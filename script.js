@@ -1,42 +1,125 @@
-// Data objects for each table
-const tableData = {
-    ide: {
-        headers: ['IDE', 'Code Completion', 'Chat', 'Inline Edit'],
-        rows: [
-            { name: 'VS Code', values: ['supported', 'supported', 'supported'] },
-            { name: 'Visual Studio', values: ['supported', 'supported', 'partial'] },
-            { name: 'JetBrains', values: ['supported', 'not-supported', 'not-supported'] },
-            { name: 'Vim/Neovim', values: ['supported', 'not-supported', 'not-supported'] }
-        ]
-    },
-    language: {
-        headers: ['Language', 'Suggestions', 'Refactoring', 'Testing'],
-        rows: [
-            { name: 'JavaScript', values: ['supported', 'supported', 'supported'] },
-            { name: 'Python', values: ['supported', 'supported', 'partial'] },
-            { name: 'Java', values: ['supported', 'partial', 'partial'] },
-            { name: 'C++', values: ['supported', 'not-supported', 'not-supported'] }
-        ]
-    },
-    version: {
-        headers: ['Feature', 'v1.0', 'v1.5', 'v2.0'],
-        rows: [
-            { name: 'Auto-complete', values: ['supported', 'supported', 'supported'] },
-            { name: 'Chat Interface', values: ['not-supported', 'supported', 'supported'] },
-            { name: 'Voice Commands', values: ['not-supported', 'not-supported', 'partial'] },
-            { name: 'Multi-file Edit', values: ['not-supported', 'partial', 'supported'] }
-        ]
-    }
-};
+// Unified feature matrix data - normalized structure
+const featureData = [
+    // VS Code data
+    { ide: 'VS Code', version: '1.60.0', feature: 'Code Completion', support: 'full', introduced: '1.0.0' },
+    { ide: 'VS Code', version: '1.60.0', feature: 'Chat', support: 'none', introduced: null },
+    { ide: 'VS Code', version: '1.60.0', feature: 'Inline Edit', support: 'none', introduced: null },
+    { ide: 'VS Code', version: '1.70.0', feature: 'Code Completion', support: 'full', introduced: '1.0.0' },
+    { ide: 'VS Code', version: '1.70.0', feature: 'Chat', support: 'full', introduced: '1.70.0' },
+    { ide: 'VS Code', version: '1.70.0', feature: 'Inline Edit', support: 'partial', introduced: '1.70.0' },
+    { ide: 'VS Code', version: '1.80.0', feature: 'Code Completion', support: 'full', introduced: '1.0.0' },
+    { ide: 'VS Code', version: '1.80.0', feature: 'Chat', support: 'full', introduced: '1.70.0' },
+    { ide: 'VS Code', version: '1.80.0', feature: 'Inline Edit', support: 'full', introduced: '1.70.0' },
+    
+    // Visual Studio data
+    { ide: 'Visual Studio', version: '2019', feature: 'Code Completion', support: 'full', introduced: '2019' },
+    { ide: 'Visual Studio', version: '2019', feature: 'Chat', support: 'none', introduced: null },
+    { ide: 'Visual Studio', version: '2019', feature: 'Inline Edit', support: 'none', introduced: null },
+    { ide: 'Visual Studio', version: '2022', feature: 'Code Completion', support: 'full', introduced: '2019' },
+    { ide: 'Visual Studio', version: '2022', feature: 'Chat', support: 'full', introduced: '2022' },
+    { ide: 'Visual Studio', version: '2022', feature: 'Inline Edit', support: 'partial', introduced: '2022' },
+    
+    // JetBrains data
+    { ide: 'JetBrains', version: '2022.1', feature: 'Code Completion', support: 'full', introduced: '2022.1' },
+    { ide: 'JetBrains', version: '2022.1', feature: 'Chat', support: 'none', introduced: null },
+    { ide: 'JetBrains', version: '2022.1', feature: 'Inline Edit', support: 'none', introduced: null },
+    { ide: 'JetBrains', version: '2023.1', feature: 'Code Completion', support: 'full', introduced: '2022.1' },
+    { ide: 'JetBrains', version: '2023.1', feature: 'Chat', support: 'none', introduced: null },
+    { ide: 'JetBrains', version: '2023.1', feature: 'Inline Edit', support: 'none', introduced: null },
+    
+    // Neovim data
+    { ide: 'Neovim', version: '0.8.0', feature: 'Code Completion', support: 'full', introduced: '0.8.0' },
+    { ide: 'Neovim', version: '0.8.0', feature: 'Chat', support: 'none', introduced: null },
+    { ide: 'Neovim', version: '0.8.0', feature: 'Inline Edit', support: 'none', introduced: null },
+    { ide: 'Neovim', version: '0.9.0', feature: 'Code Completion', support: 'full', introduced: '0.8.0' },
+    { ide: 'Neovim', version: '0.9.0', feature: 'Chat', support: 'none', introduced: null },
+    { ide: 'Neovim', version: '0.9.0', feature: 'Inline Edit', support: 'none', introduced: null }
+];
 
 // Support status mapping
 const supportStatus = {
-    'supported': '✓',
-    'partial': '⚬',
-    'not-supported': '✗'
+    'full': { symbol: '✓', class: 'supported' },
+    'partial': { symbol: '⚬', class: 'partial' },
+    'none': { symbol: '✗', class: 'not-supported' }
 };
 
-// Function to create a table from data
+// Utility functions to get unique values
+function getUniqueIDEs() {
+    return [...new Set(featureData.map(item => item.ide))].sort();
+}
+
+function getUniqueFeatures() {
+    return [...new Set(featureData.map(item => item.feature))].sort();
+}
+
+function getVersionsForIDE(ide) {
+    return [...new Set(featureData.filter(item => item.ide === ide).map(item => item.version))].sort();
+}
+
+function getAllVersions() {
+    return [...new Set(featureData.map(item => item.version))].sort();
+}
+
+// Query functions for different views
+function getFeaturesByIDE(ide, version = null) {
+    let filtered = featureData.filter(item => item.ide === ide);
+    if (version) {
+        filtered = filtered.filter(item => item.version === version);
+    }
+    return filtered;
+}
+
+function getIDEsByFeature(feature) {
+    return featureData.filter(item => item.feature === feature);
+}
+
+function getFeatureIntroduction(feature) {
+    // Get all IDEs that support this feature and when they introduced it
+    return featureData
+        .filter(item => item.feature === feature && item.introduced)
+        .reduce((acc, item) => {
+            if (!acc[item.ide] || acc[item.ide].introduced > item.introduced) {
+                acc[item.ide] = {
+                    introduced: item.introduced,
+                    currentSupport: item.support
+                };
+            }
+            return acc;
+        }, {});
+}
+
+// Pivot function - the core of our slicing and dicing
+function pivotData(rowAxis, columnAxis, filterBy = {}) {
+    let data = featureData;
+    
+    // Apply filters
+    if (filterBy.ide) data = data.filter(item => item.ide === filterBy.ide);
+    if (filterBy.feature) data = data.filter(item => item.feature === filterBy.feature);
+    if (filterBy.version) data = data.filter(item => item.version === filterBy.version);
+    
+    // Get unique values for rows and columns
+    const rowValues = [...new Set(data.map(item => item[rowAxis]))].sort();
+    const columnValues = [...new Set(data.map(item => item[columnAxis]))].sort();
+    
+    // Create pivot table structure
+    const pivot = {
+        headers: [rowAxis.charAt(0).toUpperCase() + rowAxis.slice(1), ...columnValues],
+        rows: rowValues.map(rowValue => {
+            const row = { name: rowValue, values: [] };
+            columnValues.forEach(columnValue => {
+                const match = data.find(item => 
+                    item[rowAxis] === rowValue && item[columnAxis] === columnValue
+                );
+                row.values.push(match ? match.support : 'none');
+            });
+            return row;
+        })
+    };
+    
+    return pivot;
+}
+
+// Function to create a table from pivot data
 function createTable(data) {
     const table = document.createElement('table');
     table.className = 'feature-table';
@@ -68,8 +151,9 @@ function createTable(data) {
         // Feature columns
         row.values.forEach(value => {
             const td = document.createElement('td');
-            td.className = value;
-            td.textContent = supportStatus[value];
+            const status = supportStatus[value];
+            td.className = status.class;
+            td.textContent = status.symbol;
             tr.appendChild(td);
         });
         
@@ -80,51 +164,224 @@ function createTable(data) {
     return table;
 }
 
-// Function to populate all tables
-function populateTables() {
-    // IDE Support table
-    const ideContainer = document.getElementById('ideTable');
-    ideContainer.appendChild(createTable(tableData.ide));
+// Function to create filter controls based on view type
+function createFilters(viewType) {
+    const filtersContainer = document.getElementById('filters');
+    filtersContainer.innerHTML = '';
     
-    // Language Support table
-    const languageContainer = document.getElementById('languageTable');
-    languageContainer.appendChild(createTable(tableData.language));
-    
-    // Version Support table
-    const versionContainer = document.getElementById('versionTable');
-    versionContainer.appendChild(createTable(tableData.version));
+    switch(viewType) {
+        case 'ide-features':
+            // IDE and Version selectors
+            filtersContainer.appendChild(createFilterGroup('IDE:', 'ideFilter', getUniqueIDEs(), 'All IDEs'));
+            filtersContainer.appendChild(createFilterGroup('Version:', 'versionFilter', [], 'All Versions'));
+            break;
+            
+        case 'feature-ides':
+            // Feature selector
+            filtersContainer.appendChild(createFilterGroup('Feature:', 'featureFilter', getUniqueFeatures(), 'Select Feature'));
+            break;
+            
+        case 'custom-pivot':
+            // Row and Column axis selectors
+            const axes = ['ide', 'feature', 'version'];
+            filtersContainer.appendChild(createFilterGroup('Rows:', 'rowAxis', axes, 'ide'));
+            filtersContainer.appendChild(createFilterGroup('Columns:', 'columnAxis', axes, 'feature'));
+            break;
+    }
 }
 
-// Function to switch tabs
-function switchTab(tabId) {
-    // Hide all tab panes
-    const allPanes = document.querySelectorAll('.tab-pane');
-    allPanes.forEach(pane => pane.classList.remove('active'));
+// Helper function to create filter group
+function createFilterGroup(label, id, options, defaultOption) {
+    const group = document.createElement('div');
+    group.className = 'filter-group';
     
-    // Remove active class from all tab buttons
-    const allButtons = document.querySelectorAll('.tab-button');
-    allButtons.forEach(button => button.classList.remove('active'));
+    const labelEl = document.createElement('label');
+    labelEl.textContent = label;
+    labelEl.setAttribute('for', id);
     
-    // Show the selected tab pane
-    document.getElementById(tabId).classList.add('active');
+    const select = document.createElement('select');
+    select.id = id;
     
-    // Add active class to the clicked button
-    document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+    // Add default option
+    if (defaultOption && typeof defaultOption === 'string' && !options.includes(defaultOption)) {
+        const defaultOpt = document.createElement('option');
+        defaultOpt.value = '';
+        defaultOpt.textContent = defaultOption;
+        select.appendChild(defaultOpt);
+    }
+    
+    // Add options
+    options.forEach(option => {
+        const optionEl = document.createElement('option');
+        optionEl.value = option;
+        optionEl.textContent = option.charAt(0).toUpperCase() + option.slice(1);
+        if (option === defaultOption) {
+            optionEl.selected = true;
+        }
+        select.appendChild(optionEl);
+    });
+    
+    // Add event listener for dependent dropdowns
+    if (id === 'ideFilter') {
+        select.addEventListener('change', updateVersionFilter);
+    }
+    
+    // Add event listener for table updates
+    select.addEventListener('change', updateTable);
+    
+    group.appendChild(labelEl);
+    group.appendChild(select);
+    return group;
 }
 
-// Event listeners
-document.addEventListener('DOMContentLoaded', function() {
-    // Populate tables with data
-    populateTables();
+// Function to update version filter based on IDE selection
+function updateVersionFilter() {
+    const ideSelect = document.getElementById('ideFilter');
+    const versionSelect = document.getElementById('versionFilter');
     
-    // Add click event listeners to all tab buttons
+    if (ideSelect && versionSelect) {
+        const selectedIDE = ideSelect.value;
+        versionSelect.innerHTML = '<option value="">All Versions</option>';
+        
+        if (selectedIDE) {
+            const versions = getVersionsForIDE(selectedIDE);
+            versions.forEach(version => {
+                const option = document.createElement('option');
+                option.value = version;
+                option.textContent = version;
+                versionSelect.appendChild(option);
+            });
+        }
+    }
+    
+    updateTable();
+}
+
+// Main function to update the table based on current selections
+function updateTable() {
+    const viewType = document.getElementById('viewType').value;
+    const tableContainer = document.getElementById('dynamicTable');
+    
+    let tableData;
+    
+    switch(viewType) {
+        case 'ide-features':
+            tableData = generateIDEFeaturesView();
+            break;
+        case 'feature-ides':
+            tableData = generateFeatureIDEsView();
+            break;
+        case 'custom-pivot':
+            tableData = generateCustomPivotView();
+            break;
+    }
+    
+    // Clear and rebuild table
+    tableContainer.innerHTML = '';
+    if (tableData && tableData.rows.length > 0) {
+        tableContainer.appendChild(createTable(tableData));
+    } else {
+        tableContainer.innerHTML = '<p style="color: #ccc; font-style: italic;">No data available for current selection.</p>';
+    }
+}
+
+// View generation functions
+function generateIDEFeaturesView() {
+    const ideFilter = document.getElementById('ideFilter')?.value;
+    const versionFilter = document.getElementById('versionFilter')?.value;
+    
+    if (ideFilter && versionFilter) {
+        // Show features for specific IDE and version
+        return pivotData('feature', 'ide', { ide: ideFilter, version: versionFilter });
+    } else if (ideFilter) {
+        // Show features for specific IDE across versions
+        return pivotData('feature', 'version', { ide: ideFilter });
+    } else {
+        // Show all IDEs vs features (latest version for each IDE)
+        return pivotData('ide', 'feature');
+    }
+}
+
+function generateFeatureIDEsView() {
+    const featureFilter = document.getElementById('featureFilter')?.value;
+    
+    if (featureFilter) {
+        // Show IDEs that support this feature across versions
+        return pivotData('ide', 'version', { feature: featureFilter });
+    } else {
+        return { headers: [], rows: [] };
+    }
+}
+
+function generateCustomPivotView() {
+    const rowAxis = document.getElementById('rowAxis')?.value || 'ide';
+    const columnAxis = document.getElementById('columnAxis')?.value || 'feature';
+    
+    return pivotData(rowAxis, columnAxis);
+}
+
+// Initialize the application
+function initializeApp() {
+    // Set up tab click handlers
     const tabButtons = document.querySelectorAll('.tab-button');
     tabButtons.forEach(button => {
         button.addEventListener('click', function() {
-            const tabId = this.getAttribute('data-tab');
-            switchTab(tabId);
+            // Remove active class from all buttons
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Get the view type and update
+            const viewType = this.getAttribute('data-view');
+            switchToView(viewType);
         });
     });
     
-    console.log('Feature matrix loaded with JavaScript data objects!');
-});
+    // Initialize with the first tab (active tab)
+    const activeTab = document.querySelector('.tab-button.active');
+    const initialView = activeTab.getAttribute('data-view');
+    switchToView(initialView);
+    
+    console.log('Feature matrix application initialized with tabs!');
+}
+
+// Function to switch to a specific view
+function switchToView(viewType) {
+    createFilters(viewType);
+    updateTable(viewType);
+}
+
+// Main function to update the table based on view type and current selections
+function updateTable(viewType = null) {
+    // If no viewType provided, get it from the active tab
+    if (!viewType) {
+        const activeTab = document.querySelector('.tab-button.active');
+        viewType = activeTab.getAttribute('data-view');
+    }
+    
+    const tableContainer = document.getElementById('dynamicTable');
+    let tableData;
+    
+    switch(viewType) {
+        case 'ide-features':
+            tableData = generateIDEFeaturesView();
+            break;
+        case 'feature-ides':
+            tableData = generateFeatureIDEsView();
+            break;
+        case 'custom-pivot':
+            tableData = generateCustomPivotView();
+            break;
+    }
+    
+    // Clear and rebuild table
+    tableContainer.innerHTML = '';
+    if (tableData && tableData.rows.length > 0) {
+        tableContainer.appendChild(createTable(tableData));
+    } else {
+        tableContainer.innerHTML = '<p style="color: #ccc; font-style: italic;">No data available for current selection.</p>';
+    }
+}
+
+// Event listeners
+document.addEventListener('DOMContentLoaded', initializeApp);
