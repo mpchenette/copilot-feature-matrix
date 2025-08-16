@@ -1,0 +1,1 @@
+This project is intended to be an interactive webapp that is a feature matrix for GitHub Copilot's features. The intent is to allow the user to filter by IDE, by IDE version, by Copilot extension version or by feature.
