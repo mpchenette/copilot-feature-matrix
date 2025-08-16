@@ -256,7 +256,7 @@ function createFilterGroup(label, id, options, defaultOption) {
         select.addEventListener('change', updateVersionFilter);
     } else {
         // Add event listener for table updates (but not for ideFilter since updateVersionFilter handles it)
-        select.addEventListener('change', updateTable);
+        select.addEventListener('change', () => updateTable());
     }
     
     group.appendChild(labelEl);
@@ -286,34 +286,6 @@ function updateVersionFilter() {
     }
     
     updateTable();
-}
-
-// Main function to update the table based on current selections
-function updateTable() {
-    const viewType = document.getElementById('viewType').value;
-    const tableContainer = document.getElementById('dynamicTable');
-    
-    let tableData;
-    
-    switch(viewType) {
-        case 'ide-features':
-            tableData = generateIDEFeaturesView();
-            break;
-        case 'feature-ides':
-            tableData = generateFeatureIDEsView();
-            break;
-        case 'custom-pivot':
-            tableData = generateCustomPivotView();
-            break;
-    }
-    
-    // Clear and rebuild table
-    tableContainer.innerHTML = '';
-    if (tableData && tableData.rows.length > 0) {
-        tableContainer.appendChild(createTable(tableData));
-    } else {
-        tableContainer.innerHTML = '<p style="color: #ccc; font-style: italic;">No data available for current selection.</p>';
-    }
 }
 
 // View generation functions
