@@ -1,1 +1,3 @@
 This project is intended to be an interactive webapp that is a feature matrix for GitHub Copilot's features. The intent is to allow the user to filter by IDE, by IDE version, by Copilot extension version or by feature.
+
+This project is intending to let users slice and dice "IDE versions x feature support" as they'd like, from any angle. this means, if they want to choose an ide and a version and just see the feature matrix of what's supported on that version, they can! If instead, they'd rather choose a feature and see a list of all IDEs and corresponding versions that started supporting that feature, they can!
