@@ -36,6 +36,32 @@ const featureData = [
     { ide: 'Neovim', version: '0.9.0', feature: 'Inline Edit', support: 'none', introduced: null }
 ];
 
+// Helper function to compare versions properly
+function compareVersions(a, b) {
+    // Handle different version formats
+    if (a === b) return 0;
+    
+    // If both are years (like 2019, 2022)
+    if (/^\d{4}$/.test(a) && /^\d{4}$/.test(b)) {
+        return parseInt(a) - parseInt(b);
+    }
+    
+    // If both are semantic versions (like 1.60.0, 2023.1)
+    const aParts = a.split('.').map(num => parseInt(num));
+    const bParts = b.split('.').map(num => parseInt(num));
+    
+    for (let i = 0; i < Math.max(aParts.length, bParts.length); i++) {
+        const aPart = aParts[i] || 0;
+        const bPart = bParts[i] || 0;
+        
+        if (aPart !== bPart) {
+            return aPart - bPart;
+        }
+    }
+    
+    return 0;
+}
+
 // Support status mapping
 const supportStatus = {
     'full': { symbol: '✓', class: 'supported' },
@@ -53,11 +79,11 @@ function getUniqueFeatures() {
 }
 
 function getVersionsForIDE(ide) {
-    return [...new Set(featureData.filter(item => item.ide === ide).map(item => item.version))].sort();
+    return [...new Set(featureData.filter(item => item.ide === ide).map(item => item.version))].sort(compareVersions);
 }
 
 function getAllVersions() {
-    return [...new Set(featureData.map(item => item.version))].sort();
+    return [...new Set(featureData.map(item => item.version))].sort(compareVersions);
 }
 
 // Query functions for different views
@@ -98,8 +124,12 @@ function pivotData(rowAxis, columnAxis, filterBy = {}) {
     if (filterBy.version) data = data.filter(item => item.version === filterBy.version);
     
     // Get unique values for rows and columns
-    const rowValues = [...new Set(data.map(item => item[rowAxis]))].sort();
-    const columnValues = [...new Set(data.map(item => item[columnAxis]))].sort();
+    const rowValues = [...new Set(data.map(item => item[rowAxis]))].sort((a, b) => {
+        return rowAxis === 'version' ? compareVersions(a, b) : a.localeCompare(b);
+    });
+    const columnValues = [...new Set(data.map(item => item[columnAxis]))].sort((a, b) => {
+        return columnAxis === 'version' ? compareVersions(a, b) : a.localeCompare(b);
+    });
     
     // Create pivot table structure
     const pivot = {
@@ -224,10 +254,10 @@ function createFilterGroup(label, id, options, defaultOption) {
     // Add event listener for dependent dropdowns
     if (id === 'ideFilter') {
         select.addEventListener('change', updateVersionFilter);
+    } else {
+        // Add event listener for table updates (but not for ideFilter since updateVersionFilter handles it)
+        select.addEventListener('change', updateTable);
     }
-    
-    // Add event listener for table updates
-    select.addEventListener('change', updateTable);
     
     group.appendChild(labelEl);
     group.appendChild(select);
@@ -241,6 +271,7 @@ function updateVersionFilter() {
     
     if (ideSelect && versionSelect) {
         const selectedIDE = ideSelect.value;
+        
         versionSelect.innerHTML = '<option value="">All Versions</option>';
         
         if (selectedIDE) {
@@ -292,13 +323,54 @@ function generateIDEFeaturesView() {
     
     if (ideFilter && versionFilter) {
         // Show features for specific IDE and version
-        return pivotData('feature', 'ide', { ide: ideFilter, version: versionFilter });
+        // We want to show features as rows, with just this IDE+version as the single column
+        const filtered = featureData.filter(item => item.ide === ideFilter && item.version === versionFilter);
+        
+        // Create a simple table structure
+        const features = [...new Set(filtered.map(item => item.feature))].sort();
+        return {
+            headers: ['Feature', `${ideFilter} ${versionFilter}`],
+            rows: features.map(feature => {
+                const match = filtered.find(item => item.feature === feature);
+                return {
+                    name: feature,
+                    values: [match ? match.support : 'none']
+                };
+            })
+        };
     } else if (ideFilter) {
-        // Show features for specific IDE across versions
+        // Show features for specific IDE across all its versions
         return pivotData('feature', 'version', { ide: ideFilter });
     } else {
-        // Show all IDEs vs features (latest version for each IDE)
-        return pivotData('ide', 'feature');
+        // Show all IDEs vs features (use latest version for each IDE)
+        // Get the latest version for each IDE
+        const latestVersions = {};
+        featureData.forEach(item => {
+            if (!latestVersions[item.ide] || compareVersions(item.version, latestVersions[item.ide]) > 0) {
+                latestVersions[item.ide] = item.version;
+            }
+        });
+        
+        // Filter to only include latest versions
+        const latestData = featureData.filter(item => 
+            latestVersions[item.ide] === item.version
+        );
+        
+        // Create pivot with the latest data
+        const ides = [...new Set(latestData.map(item => item.ide))].sort();
+        const features = [...new Set(latestData.map(item => item.feature))].sort();
+        
+        return {
+            headers: ['Feature', ...ides],
+            rows: features.map(feature => {
+                const row = { name: feature, values: [] };
+                ides.forEach(ide => {
+                    const match = latestData.find(item => item.ide === ide && item.feature === feature);
+                    row.values.push(match ? match.support : 'none');
+                });
+                return row;
+            })
+        };
     }
 }
 
