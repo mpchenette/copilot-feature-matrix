@@ -1,39 +1,39 @@
 // Unified feature matrix data - normalized structure
 const featureData = [
     // VS Code data
-    { ide: 'VS Code', version: '1.60.0', feature: 'Code Completion', support: 'full', introduced: '1.0.0' },
-    { ide: 'VS Code', version: '1.60.0', feature: 'Chat', support: 'none', introduced: null },
-    { ide: 'VS Code', version: '1.60.0', feature: 'Inline Edit', support: 'none', introduced: null },
-    { ide: 'VS Code', version: '1.70.0', feature: 'Code Completion', support: 'full', introduced: '1.0.0' },
-    { ide: 'VS Code', version: '1.70.0', feature: 'Chat', support: 'full', introduced: '1.70.0' },
-    { ide: 'VS Code', version: '1.70.0', feature: 'Inline Edit', support: 'partial', introduced: '1.70.0' },
-    { ide: 'VS Code', version: '1.80.0', feature: 'Code Completion', support: 'full', introduced: '1.0.0' },
-    { ide: 'VS Code', version: '1.80.0', feature: 'Chat', support: 'full', introduced: '1.70.0' },
-    { ide: 'VS Code', version: '1.80.0', feature: 'Inline Edit', support: 'full', introduced: '1.70.0' },
+    { ide: 'VS Code', version: '1.60.0', feature: 'Code Completion', support: 'full', introduced: '1.0.0', releaseType: 'ga' },
+    { ide: 'VS Code', version: '1.60.0', feature: 'Chat', support: 'none', introduced: null, releaseType: null },
+    { ide: 'VS Code', version: '1.60.0', feature: 'Inline Edit', support: 'none', introduced: null, releaseType: null },
+    { ide: 'VS Code', version: '1.70.0', feature: 'Code Completion', support: 'full', introduced: '1.0.0', releaseType: 'ga' },
+    { ide: 'VS Code', version: '1.70.0', feature: 'Chat', support: 'full', introduced: '1.70.0', releaseType: 'ga' },
+    { ide: 'VS Code', version: '1.70.0', feature: 'Inline Edit', support: 'partial', introduced: '1.70.0', releaseType: 'preview' },
+    { ide: 'VS Code', version: '1.80.0', feature: 'Code Completion', support: 'full', introduced: '1.0.0', releaseType: 'ga' },
+    { ide: 'VS Code', version: '1.80.0', feature: 'Chat', support: 'full', introduced: '1.70.0', releaseType: 'ga' },
+    { ide: 'VS Code', version: '1.80.0', feature: 'Inline Edit', support: 'full', introduced: '1.70.0', releaseType: 'ga' },
     
     // Visual Studio data
-    { ide: 'Visual Studio', version: '2019', feature: 'Code Completion', support: 'full', introduced: '2019' },
-    { ide: 'Visual Studio', version: '2019', feature: 'Chat', support: 'none', introduced: null },
-    { ide: 'Visual Studio', version: '2019', feature: 'Inline Edit', support: 'none', introduced: null },
-    { ide: 'Visual Studio', version: '2022', feature: 'Code Completion', support: 'full', introduced: '2019' },
-    { ide: 'Visual Studio', version: '2022', feature: 'Chat', support: 'full', introduced: '2022' },
-    { ide: 'Visual Studio', version: '2022', feature: 'Inline Edit', support: 'partial', introduced: '2022' },
+    { ide: 'Visual Studio', version: '2019', feature: 'Code Completion', support: 'full', introduced: '2019', releaseType: 'ga' },
+    { ide: 'Visual Studio', version: '2019', feature: 'Chat', support: 'none', introduced: null, releaseType: null },
+    { ide: 'Visual Studio', version: '2019', feature: 'Inline Edit', support: 'none', introduced: null, releaseType: null },
+    { ide: 'Visual Studio', version: '2022', feature: 'Code Completion', support: 'full', introduced: '2019', releaseType: 'ga' },
+    { ide: 'Visual Studio', version: '2022', feature: 'Chat', support: 'full', introduced: '2022', releaseType: 'ga' },
+    { ide: 'Visual Studio', version: '2022', feature: 'Inline Edit', support: 'partial', introduced: '2022', releaseType: 'preview' },
     
     // JetBrains data
-    { ide: 'JetBrains', version: '2022.1', feature: 'Code Completion', support: 'full', introduced: '2022.1' },
-    { ide: 'JetBrains', version: '2022.1', feature: 'Chat', support: 'none', introduced: null },
-    { ide: 'JetBrains', version: '2022.1', feature: 'Inline Edit', support: 'none', introduced: null },
-    { ide: 'JetBrains', version: '2023.1', feature: 'Code Completion', support: 'full', introduced: '2022.1' },
-    { ide: 'JetBrains', version: '2023.1', feature: 'Chat', support: 'none', introduced: null },
-    { ide: 'JetBrains', version: '2023.1', feature: 'Inline Edit', support: 'none', introduced: null },
+    { ide: 'JetBrains', version: '2022.1', feature: 'Code Completion', support: 'full', introduced: '2022.1', releaseType: 'preview' },
+    { ide: 'JetBrains', version: '2022.1', feature: 'Chat', support: 'none', introduced: null, releaseType: null },
+    { ide: 'JetBrains', version: '2022.1', feature: 'Inline Edit', support: 'none', introduced: null, releaseType: null },
+    { ide: 'JetBrains', version: '2023.1', feature: 'Code Completion', support: 'full', introduced: '2022.1', releaseType: 'ga' },
+    { ide: 'JetBrains', version: '2023.1', feature: 'Chat', support: 'none', introduced: null, releaseType: null },
+    { ide: 'JetBrains', version: '2023.1', feature: 'Inline Edit', support: 'none', introduced: null, releaseType: null },
     
     // Neovim data
-    { ide: 'Neovim', version: '0.8.0', feature: 'Code Completion', support: 'full', introduced: '0.8.0' },
-    { ide: 'Neovim', version: '0.8.0', feature: 'Chat', support: 'none', introduced: null },
-    { ide: 'Neovim', version: '0.8.0', feature: 'Inline Edit', support: 'none', introduced: null },
-    { ide: 'Neovim', version: '0.9.0', feature: 'Code Completion', support: 'full', introduced: '0.8.0' },
-    { ide: 'Neovim', version: '0.9.0', feature: 'Chat', support: 'none', introduced: null },
-    { ide: 'Neovim', version: '0.9.0', feature: 'Inline Edit', support: 'none', introduced: null }
+    { ide: 'Neovim', version: '0.8.0', feature: 'Code Completion', support: 'full', introduced: '0.8.0', releaseType: 'ga' },
+    { ide: 'Neovim', version: '0.8.0', feature: 'Chat', support: 'none', introduced: null, releaseType: null },
+    { ide: 'Neovim', version: '0.8.0', feature: 'Inline Edit', support: 'none', introduced: null, releaseType: null },
+    { ide: 'Neovim', version: '0.9.0', feature: 'Code Completion', support: 'full', introduced: '0.8.0', releaseType: 'ga' },
+    { ide: 'Neovim', version: '0.9.0', feature: 'Chat', support: 'none', introduced: null, releaseType: null },
+    { ide: 'Neovim', version: '0.9.0', feature: 'Inline Edit', support: 'none', introduced: null, releaseType: null }
 ];
 
 // Helper function to compare versions properly
@@ -178,12 +178,28 @@ function createTable(data) {
         nameCell.textContent = row.name;
         tr.appendChild(nameCell);
         
-        // Feature columns
+        // Value columns
         row.values.forEach(value => {
             const td = document.createElement('td');
-            const status = supportStatus[value];
-            td.className = status.class;
-            td.textContent = status.symbol;
+            
+            // Check if this is a support status (for Features by IDE view) or version number (for IDEs by Feature view)
+            if (supportStatus[value]) {
+                // This is a support status symbol
+                const status = supportStatus[value];
+                td.className = status.class;
+                td.textContent = status.symbol;
+            } else {
+                // This is a version number or N/A
+                td.textContent = value;
+                if (value === 'N/A') {
+                    td.className = 'not-supported';
+                    td.style.fontStyle = 'italic';
+                    td.style.color = '#888';
+                } else {
+                    td.className = 'version-number';
+                    td.style.fontWeight = 'bold';
+                }
+            }
             tr.appendChild(td);
         });
         
@@ -350,8 +366,40 @@ function generateFeatureIDEsView() {
     const featureFilter = document.getElementById('featureFilter')?.value;
     
     if (featureFilter) {
-        // Show IDEs that support this feature across versions
-        return pivotData('ide', 'version', { feature: featureFilter });
+        // Get all data for this feature
+        const featureData_filtered = featureData.filter(item => item.feature === featureFilter);
+        
+        // Get unique IDEs that have this feature
+        const ides = [...new Set(featureData_filtered.map(item => item.ide))].sort();
+        
+        // For each IDE, find the Preview and GA versions
+        const rows = ides.map(ide => {
+            const ideFeatureData = featureData_filtered.filter(item => item.ide === ide);
+            
+            // Find Preview version (first version where feature was introduced as preview)
+            const previewEntry = ideFeatureData.find(item => 
+                item.support !== 'none' && item.releaseType === 'preview'
+            );
+            
+            // Find GA version (first version where feature was released as GA)
+            const gaEntry = ideFeatureData.find(item => 
+                item.support !== 'none' && item.releaseType === 'ga'
+            );
+            
+            return {
+                name: ide,
+                preview: previewEntry ? previewEntry.version : 'N/A',
+                ga: gaEntry ? gaEntry.version : 'N/A'
+            };
+        });
+        
+        return {
+            headers: ['IDE', 'Preview', 'GA'],
+            rows: rows.map(row => ({
+                name: row.name,
+                values: [row.preview, row.ga]
+            }))
+        };
     } else {
         return { headers: [], rows: [] };
     }
