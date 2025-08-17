@@ -30,6 +30,16 @@ function normalizeData(rawData) {
         const resolvedVersions = {};
         featureIntroductions[ide] = {};
         
+        // Get all possible features for this IDE (to track absence)
+        const allFeatures = new Set();
+        for (const version of Object.values(versions)) {
+            for (const featureName of Object.keys(version)) {
+                if (featureName !== '_inherits') {
+                    allFeatures.add(featureName);
+                }
+            }
+        }
+        
         for (const version of sortedVersions) {
             const versionData = versions[version];
             let features = {};
@@ -52,25 +62,29 @@ function normalizeData(rawData) {
             // Store resolved features for this version
             resolvedVersions[version] = features;
             
-            // Convert to flat structure and calculate 'introduced' field
-            for (const [featureName, featureInfo] of Object.entries(features)) {
-                // Track when this feature was first introduced (support != 'none')
-                if (featureInfo.support !== 'none' && !featureIntroductions[ide][featureName]) {
+            // Convert to flat structure for all features (present and absent)
+            for (const featureName of allFeatures) {
+                const featureInfo = features[featureName];
+                const isSupported = !!featureInfo;
+                
+                // Track when this feature was first introduced
+                if (isSupported && !featureIntroductions[ide][featureName]) {
                     featureIntroductions[ide][featureName] = version;
                 }
                 
-                // Calculate the introduced version for this entry
-                const introducedVersion = featureInfo.support !== 'none' 
-                    ? featureIntroductions[ide][featureName] 
-                    : null;
+                // Calculate the introduced version and support level
+                const introducedVersion = isSupported ? featureIntroductions[ide][featureName] : null;
+                const support = isSupported 
+                    ? (featureInfo.releaseType === 'preview' ? 'partial' : 'full')
+                    : 'none';
                 
                 normalized.push({
                     ide: ide,
                     version: version,
                     feature: featureName,
-                    support: featureInfo.support,
+                    support: support,
                     introduced: introducedVersion,
-                    releaseType: featureInfo.releaseType
+                    releaseType: isSupported ? featureInfo.releaseType : null
                 });
             }
         }
@@ -119,15 +133,39 @@ function getUniqueIDEs() {
 
 function getUniqueFeatures() {
     const features = new Set();
-    for (const ide of Object.values(rawFeatureData)) {
-        for (const version of Object.values(ide)) {
-            for (const featureName of Object.keys(version)) {
-                if (featureName !== '_inherits') {
-                    features.add(featureName);
+    
+    // Collect all features from all IDEs and versions (including inherited ones)
+    for (const [ide, versions] of Object.entries(rawFeatureData)) {
+        const sortedVersions = Object.keys(versions).sort(compareVersions);
+        const resolvedVersions = {};
+        
+        for (const version of sortedVersions) {
+            const versionData = versions[version];
+            let versionFeatures = {};
+            
+            // If this version inherits from another, start with parent's features
+            if (versionData._inherits) {
+                const parentVersion = versionData._inherits;
+                if (resolvedVersions[parentVersion]) {
+                    versionFeatures = { ...resolvedVersions[parentVersion] };
                 }
+            }
+            
+            // Apply this version's features (overriding inherited ones)
+            for (const [featureName, featureData] of Object.entries(versionData)) {
+                if (featureName !== '_inherits') {
+                    versionFeatures[featureName] = featureData;
+                }
+            }
+            
+            // Store resolved features and add to global set
+            resolvedVersions[version] = versionFeatures;
+            for (const featureName of Object.keys(versionFeatures)) {
+                features.add(featureName);
             }
         }
     }
+    
     return [...features].sort();
 }
 
