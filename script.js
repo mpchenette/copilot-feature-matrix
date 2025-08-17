@@ -1,41 +1,71 @@
-// Unified feature matrix data - normalized structure
-const featureData = [
-    // VS Code data
-    { ide: 'VS Code', version: '1.60.0', feature: 'Code Completion', support: 'full', introduced: '1.0.0', releaseType: 'ga' },
-    { ide: 'VS Code', version: '1.60.0', feature: 'Chat', support: 'none', introduced: null, releaseType: null },
-    { ide: 'VS Code', version: '1.60.0', feature: 'Inline Edit', support: 'none', introduced: null, releaseType: null },
-    { ide: 'VS Code', version: '1.70.0', feature: 'Code Completion', support: 'full', introduced: '1.0.0', releaseType: 'ga' },
-    { ide: 'VS Code', version: '1.70.0', feature: 'Chat', support: 'full', introduced: '1.70.0', releaseType: 'ga' },
-    { ide: 'VS Code', version: '1.70.0', feature: 'Inline Edit', support: 'partial', introduced: '1.70.0', releaseType: 'preview' },
-    { ide: 'VS Code', version: '1.80.0', feature: 'Code Completion', support: 'full', introduced: '1.0.0', releaseType: 'ga' },
-    { ide: 'VS Code', version: '1.80.0', feature: 'Chat', support: 'full', introduced: '1.70.0', releaseType: 'ga' },
-    { ide: 'VS Code', version: '1.80.0', feature: 'Inline Edit', support: 'full', introduced: '1.70.0', releaseType: 'ga' },
-    { ide: 'VS Code', version: '1.80.0', feature: 'Copilot code review', support: 'full', introduced: '1.70.0', releaseType: 'ga' },
+// Feature matrix data - loaded from JSON
+let rawFeatureData = {};
+let featureData = []; // Normalized data for backwards compatibility
+
+// Load data from JSON file
+async function loadFeatureData() {
+    try {
+        const response = await fetch('./data.json');
+        rawFeatureData = await response.json();
+        
+        // Convert to normalized structure for existing functions
+        featureData = normalizeData(rawFeatureData);
+        
+        console.log('Feature data loaded successfully');
+        return true;
+    } catch (error) {
+        console.error('Error loading feature data:', error);
+        return false;
+    }
+}
+
+// Function to resolve inheritance and convert to flat structure
+function normalizeData(rawData) {
+    const normalized = [];
     
-    // Visual Studio data
-    { ide: 'Visual Studio', version: '2019', feature: 'Code Completion', support: 'full', introduced: '2019', releaseType: 'ga' },
-    { ide: 'Visual Studio', version: '2019', feature: 'Chat', support: 'none', introduced: null, releaseType: null },
-    { ide: 'Visual Studio', version: '2019', feature: 'Inline Edit', support: 'none', introduced: null, releaseType: null },
-    { ide: 'Visual Studio', version: '2022', feature: 'Code Completion', support: 'full', introduced: '2019', releaseType: 'ga' },
-    { ide: 'Visual Studio', version: '2022', feature: 'Chat', support: 'full', introduced: '2022', releaseType: 'ga' },
-    { ide: 'Visual Studio', version: '2022', feature: 'Inline Edit', support: 'partial', introduced: '2022', releaseType: 'preview' },
+    for (const [ide, versions] of Object.entries(rawData)) {
+        // Sort versions to process in order
+        const sortedVersions = Object.keys(versions).sort(compareVersions);
+        const resolvedVersions = {};
+        
+        for (const version of sortedVersions) {
+            const versionData = versions[version];
+            let features = {};
+            
+            // If this version inherits from another, start with parent's features
+            if (versionData._inherits) {
+                const parentVersion = versionData._inherits;
+                if (resolvedVersions[parentVersion]) {
+                    features = { ...resolvedVersions[parentVersion] };
+                }
+            }
+            
+            // Apply this version's features (overriding inherited ones)
+            for (const [featureName, featureData] of Object.entries(versionData)) {
+                if (featureName !== '_inherits') {
+                    features[featureName] = featureData;
+                }
+            }
+            
+            // Store resolved features for this version
+            resolvedVersions[version] = features;
+            
+            // Convert to flat structure for backwards compatibility
+            for (const [featureName, featureInfo] of Object.entries(features)) {
+                normalized.push({
+                    ide: ide,
+                    version: version,
+                    feature: featureName,
+                    support: featureInfo.support,
+                    introduced: featureInfo.introduced,
+                    releaseType: featureInfo.releaseType
+                });
+            }
+        }
+    }
     
-    // JetBrains data
-    { ide: 'JetBrains', version: '2022.1', feature: 'Code Completion', support: 'full', introduced: '2022.1', releaseType: 'preview' },
-    { ide: 'JetBrains', version: '2022.1', feature: 'Chat', support: 'none', introduced: null, releaseType: null },
-    { ide: 'JetBrains', version: '2022.1', feature: 'Inline Edit', support: 'none', introduced: null, releaseType: null },
-    { ide: 'JetBrains', version: '2023.1', feature: 'Code Completion', support: 'full', introduced: '2022.1', releaseType: 'ga' },
-    { ide: 'JetBrains', version: '2023.1', feature: 'Chat', support: 'none', introduced: null, releaseType: null },
-    { ide: 'JetBrains', version: '2023.1', feature: 'Inline Edit', support: 'none', introduced: null, releaseType: null },
-    
-    // Neovim data
-    { ide: 'Neovim', version: '0.8.0', feature: 'Code Completion', support: 'full', introduced: '0.8.0', releaseType: 'ga' },
-    { ide: 'Neovim', version: '0.8.0', feature: 'Chat', support: 'none', introduced: null, releaseType: null },
-    { ide: 'Neovim', version: '0.8.0', feature: 'Inline Edit', support: 'none', introduced: null, releaseType: null },
-    { ide: 'Neovim', version: '0.9.0', feature: 'Code Completion', support: 'full', introduced: '0.8.0', releaseType: 'ga' },
-    { ide: 'Neovim', version: '0.9.0', feature: 'Chat', support: 'none', introduced: null, releaseType: null },
-    { ide: 'Neovim', version: '0.9.0', feature: 'Inline Edit', support: 'none', introduced: null, releaseType: null }
-];
+    return normalized;
+}
 
 // Helper function to compare versions properly
 function compareVersions(a, b) {
@@ -72,19 +102,36 @@ const supportStatus = {
 
 // Utility functions to get unique values
 function getUniqueIDEs() {
-    return [...new Set(featureData.map(item => item.ide))].sort();
+    return Object.keys(rawFeatureData).sort();
 }
 
 function getUniqueFeatures() {
-    return [...new Set(featureData.map(item => item.feature))].sort();
+    const features = new Set();
+    for (const ide of Object.values(rawFeatureData)) {
+        for (const version of Object.values(ide)) {
+            for (const featureName of Object.keys(version)) {
+                if (featureName !== '_inherits') {
+                    features.add(featureName);
+                }
+            }
+        }
+    }
+    return [...features].sort();
 }
 
 function getVersionsForIDE(ide) {
-    return [...new Set(featureData.filter(item => item.ide === ide).map(item => item.version))].sort(compareVersions);
+    if (!rawFeatureData[ide]) return [];
+    return Object.keys(rawFeatureData[ide]).sort(compareVersions);
 }
 
 function getAllVersions() {
-    return [...new Set(featureData.map(item => item.version))].sort(compareVersions);
+    const versions = new Set();
+    for (const ide of Object.values(rawFeatureData)) {
+        for (const version of Object.keys(ide)) {
+            versions.add(version);
+        }
+    }
+    return [...versions].sort(compareVersions);
 }
 
 // Query functions for different views
@@ -445,7 +492,14 @@ function generateCustomPivotView() {
 }
 
 // Initialize the application
-function initializeApp() {
+async function initializeApp() {
+    // Load data first
+    const dataLoaded = await loadFeatureData();
+    if (!dataLoaded) {
+        document.getElementById('dynamicTable').innerHTML = '<p style="color: #f44336;">Error loading feature data. Please check the console for details.</p>';
+        return;
+    }
+    
     // Set up tab click handlers
     const tabButtons = document.querySelectorAll('.tab-button');
     tabButtons.forEach(button => {
@@ -466,7 +520,7 @@ function initializeApp() {
     const initialView = activeTab.getAttribute('data-view');
     switchToView(initialView);
     
-    console.log('Feature matrix application initialized with tabs!');
+    console.log('Feature matrix application initialized with JSON data!');
 }
 
 // Function to switch to a specific view

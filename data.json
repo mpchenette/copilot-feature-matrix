@@ -1,0 +1,68 @@
+{
+  "VS Code": {
+    "1.60.0": {
+      "Code Completion": { "support": "full", "introduced": "1.0.0", "releaseType": "ga" },
+      "Chat": { "support": "none", "introduced": null, "releaseType": null },
+      "Inline Edit": { "support": "none", "introduced": null, "releaseType": null },
+      "Copilot Code Review": { "support": "none", "introduced": null, "releaseType": null }
+    },
+    "1.70.0": {
+      "_inherits": "1.60.0",
+      "Chat": { "support": "full", "introduced": "1.70.0", "releaseType": "ga" },
+      "Inline Edit": { "support": "partial", "introduced": "1.70.0", "releaseType": "preview" },
+      "Copilot Code Review": { "support": "full", "introduced": "1.70.0", "releaseType": "ga" }
+    },
+    "1.80.0": {
+      "_inherits": "1.70.0",
+      "Inline Edit": { "support": "full", "introduced": "1.70.0", "releaseType": "ga" }
+    },
+        "1.97.0": {
+      "_inherits": "1.80.0",
+      "Agent mode": { "support": "full", "introduced": "1.97.0", "releaseType": "ga" }
+    },
+        "1.98.0": {
+      "_inherits": "1.97.0",
+      "Agent mode": { "support": "full", "introduced": "1.97.0", "releaseType": "preview" }
+    },
+    "1.99.0": {
+      "_inherits": "1.98.0",
+      "Agent mode": { "support": "full", "introduced": "1.97.0", "releaseType": "ga" }
+    }
+  },
+  "Visual Studio": {
+    "2019": {
+      "Code Completion": { "support": "full", "introduced": "2019", "releaseType": "ga" },
+      "Chat": { "support": "none", "introduced": null, "releaseType": null },
+      "Inline Edit": { "support": "none", "introduced": null, "releaseType": null },
+      "Copilot Code Review": { "support": "none", "introduced": null, "releaseType": null }
+    },
+    "2022": {
+      "_inherits": "2019",
+      "Chat": { "support": "full", "introduced": "2022", "releaseType": "ga" },
+      "Inline Edit": { "support": "partial", "introduced": "2022", "releaseType": "preview" }
+    }
+  },
+  "JetBrains": {
+    "2022.1": {
+      "Code Completion": { "support": "full", "introduced": "2022.1", "releaseType": "preview" },
+      "Chat": { "support": "none", "introduced": null, "releaseType": null },
+      "Inline Edit": { "support": "none", "introduced": null, "releaseType": null },
+      "Copilot Code Review": { "support": "none", "introduced": null, "releaseType": null }
+    },
+    "2023.1": {
+      "_inherits": "2022.1",
+      "Code Completion": { "support": "full", "introduced": "2022.1", "releaseType": "ga" }
+    }
+  },
+  "Neovim": {
+    "0.8.0": {
+      "Code Completion": { "support": "full", "introduced": "0.8.0", "releaseType": "ga" },
+      "Chat": { "support": "none", "introduced": null, "releaseType": null },
+      "Inline Edit": { "support": "none", "introduced": null, "releaseType": null },
+      "Copilot Code Review": { "support": "none", "introduced": null, "releaseType": null }
+    },
+    "0.9.0": {
+      "_inherits": "0.8.0"
+    }
+  }
+}
