@@ -353,7 +353,7 @@ function generateIDEFeaturesView() {
         const features = [...new Set(latestData.map(item => item.feature))].sort();
         
         return {
-            headers: ['Feature', ...ides],
+            headers: ['', ...ides],
             rows: features.map(feature => {
                 const row = { name: feature, values: [] };
                 ides.forEach(ide => {
@@ -431,7 +431,7 @@ function generateCustomPivotView() {
     
     // Create the matrix
     return {
-        headers: ['Feature', ...ides],
+        headers: ['', ...ides],
         rows: features.map(feature => {
             const row = { name: feature, values: [] };
             ides.forEach(ide => {
