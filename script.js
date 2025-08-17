@@ -25,7 +25,7 @@ function normalizeData(rawData) {
     const featureIntroductions = {}; // Track when each feature was first introduced per IDE
     
     for (const [ide, versions] of Object.entries(rawData)) {
-        // Sort versions to process in order
+        // Sort versions to process in order (automatic inheritance from previous version)
         const sortedVersions = Object.keys(versions).sort(compareVersions);
         const resolvedVersions = {};
         featureIntroductions[ide] = {};
@@ -34,29 +34,26 @@ function normalizeData(rawData) {
         const allFeatures = new Set();
         for (const version of Object.values(versions)) {
             for (const featureName of Object.keys(version)) {
-                if (featureName !== '_inherits') {
-                    allFeatures.add(featureName);
-                }
+                allFeatures.add(featureName);
             }
         }
         
-        for (const version of sortedVersions) {
+        for (let i = 0; i < sortedVersions.length; i++) {
+            const version = sortedVersions[i];
             const versionData = versions[version];
             let features = {};
             
-            // If this version inherits from another, start with parent's features
-            if (versionData._inherits) {
-                const parentVersion = versionData._inherits;
-                if (resolvedVersions[parentVersion]) {
-                    features = { ...resolvedVersions[parentVersion] };
+            // Automatically inherit from previous version (if exists)
+            if (i > 0) {
+                const previousVersion = sortedVersions[i - 1];
+                if (resolvedVersions[previousVersion]) {
+                    features = { ...resolvedVersions[previousVersion] };
                 }
             }
             
             // Apply this version's features (overriding inherited ones)
             for (const [featureName, featureData] of Object.entries(versionData)) {
-                if (featureName !== '_inherits') {
-                    features[featureName] = featureData;
-                }
+                features[featureName] = featureData;
             }
             
             // Store resolved features for this version
