@@ -10,6 +10,7 @@ const featureData = [
     { ide: 'VS Code', version: '1.80.0', feature: 'Code Completion', support: 'full', introduced: '1.0.0', releaseType: 'ga' },
     { ide: 'VS Code', version: '1.80.0', feature: 'Chat', support: 'full', introduced: '1.70.0', releaseType: 'ga' },
     { ide: 'VS Code', version: '1.80.0', feature: 'Inline Edit', support: 'full', introduced: '1.70.0', releaseType: 'ga' },
+    { ide: 'VS Code', version: '1.80.0', feature: 'Copilot code review', support: 'full', introduced: '1.70.0', releaseType: 'ga' },
     
     // Visual Studio data
     { ide: 'Visual Studio', version: '2019', feature: 'Code Completion', support: 'full', introduced: '2019', releaseType: 'ga' },
