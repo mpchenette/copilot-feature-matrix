@@ -228,10 +228,14 @@ function createFilters(viewType) {
             break;
             
         case 'custom-pivot':
-            // Row and Column axis selectors
-            const axes = ['ide', 'feature', 'version'];
-            filtersContainer.appendChild(createFilterGroup('Rows:', 'rowAxis', axes, 'ide'));
-            filtersContainer.appendChild(createFilterGroup('Columns:', 'columnAxis', axes, 'feature'));
+            // No filters for custom view - it's a static matrix
+            const description = document.createElement('div');
+            description.style.textAlign = 'center';
+            description.style.color = '#ccc';
+            description.style.fontStyle = 'italic';
+            description.style.marginBottom = '1rem';
+            description.textContent = 'Complete feature matrix showing latest version of each IDE';
+            filtersContainer.appendChild(description);
             break;
     }
 }
@@ -406,10 +410,37 @@ function generateFeatureIDEsView() {
 }
 
 function generateCustomPivotView() {
-    const rowAxis = document.getElementById('rowAxis')?.value || 'ide';
-    const columnAxis = document.getElementById('columnAxis')?.value || 'feature';
+    // Create a static feature matrix showing all features vs all IDEs (latest versions)
     
-    return pivotData(rowAxis, columnAxis);
+    // Get the latest version for each IDE
+    const latestVersions = {};
+    featureData.forEach(item => {
+        if (!latestVersions[item.ide] || compareVersions(item.version, latestVersions[item.ide]) > 0) {
+            latestVersions[item.ide] = item.version;
+        }
+    });
+    
+    // Filter to only include latest versions
+    const latestData = featureData.filter(item => 
+        latestVersions[item.ide] === item.version
+    );
+    
+    // Get unique IDEs and features
+    const ides = [...new Set(latestData.map(item => item.ide))].sort();
+    const features = [...new Set(latestData.map(item => item.feature))].sort();
+    
+    // Create the matrix
+    return {
+        headers: ['Feature', ...ides],
+        rows: features.map(feature => {
+            const row = { name: feature, values: [] };
+            ides.forEach(ide => {
+                const match = latestData.find(item => item.ide === ide && item.feature === feature);
+                row.values.push(match ? match.support : 'none');
+            });
+            return row;
+        })
+    };
 }
 
 // Initialize the application
