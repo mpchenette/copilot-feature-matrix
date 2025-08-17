@@ -22,11 +22,13 @@ async function loadFeatureData() {
 // Function to resolve inheritance and convert to flat structure
 function normalizeData(rawData) {
     const normalized = [];
+    const featureIntroductions = {}; // Track when each feature was first introduced per IDE
     
     for (const [ide, versions] of Object.entries(rawData)) {
         // Sort versions to process in order
         const sortedVersions = Object.keys(versions).sort(compareVersions);
         const resolvedVersions = {};
+        featureIntroductions[ide] = {};
         
         for (const version of sortedVersions) {
             const versionData = versions[version];
@@ -50,14 +52,24 @@ function normalizeData(rawData) {
             // Store resolved features for this version
             resolvedVersions[version] = features;
             
-            // Convert to flat structure for backwards compatibility
+            // Convert to flat structure and calculate 'introduced' field
             for (const [featureName, featureInfo] of Object.entries(features)) {
+                // Track when this feature was first introduced (support != 'none')
+                if (featureInfo.support !== 'none' && !featureIntroductions[ide][featureName]) {
+                    featureIntroductions[ide][featureName] = version;
+                }
+                
+                // Calculate the introduced version for this entry
+                const introducedVersion = featureInfo.support !== 'none' 
+                    ? featureIntroductions[ide][featureName] 
+                    : null;
+                
                 normalized.push({
                     ide: ide,
                     version: version,
                     feature: featureName,
                     support: featureInfo.support,
-                    introduced: featureInfo.introduced,
+                    introduced: introducedVersion,
                     releaseType: featureInfo.releaseType
                 });
             }
