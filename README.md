@@ -10,8 +10,7 @@
     "1.94.0": {
       "Code referencing": { "releaseType": "preview" } //preview?
     },
-      "Workspace indexing": { "releaseType": "preview" } //preview?
-    "1.100.0": {
-            "Prompt files": { "releaseType": "preview" } //???
+      "Workspace indexing": { "releaseType": "ga" } //not really a new feature, but in 1.95 we added the ability to manually kick off an index without having to call @workspace
 
-    },
+
+both agent mode and vision for 1.97 say they were only insiders for the 2-6 changelog post. does this mean they are 1.97 or were they brought to stable on 1.98? I think in the 1.98 changelog on the vs code docs it mentions thats when they started rolling out to stable.

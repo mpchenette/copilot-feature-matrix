@@ -10,23 +10,23 @@
       "Chat": { "releaseType": "ga" }
     },
     "1.80.0": {
-      "Inline Edit": { "releaseType": "ga" }
     },
     "1.94.0": {
       "Code referencing": { "releaseType": "preview" }
     },
     "1.95.0": {
       "Edit mode": { "releaseType": "preview" },
-      "Copilot code review": { "releaseType": "preview" }
+      "Copilot code review": { "releaseType": "preview" },
+      "Custom instructions": { "releaseType": "preview" },
+      "Workspace indexing": { "releaseType": "ga" }
     },
-    "1.96.0": {
-    },
+    "1.96.0": {},
     "1.97.0": {
       "Agent mode": { "releaseType": "preview" },
       "Edit mode": { "releaseType": "ga" },
       "Vision": { "releaseType": "preview" },
       "Next edit suggestions": { "releaseType": "preview" },
-      "Workspace indexing": { "releaseType": "preview" }
+      "Prompt files": { "releaseType": "preview" }
     },
     "1.98.0": {
       "Custom instructions": { "releaseType": "ga" }
@@ -34,12 +34,10 @@
     "1.99.0": {
       "Agent mode": { "releaseType": "ga" },
       "MCP": { "releaseType": "preview" },
-      "Next edit suggestions": { "releaseType": "ga" }
-
+      "Next edit suggestions": { "releaseType": "ga" },
+      "Copilot code review": { "releaseType": "ga" }
     },
     "1.100.0": {
-      "Prompt files": { "releaseType": "preview" }
-
     },
     "1.101.0": {
       "Custom chat modes": { "releaseType": "preview" }
