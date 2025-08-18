@@ -3,20 +3,171 @@ let rawFeatureData = {};
 let featureData = []; // Normalized data for backwards compatibility
 
 // Load data from JSON file
+// Function to load and process feature data
 async function loadFeatureData() {
     try {
-        const response = await fetch('./data.json');
-        rawFeatureData = await response.json();
+        const response = await fetch('data.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         
-        // Convert to normalized structure for existing functions
-        featureData = normalizeData(rawFeatureData);
+        const rawData = await response.json();
+        console.log('Raw data loaded successfully:', Object.keys(rawData));
         
-        console.log('Feature data loaded successfully');
-        return true;
+        // Store raw data globally for other functions
+        window.rawFeatureData = rawData;
+        
+        // Validate data for conflicts
+        const warnings = validateData(rawData);
+        displayWarnings(warnings);
+        
+        // Convert to normalized format
+        window.featureData = normalizeData(rawData);
+        
+        console.log('Loaded feature data:', window.featureData.length, 'entries');
+        
+        // Initialize the default view
+        showFeatureMatrix();
+        
+        return true; // Return success
     } catch (error) {
         console.error('Error loading feature data:', error);
-        return false;
+        
+        // Display error in UI
+        const container = document.querySelector('.container');
+        if (container) {
+            container.innerHTML = `
+                <div style="padding: 2rem; background: #4a2828; border: 1px solid #d66; border-radius: 8px; margin: 2rem;">
+                    <h3 style="color: #d66; margin: 0 0 1rem 0;">❌ Error Loading Data</h3>
+                    <p style="color: #ddd; margin: 0;">
+                        <strong>Error:</strong> ${error.message}
+                    </p>
+                    <p style="color: #999; margin: 1rem 0 0 0; font-size: 0.9em;">
+                        Please check the browser console for more details and verify that data.json is valid JSON.
+                    </p>
+                </div>
+            `;
+        }
+        
+        return false; // Return failure
     }
+}
+
+// Global variables
+window.featureData = [];
+window.rawFeatureData = {};
+
+// Function to validate data for conflicts and inconsistencies
+function validateData(rawData) {
+    const warnings = [];
+    
+    for (const [ide, versions] of Object.entries(rawData)) {
+        const sortedVersions = Object.keys(versions).sort(compareVersions);
+        const featureHistory = {}; // Track feature release type history
+        
+        // Get all features across all versions for this IDE
+        const allFeatures = new Set();
+        for (const version of Object.values(versions)) {
+            for (const featureName of Object.keys(version)) {
+                allFeatures.add(featureName);
+            }
+        }
+        
+        // Check each feature's history across versions
+        for (const featureName of allFeatures) {
+            featureHistory[featureName] = [];
+            
+            // Collect all explicit mentions of this feature
+            for (const version of sortedVersions) {
+                const versionData = versions[version];
+                if (versionData[featureName]) {
+                    featureHistory[featureName].push({
+                        version: version,
+                        releaseType: versionData[featureName].releaseType
+                    });
+                }
+            }
+            
+            // Validate feature history
+            const history = featureHistory[featureName];
+            if (history.length > 0) {
+                // Check for duplicate entries with same release type
+                const releaseTypeCounts = {};
+                for (const entry of history) {
+                    const key = entry.releaseType;
+                    releaseTypeCounts[key] = (releaseTypeCounts[key] || 0) + 1;
+                    if (releaseTypeCounts[key] > 1) {
+                        warnings.push({
+                            type: 'duplicate',
+                            ide: ide,
+                            feature: featureName,
+                            releaseType: entry.releaseType,
+                            message: `Feature "${featureName}" in ${ide} has multiple entries with releaseType "${entry.releaseType}"`
+                        });
+                    }
+                }
+                
+                // Check for GA before Preview (chronological order violation)
+                let seenGA = false;
+                for (const entry of history) {
+                    if (entry.releaseType === 'ga') {
+                        seenGA = true;
+                    } else if (entry.releaseType === 'preview') {
+                        if (seenGA) {
+                            warnings.push({
+                                type: 'chronology',
+                                ide: ide,
+                                feature: featureName,
+                                message: `Feature "${featureName}" in ${ide} has Preview release after GA (should be Preview → GA)`
+                            });
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    return warnings;
+}
+
+// Function to display validation warnings
+function displayWarnings(warnings) {
+    if (warnings.length === 0) {
+        console.log('✅ Data validation passed - no conflicts detected');
+        return;
+    }
+    
+    console.warn(`⚠️ Data validation found ${warnings.length} issue(s):`);
+    
+    const groupedWarnings = {
+        duplicate: warnings.filter(w => w.type === 'duplicate'),
+        chronology: warnings.filter(w => w.type === 'chronology')
+    };
+    
+    if (groupedWarnings.duplicate.length > 0) {
+        console.warn('\n🔄 Duplicate Entries:');
+        groupedWarnings.duplicate.forEach(w => console.warn(`  • ${w.message}`));
+    }
+    
+    if (groupedWarnings.chronology.length > 0) {
+        console.warn('\n📅 Chronology Issues:');
+        groupedWarnings.chronology.forEach(w => console.warn(`  • ${w.message}`));
+    }
+    
+    // Also display in UI
+    const warningDiv = document.createElement('div');
+    warningDiv.className = 'validation-warnings';
+    warningDiv.innerHTML = `
+        <h3>⚠️ Data Validation Warnings (${warnings.length})</h3>
+        <ul>
+            ${warnings.map(w => `<li><strong>${w.ide}</strong> - ${w.message}</li>`).join('')}
+        </ul>
+        <p><em>Check browser console for details. These issues should be fixed in data.json.</em></p>
+    `;
+    
+    // Insert warnings at the top of the page
+    const container = document.querySelector('.container');
+    container.insertBefore(warningDiv, container.firstChild);
 }
 
 // Function to resolve inheritance and convert to flat structure
@@ -125,14 +276,14 @@ const supportStatus = {
 
 // Utility functions to get unique values
 function getUniqueIDEs() {
-    return Object.keys(rawFeatureData).sort();
+    return Object.keys(window.rawFeatureData).sort();
 }
 
 function getUniqueFeatures() {
     const features = new Set();
     
     // Collect all features from all IDEs and versions (including inherited ones)
-    for (const [ide, versions] of Object.entries(rawFeatureData)) {
+    for (const [ide, versions] of Object.entries(window.rawFeatureData)) {
         const sortedVersions = Object.keys(versions).sort(compareVersions);
         const resolvedVersions = {};
         
@@ -167,23 +318,21 @@ function getUniqueFeatures() {
 }
 
 function getVersionsForIDE(ide) {
-    if (!rawFeatureData[ide]) return [];
-    return Object.keys(rawFeatureData[ide]).sort(compareVersions);
+    if (!window.rawFeatureData[ide]) return [];
+    return Object.keys(window.rawFeatureData[ide]).sort(compareVersions);
 }
 
 function getAllVersions() {
     const versions = new Set();
-    for (const ide of Object.values(rawFeatureData)) {
-        for (const version of Object.keys(ide)) {
-            versions.add(version);
-        }
+    for (const ide of Object.values(window.rawFeatureData)) {
+        Object.keys(ide).forEach(version => versions.add(version));
     }
     return [...versions].sort(compareVersions);
 }
 
 // Query functions for different views
 function getFeaturesByIDE(ide, version = null) {
-    let filtered = featureData.filter(item => item.ide === ide);
+    let filtered = window.featureData.filter(item => item.ide === ide);
     if (version) {
         filtered = filtered.filter(item => item.version === version);
     }
@@ -191,7 +340,7 @@ function getFeaturesByIDE(ide, version = null) {
 }
 
 function getIDEsByFeature(feature) {
-    return featureData.filter(item => item.feature === feature);
+    return window.featureData.filter(item => item.feature === feature);
 }
 
 function getFeatureIntroduction(feature) {
@@ -411,7 +560,7 @@ function generateIDEFeaturesView() {
     if (ideFilter && versionFilter) {
         // Show features for specific IDE and version
         // We want to show features as rows, with just this IDE+version as the single column
-        const filtered = featureData.filter(item => item.ide === ideFilter && item.version === versionFilter);
+        const filtered = window.featureData.filter(item => item.ide === ideFilter && item.version === versionFilter);
         
         // Create a simple table structure
         const features = [...new Set(filtered.map(item => item.feature))].sort();
@@ -432,14 +581,14 @@ function generateIDEFeaturesView() {
         // Show all IDEs vs features (use latest version for each IDE)
         // Get the latest version for each IDE
         const latestVersions = {};
-        featureData.forEach(item => {
+        window.featureData.forEach(item => {
             if (!latestVersions[item.ide] || compareVersions(item.version, latestVersions[item.ide]) > 0) {
                 latestVersions[item.ide] = item.version;
             }
         });
         
         // Filter to only include latest versions
-        const latestData = featureData.filter(item => 
+        const latestData = window.featureData.filter(item => 
             latestVersions[item.ide] === item.version
         );
         
@@ -466,7 +615,7 @@ function generateFeatureIDEsView() {
     
     if (featureFilter) {
         // Get all data for this feature
-        const featureData_filtered = featureData.filter(item => item.feature === featureFilter);
+        const featureData_filtered = window.featureData.filter(item => item.feature === featureFilter);
         
         // Get unique IDEs that have this feature
         const ides = [...new Set(featureData_filtered.map(item => item.ide))].sort();
@@ -507,16 +656,20 @@ function generateFeatureIDEsView() {
 function generateCustomPivotView() {
     // Create a static feature matrix showing all features vs all IDEs (latest versions)
     
+    if (!window.featureData || window.featureData.length === 0) {
+        return { headers: [], rows: [] };
+    }
+    
     // Get the latest version for each IDE
     const latestVersions = {};
-    featureData.forEach(item => {
+    window.featureData.forEach(item => {
         if (!latestVersions[item.ide] || compareVersions(item.version, latestVersions[item.ide]) > 0) {
             latestVersions[item.ide] = item.version;
         }
     });
     
     // Filter to only include latest versions
-    const latestData = featureData.filter(item => 
+    const latestData = window.featureData.filter(item => 
         latestVersions[item.ide] === item.version
     );
     
@@ -538,12 +691,27 @@ function generateCustomPivotView() {
     };
 }
 
+// Function to show the feature matrix (default view)
+function showFeatureMatrix() {
+    // Set the first tab as active and switch to it
+    const firstTab = document.querySelector('.tab-button');
+    if (firstTab) {
+        // Remove active from all tabs
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        // Set first tab as active
+        firstTab.classList.add('active');
+        // Switch to the view
+        const viewType = firstTab.getAttribute('data-view');
+        switchToView(viewType);
+    }
+}
+
 // Initialize the application
 async function initializeApp() {
     // Load data first
     const dataLoaded = await loadFeatureData();
     if (!dataLoaded) {
-        document.getElementById('dynamicTable').innerHTML = '<p style="color: #f44336;">Error loading feature data. Please check the console for details.</p>';
+        // Error handling is already done in loadFeatureData
         return;
     }
     
@@ -561,11 +729,6 @@ async function initializeApp() {
             switchToView(viewType);
         });
     });
-    
-    // Initialize with the first tab (active tab)
-    const activeTab = document.querySelector('.tab-button.active');
-    const initialView = activeTab.getAttribute('data-view');
-    switchToView(initialView);
     
     console.log('Feature matrix application initialized with JSON data!');
 }

@@ -22,7 +22,7 @@
       "Next edit suggestions": { "releaseType": "preview" }
     },
     "1.98.0": {
-    "Custom instructions": { "releaseType": "ga" }
+      "Custom instructions": { "releaseType": "ga" }
     },
     "1.99.0": {
       "Agent mode": { "releaseType": "ga" },
