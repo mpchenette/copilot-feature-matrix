@@ -1,8 +1,7 @@
-// Feature matrix data - loaded from JSON
-let rawFeatureData = {};
-let featureData = []; // Normalized data for backwards compatibility
+// Global variables
+window.featureData = [];
+window.rawFeatureData = {};
 
-// Load data from JSON file
 // Function to load and process feature data
 async function loadFeatureData() {
     try {
@@ -270,45 +269,43 @@ function compareVersions(a, b) {
 // Support status mapping
 const supportStatus = {
     'full': { symbol: '✓', class: 'supported' },
-    'partial': { symbol: '⚬', class: 'partial' },
-    'none': { symbol: '✗', class: 'not-supported' }
+    'partial': { symbol: 'P', class: 'partial' },
+    'none': { symbol: '-', class: 'not-supported' }
 };
+
+// Helper function for custom IDE sorting
+function sortIDEs(ides) {
+    const customOrder = ['VS Code', 'Visual Studio', 'JetBrains', 'Neovim'];
+    
+    return ides.sort((a, b) => {
+        const aIndex = customOrder.indexOf(a);
+        const bIndex = customOrder.indexOf(b);
+        
+        // If both are in custom order, use that order
+        if (aIndex !== -1 && bIndex !== -1) {
+            return aIndex - bIndex;
+        }
+        // If only one is in custom order, prioritize it
+        if (aIndex !== -1) return -1;
+        if (bIndex !== -1) return 1;
+        // If neither is in custom order, use alphabetical
+        return a.localeCompare(b);
+    });
+}
 
 // Utility functions to get unique values
 function getUniqueIDEs() {
-    return Object.keys(window.rawFeatureData).sort();
+    const ides = Object.keys(window.rawFeatureData);
+    return sortIDEs(ides);
 }
 
 function getUniqueFeatures() {
     const features = new Set();
     
-    // Collect all features from all IDEs and versions (including inherited ones)
+    // Collect all features from all IDEs and versions
     for (const [ide, versions] of Object.entries(window.rawFeatureData)) {
-        const sortedVersions = Object.keys(versions).sort(compareVersions);
-        const resolvedVersions = {};
-        
-        for (const version of sortedVersions) {
-            const versionData = versions[version];
-            let versionFeatures = {};
-            
-            // If this version inherits from another, start with parent's features
-            if (versionData._inherits) {
-                const parentVersion = versionData._inherits;
-                if (resolvedVersions[parentVersion]) {
-                    versionFeatures = { ...resolvedVersions[parentVersion] };
-                }
-            }
-            
-            // Apply this version's features (overriding inherited ones)
-            for (const [featureName, featureData] of Object.entries(versionData)) {
-                if (featureName !== '_inherits') {
-                    versionFeatures[featureName] = featureData;
-                }
-            }
-            
-            // Store resolved features and add to global set
-            resolvedVersions[version] = versionFeatures;
-            for (const featureName of Object.keys(versionFeatures)) {
+        for (const version of Object.values(versions)) {
+            for (const featureName of Object.keys(version)) {
                 features.add(featureName);
             }
         }
@@ -328,34 +325,6 @@ function getAllVersions() {
         Object.keys(ide).forEach(version => versions.add(version));
     }
     return [...versions].sort(compareVersions);
-}
-
-// Query functions for different views
-function getFeaturesByIDE(ide, version = null) {
-    let filtered = window.featureData.filter(item => item.ide === ide);
-    if (version) {
-        filtered = filtered.filter(item => item.version === version);
-    }
-    return filtered;
-}
-
-function getIDEsByFeature(feature) {
-    return window.featureData.filter(item => item.feature === feature);
-}
-
-function getFeatureIntroduction(feature) {
-    // Get all IDEs that support this feature and when they introduced it
-    return featureData
-        .filter(item => item.feature === feature && item.introduced)
-        .reduce((acc, item) => {
-            if (!acc[item.ide] || acc[item.ide].introduced > item.introduced) {
-                acc[item.ide] = {
-                    introduced: item.introduced,
-                    currentSupport: item.support
-                };
-            }
-            return acc;
-        }, {});
 }
 
 // Pivot function - the core of our slicing and dicing
@@ -593,7 +562,7 @@ function generateIDEFeaturesView() {
         );
         
         // Create pivot with the latest data
-        const ides = [...new Set(latestData.map(item => item.ide))].sort();
+        const ides = sortIDEs([...new Set(latestData.map(item => item.ide))]);
         const features = [...new Set(latestData.map(item => item.feature))].sort();
         
         return {
@@ -618,7 +587,7 @@ function generateFeatureIDEsView() {
         const featureData_filtered = window.featureData.filter(item => item.feature === featureFilter);
         
         // Get unique IDEs that have this feature
-        const ides = [...new Set(featureData_filtered.map(item => item.ide))].sort();
+        const ides = sortIDEs([...new Set(featureData_filtered.map(item => item.ide))]);
         
         // For each IDE, find the Preview and GA versions
         const rows = ides.map(ide => {
@@ -674,7 +643,7 @@ function generateCustomPivotView() {
     );
     
     // Get unique IDEs and features
-    const ides = [...new Set(latestData.map(item => item.ide))].sort();
+    const ides = sortIDEs([...new Set(latestData.map(item => item.ide))]);
     const features = [...new Set(latestData.map(item => item.feature))].sort();
     
     // Create the matrix

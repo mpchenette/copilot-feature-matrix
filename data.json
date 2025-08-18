@@ -1,5 +1,8 @@
 {
   "VS Code": {
+    "1.57.0": {
+      "Code completion": { "releaseType": "preview" }
+    },
     "1.60.0": {
       "Code completion": { "releaseType": "ga" }
     },
@@ -8,6 +11,9 @@
     },
     "1.80.0": {
       "Inline Edit": { "releaseType": "ga" }
+    },
+    "1.94.0": {
+      "Code referencing": { "releaseType": "preview" }
     },
     "1.95.0": {
       "Edit mode": { "releaseType": "preview" },
@@ -19,15 +25,27 @@
       "Agent mode": { "releaseType": "preview" },
       "Edit mode": { "releaseType": "ga" },
       "Vision": { "releaseType": "preview" },
-      "Next edit suggestions": { "releaseType": "preview" }
+      "Next edit suggestions": { "releaseType": "preview" },
+      "Workspace indexing": { "releaseType": "preview" }
     },
     "1.98.0": {
       "Custom instructions": { "releaseType": "ga" }
     },
     "1.99.0": {
       "Agent mode": { "releaseType": "ga" },
+      "MCP": { "releaseType": "preview" },
       "Next edit suggestions": { "releaseType": "ga" }
 
+    },
+    "1.100.0": {
+      "Prompt files": { "releaseType": "preview" }
+
+    },
+    "1.101.0": {
+      "Custom chat modes": { "releaseType": "preview" }
+    },
+    "1.102.0": {
+      "MCP": { "releaseType": "ga" }
     },
     "1.103.0": {
       "Checkpoints": { "releaseType": "ga" }
@@ -35,24 +53,23 @@
   },
   "Visual Studio": {
     "2019": {
-      "Code Completion": { "releaseType": "ga" }
+      "Code completion": { "releaseType": "ga" }
     },
     "2022": {
-      "Chat": { "releaseType": "ga" },
-      "Inline Edit": { "releaseType": "preview" }
+      "Chat": { "releaseType": "ga" }
     }
   },
   "JetBrains": {
     "2022.1": {
-      "Code Completion": { "releaseType": "preview" }
+      "Code completion": { "releaseType": "preview" }
     },
     "2023.1": {
-      "Code Completion": { "releaseType": "ga" }
+      "Code completion": { "releaseType": "ga" }
     }
   },
   "Neovim": {
     "0.8.0": {
-      "Code Completion": { "releaseType": "ga" }
+      "Code completion": { "releaseType": "ga" }
     },
     "0.9.0": {
     }
