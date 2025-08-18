@@ -58,11 +58,20 @@
     }
   },
   "JetBrains": {
-    "2022.1": {
+    "1.0.1": {
       "Code completion": { "releaseType": "preview" }
     },
-    "2023.1": {
-      "Code completion": { "releaseType": "ga" }
+    "1.4.0": {
+      "Chat": { "releaseType": "preview" }
+    },
+    "1.5.0": {
+      "Chat": { "releaseType": "ga" }
+    },
+    "1.5.39": {
+      "Edit mode": { "releaseType": "preview" }
+    },
+    "1.5.53": {
+      "MCP": { "releaseType": "ga" }
     }
   },
   "Neovim": {
