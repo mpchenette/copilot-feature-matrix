@@ -450,6 +450,17 @@ function createFilters(viewType) {
             description.textContent = 'Complete feature matrix showing latest version of each IDE';
             filtersContainer.appendChild(description);
             break;
+            
+        case 'extension-compatibility':
+            // No filters for extension compatibility view yet
+            const compatDescription = document.createElement('div');
+            compatDescription.style.textAlign = 'center';
+            compatDescription.style.color = '#ccc';
+            compatDescription.style.fontStyle = 'italic';
+            compatDescription.style.marginBottom = '1rem';
+            compatDescription.textContent = 'Extension compatibility matrix - coming soon';
+            filtersContainer.appendChild(compatDescription);
+            break;
     }
 }
 
@@ -660,6 +671,19 @@ function generateCustomPivotView() {
     };
 }
 
+function generateExtensionCompatibilityView() {
+    // Placeholder for extension compatibility matrix
+    return {
+        headers: ['Extension', 'VS Code', 'Visual Studio', 'JetBrains', 'Neovim'],
+        rows: [
+            {
+                name: 'Coming Soon...',
+                values: ['-', '-', '-', '-']
+            }
+        ]
+    };
+}
+
 // Function to show the feature matrix (default view)
 function showFeatureMatrix() {
     // Set the first tab as active and switch to it
@@ -728,6 +752,9 @@ function updateTable(viewType = null) {
             break;
         case 'custom-pivot':
             tableData = generateCustomPivotView();
+            break;
+        case 'extension-compatibility':
+            tableData = generateExtensionCompatibilityView();
             break;
     }
     
