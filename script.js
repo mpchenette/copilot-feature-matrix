@@ -275,7 +275,7 @@ const supportStatus = {
 
 // Helper function for custom IDE sorting
 function sortIDEs(ides) {
-    const customOrder = ['VS Code', 'Visual Studio', 'JetBrains', 'Neovim'];
+    const customOrder = ['VS Code', 'Visual Studio', 'JetBrains', 'Eclipse', 'Xcode', 'Neovim'];
     
     return ides.sort((a, b) => {
         const aIndex = customOrder.indexOf(a);
