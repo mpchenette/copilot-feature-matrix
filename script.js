@@ -268,7 +268,11 @@ function compareVersions(a, b) {
 
 // Support status mapping
 const supportStatus = {
-    'full': { symbol: '✓', class: 'supported' },
+    'full': { 
+        symbol: '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="48" height="48" viewBox="0 0 96 96" style="display: inline-block; vertical-align: middle;"><g transform="translate(26.386363636363633, 64.1590909090909)"><path d="M16.77-4.23L5.18-15.75 7.77-18.41 16.77-9.55 35.39-28.09 38.05-25.43 16.77-4.23Z" fill="#4CAF50"></path></g></svg>', 
+        class: 'supported',
+        isHtml: true
+    },
     'partial': { symbol: 'P', class: 'partial' },
     'none': { symbol: '-', class: 'not-supported' }
 };
@@ -400,7 +404,13 @@ function createTable(data, viewType = null) {
                 // This is a support status symbol
                 const status = supportStatus[value];
                 td.className = status.class + ' tooltip';
-                td.textContent = status.symbol;
+                
+                // Use innerHTML for SVG content, textContent for regular text
+                if (status.isHtml) {
+                    td.innerHTML = status.symbol;
+                } else {
+                    td.textContent = status.symbol;
+                }
                 
                 // Add tooltip for Feature Matrix view
                 if (viewType === 'custom-pivot') {
