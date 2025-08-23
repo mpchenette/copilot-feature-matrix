@@ -363,7 +363,7 @@ function pivotData(rowAxis, columnAxis, filterBy = {}) {
 }
 
 // Function to create a table from pivot data
-function createTable(data) {
+function createTable(data, viewType = null) {
     const table = document.createElement('table');
     table.className = 'feature-table';
     
@@ -383,7 +383,7 @@ function createTable(data) {
     // Create body
     const tbody = document.createElement('tbody');
     
-    data.rows.forEach(row => {
+    data.rows.forEach((row, rowIndex) => {
         const tr = document.createElement('tr');
         
         // First column (name)
@@ -392,25 +392,45 @@ function createTable(data) {
         tr.appendChild(nameCell);
         
         // Value columns
-        row.values.forEach(value => {
+        row.values.forEach((value, colIndex) => {
             const td = document.createElement('td');
             
             // Check if this is a support status (for Features by IDE view) or version number (for IDEs by Feature view)
             if (supportStatus[value]) {
                 // This is a support status symbol
                 const status = supportStatus[value];
-                td.className = status.class;
+                td.className = status.class + ' tooltip';
                 td.textContent = status.symbol;
+                
+                // Add tooltip for Feature Matrix view
+                if (viewType === 'custom-pivot') {
+                    const featureName = row.name;
+                    const ideName = data.headers[colIndex + 1]; // +1 because first header is empty
+                    
+                    // Get detailed info for tooltip
+                    const tooltipInfo = getFeatureTooltipInfo(featureName, ideName, value);
+                    td.setAttribute('data-tooltip', tooltipInfo);
+                }
             } else {
                 // This is a version number or N/A
                 td.textContent = value;
                 if (value === 'N/A') {
-                    td.className = 'not-supported';
+                    td.className = 'not-supported tooltip';
                     td.style.fontStyle = 'italic';
                     td.style.color = '#888';
+                    td.setAttribute('data-tooltip', 'Feature not available in this IDE');
                 } else {
-                    td.className = 'version-number';
+                    td.className = 'version-number tooltip';
                     td.style.fontWeight = 'bold';
+                    
+                    // Add tooltip for version info
+                    if (viewType === 'feature-ides') {
+                        const featureName = data.headers[0] === 'IDE' ? 
+                            document.getElementById('featureFilter')?.value || 'Selected Feature' :
+                            'Feature';
+                        const releaseType = colIndex === 0 ? 'Preview' : 'GA';
+                        td.setAttribute('data-tooltip', `${featureName} ${releaseType}: Version ${value}`);
+                    }
                 }
             }
             tr.appendChild(td);
@@ -421,6 +441,23 @@ function createTable(data) {
     
     table.appendChild(tbody);
     return table;
+}
+
+// Helper function to get tooltip information for feature matrix
+function getFeatureTooltipInfo(featureName, ideName, supportLevel) {
+    if (!window.featureData) return 'Loading...';
+    
+    // Find the latest version entry for this feature and IDE
+    const entries = window.featureData.filter(item => 
+        item.feature === featureName && 
+        item.ide === ideName && 
+        item.support !== 'none'
+    );
+    
+    // if (entries.length === 0) {
+    //     return `Not Supported`;
+    // }
+    return `Not Supported`;
 }
 
 // Function to create filter controls based on view type
@@ -761,7 +798,7 @@ function updateTable(viewType = null) {
     // Clear and rebuild table
     tableContainer.innerHTML = '';
     if (tableData && tableData.rows.length > 0) {
-        tableContainer.appendChild(createTable(tableData));
+        tableContainer.appendChild(createTable(tableData, viewType));
     } else {
         tableContainer.innerHTML = '<p style="color: #ccc; font-style: italic;">No data available for current selection.</p>';
     }

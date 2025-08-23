@@ -182,8 +182,6 @@ select:focus {
     color: #4CAF50;
     font-weight: bold;
     text-align: center;
-    font-family: "SF Pro Display", "Segoe UI Symbol", "Apple Color Emoji", "Segoe UI", Arial, sans-serif;
-    font-size: 1.2em;
 }
 
 .partial {
@@ -201,4 +199,52 @@ select:focus {
 .version-number {
     color: #ddd;
     text-align: center;
+}
+
+/* Tooltip styles */
+.tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #1a1a1a;
+    color: #fff !important;
+    padding: 8px 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    font-size: 0.85em;
+    font-weight: normal !important;
+    font-family: Arial, sans-serif !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 1000;
+    border: 1px solid #444;
+}
+
+.tooltip::before {
+    content: '';
+    position: absolute;
+    bottom: 117%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1a1a1a;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 1000;
+}
+
+.tooltip:hover::after,
+.tooltip:hover::before {
+    opacity: 1;
+    visibility: visible;
 }
