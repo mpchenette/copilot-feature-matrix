@@ -170,6 +170,10 @@ select:focus {
     font-size: 0.95rem;
 }
 
+.feature-table td:first-child {
+    text-align: left;
+}
+
 .feature-table tr:last-child td {
     border-bottom: none;
 }

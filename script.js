@@ -273,7 +273,11 @@ const supportStatus = {
         class: 'supported',
         isHtml: true
     },
-    'partial': { symbol: 'P', class: 'partial' },
+    'partial': { 
+        symbol: '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="48" height="48" viewBox="0 0 96 96" style="display: inline-block; vertical-align: middle;"><text x="24" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="bold"fill="#fbff7fff">P</text></svg>', 
+        class: 'partial',
+        isHtml: true
+    },
     'none': { symbol: '-', class: 'not-supported' }
 };
 
