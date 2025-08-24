@@ -84,10 +84,31 @@
     }
   },
   "Eclipse": {
+    "0.1.0": {
+      "_date": "2025-02-12",
+      "Code completion": { "releaseType": "preview" }
+    },
+    "0.2.0": {
+      "_date": "2025-02-19"
+    },
+    "0.3.0": {
+      "_date": "2025-03-10",
+      "Code completion": { "releaseType": "ga" },
+      "Chat": { "releaseType": "preview" }
+    },
+    "0.4.0": {
+      "_date": "2025-03-18"
+    },
+    "0.5.0": {
+      "_date": "2025-03-25",
+      "Chat": { "releaseType": "ga" }
+    },
     "0.8.0": {
-      "Code completion": { "releaseType": "ga" }
     },
     "0.9.0": {
+    },
+    "0.10.0": {
+      "Custom instructions": { "releaseType": "preview" }
     }
   },
   "Xcode": {
