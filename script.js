@@ -540,10 +540,32 @@ function getFeatureTooltipInfo(featureName, ideName, supportLevel) {
         item.support !== 'none'
     );
     
-    // if (entries.length === 0) {
-    //     return `Not Supported`;
-    // }
-    return `Not Supported`;
+    if (entries.length === 0) {
+        return `Feature not supported in ${ideName}`;
+    }
+    
+    // Get the latest entry (highest version)
+    const latestEntry = entries.reduce((latest, current) => {
+        return compareVersions(current.version, latest.version) > 0 ? current : latest;
+    });
+    
+    // Get the first introduction of this feature
+    const firstEntry = entries.reduce((first, current) => {
+        return compareVersions(current.version, first.version) < 0 ? current : first;
+    });
+    
+    let tooltip = `${featureName} in ${ideName}`;
+    
+    if (latestEntry.support === 'full') {
+        tooltip += ` (GA since v${latestEntry.version})`;
+        if (firstEntry.version !== latestEntry.version && firstEntry.support === 'partial') {
+            tooltip += ` - Preview since v${firstEntry.version}`;
+        }
+    } else if (latestEntry.support === 'partial') {
+        tooltip += ` (Preview since v${latestEntry.version})`;
+    }
+    
+    return tooltip;
 }
 
 // Function to create filter controls based on view type
