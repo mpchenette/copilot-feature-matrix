@@ -14,6 +14,7 @@
     --accent-color: #667eea;
     --accent-hover: #5a6fd8;
     --shadow: rgba(0, 0, 0, 0.3);
+    --partial-color: #FF9800;
 }
 
 [data-theme="light"] {
@@ -32,6 +33,7 @@
     --accent-color: #667eea;
     --accent-hover: #5a6fd8;
     --shadow: rgba(0, 0, 0, 0.1);
+    --partial-color: #E65100;
 }
 
 /* Theme toggle button */
@@ -267,9 +269,10 @@ select:focus {
 }
 
 .partial {
-    color: #FF9800;
+    color: var(--partial-color);
     font-weight: bold;
     text-align: center;
+    transition: color 0.3s ease;
 }
 
 .not-supported {

@@ -338,12 +338,12 @@ function compareVersions(a, b) {
 // Support status mapping
 const supportStatus = {
     'full': { 
-        symbol: '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="48" height="48" viewBox="0 0 96 96" style="display: inline-block; vertical-align: middle;"><g transform="translate(26.386363636363633, 64.1590909090909)"><path d="M16.77-4.23L5.18-15.75 7.77-18.41 16.77-9.55 35.39-28.09 38.05-25.43 16.77-4.23Z" fill="#4CAF50"></path></g></svg>', 
+        symbol: '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="48" height="48" viewBox="0 0 96 96" style="display: inline-block; vertical-align: middle;"><g transform="translate(26.386363636363633, 64.1590909090909)"><path d="M16.77-4.23L5.18-15.75 7.77-18.41 16.77-9.55 35.39-28.09 38.05-25.43 16.77-4.23Z" fill="#4CAF50" stroke="#4CAF50" stroke-width="2" stroke-linejoin="round"></path></g></svg>', 
         class: 'supported',
         isHtml: true
     },
     'partial': { 
-        symbol: '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="48" height="48" viewBox="0 0 96 96" style="display: inline-block; vertical-align: middle;"><text x="50" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="bold"fill="#fbff7fff">P</text></svg>', 
+        symbol: '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="48" height="48" viewBox="0 0 96 96" style="display: inline-block; vertical-align: middle;"><text x="50" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="currentColor">P</text></svg>', 
         class: 'partial',
         isHtml: true
     },
