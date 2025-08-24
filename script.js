@@ -63,12 +63,63 @@ function validateData(rawData) {
     for (const [ide, versions] of Object.entries(rawData)) {
         const sortedVersions = Object.keys(versions).sort(compareVersions);
         const featureHistory = {}; // Track feature release type history
+        const dateHistory = []; // Track date chronology
         
-        // Get all features across all versions for this IDE
+        // Get all features across all versions for this IDE (excluding _date fields)
         const allFeatures = new Set();
         for (const version of Object.values(versions)) {
             for (const featureName of Object.keys(version)) {
-                allFeatures.add(featureName);
+                // Skip internal fields like _date
+                if (!featureName.startsWith('_')) {
+                    allFeatures.add(featureName);
+                }
+            }
+        }
+        
+        // Validate dates and chronology
+        for (const version of sortedVersions) {
+            const versionData = versions[version];
+            if (versionData._date) {
+                const dateStr = versionData._date;
+                
+                // Validate date format (YYYY-MM-DD)
+                const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+                if (!dateRegex.test(dateStr)) {
+                    warnings.push({
+                        type: 'invalid_date',
+                        ide,
+                        version,
+                        message: `Invalid date format "${dateStr}" in version ${version}. Expected YYYY-MM-DD format.`
+                    });
+                    continue;
+                }
+                
+                // Validate that it's a real date
+                const dateObj = new Date(dateStr + 'T00:00:00.000Z');
+                if (isNaN(dateObj.getTime()) || dateObj.toISOString().slice(0, 10) !== dateStr) {
+                    warnings.push({
+                        type: 'invalid_date',
+                        ide,
+                        version,
+                        message: `Invalid date "${dateStr}" in version ${version}. Date does not exist.`
+                    });
+                    continue;
+                }
+                
+                // Check chronological order
+                if (dateHistory.length > 0) {
+                    const lastDate = dateHistory[dateHistory.length - 1];
+                    if (dateObj <= lastDate.dateObj) {
+                        warnings.push({
+                            type: 'date_chronology',
+                            ide,
+                            version,
+                            message: `Date "${dateStr}" in version ${version} is not chronologically after "${lastDate.dateStr}" in version ${lastDate.version}.`
+                        });
+                    }
+                }
+                
+                dateHistory.push({ dateStr, dateObj, version });
             }
         }
         
@@ -140,7 +191,9 @@ function displayWarnings(warnings) {
     
     const groupedWarnings = {
         duplicate: warnings.filter(w => w.type === 'duplicate'),
-        chronology: warnings.filter(w => w.type === 'chronology')
+        chronology: warnings.filter(w => w.type === 'chronology'),
+        invalid_date: warnings.filter(w => w.type === 'invalid_date'),
+        date_chronology: warnings.filter(w => w.type === 'date_chronology')
     };
     
     if (groupedWarnings.duplicate.length > 0) {
@@ -149,8 +202,18 @@ function displayWarnings(warnings) {
     }
     
     if (groupedWarnings.chronology.length > 0) {
-        console.warn('\n📅 Chronology Issues:');
+        console.warn('\n📅 Feature Chronology Issues:');
         groupedWarnings.chronology.forEach(w => console.warn(`  • ${w.message}`));
+    }
+    
+    if (groupedWarnings.invalid_date.length > 0) {
+        console.warn('\n📅 Invalid Date Format:');
+        groupedWarnings.invalid_date.forEach(w => console.warn(`  • ${w.message}`));
+    }
+    
+    if (groupedWarnings.date_chronology.length > 0) {
+        console.warn('\n📅 Date Chronology Issues:');
+        groupedWarnings.date_chronology.forEach(w => console.warn(`  • ${w.message}`));
     }
     
     // Also display in UI
@@ -180,11 +243,14 @@ function normalizeData(rawData) {
         const resolvedVersions = {};
         featureIntroductions[ide] = {};
         
-        // Get all possible features for this IDE (to track absence)
+        // Get all possible features for this IDE (to track absence, excluding _date fields)
         const allFeatures = new Set();
         for (const version of Object.values(versions)) {
             for (const featureName of Object.keys(version)) {
-                allFeatures.add(featureName);
+                // Skip internal fields like _date
+                if (!featureName.startsWith('_')) {
+                    allFeatures.add(featureName);
+                }
             }
         }
         
@@ -201,9 +267,12 @@ function normalizeData(rawData) {
                 }
             }
             
-            // Apply this version's features (overriding inherited ones)
+            // Apply this version's features (overriding inherited ones, excluding _date fields)
             for (const [featureName, featureData] of Object.entries(versionData)) {
-                features[featureName] = featureData;
+                // Skip internal fields like _date
+                if (!featureName.startsWith('_')) {
+                    features[featureName] = featureData;
+                }
             }
             
             // Store resolved features for this version
@@ -310,11 +379,14 @@ function getUniqueIDEs() {
 function getUniqueFeatures() {
     const features = new Set();
     
-    // Collect all features from all IDEs and versions
+    // Collect all features from all IDEs and versions (excluding _date fields)
     for (const [ide, versions] of Object.entries(window.rawFeatureData)) {
         for (const version of Object.values(versions)) {
             for (const featureName of Object.keys(version)) {
-                features.add(featureName);
+                // Skip internal fields like _date
+                if (!featureName.startsWith('_')) {
+                    features.add(featureName);
+                }
             }
         }
     }
