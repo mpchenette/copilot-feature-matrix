@@ -303,7 +303,7 @@ select:focus {
     color: var(--text-primary) !important;
     padding: 8px 12px;
     border-radius: 6px;
-    white-space: nowrap;
+    white-space: pre;
     font-size: 0.85em;
     font-weight: normal !important;
     font-family: Arial, sans-serif !important;

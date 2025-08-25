@@ -533,7 +533,7 @@ function createTable(data, viewType = null) {
 function getFeatureTooltipInfo(featureName, ideName, supportLevel) {
     if (!window.featureData) return 'Loading...';
     
-    // Find the latest version entry for this feature and IDE
+    // Find all version entries for this feature and IDE
     const entries = window.featureData.filter(item => 
         item.feature === featureName && 
         item.ide === ideName && 
@@ -541,7 +541,7 @@ function getFeatureTooltipInfo(featureName, ideName, supportLevel) {
     );
     
     if (entries.length === 0) {
-        return `Feature not supported in ${ideName}`;
+        return 'Not supported';
     }
     
     // Get the latest entry (highest version)
@@ -549,23 +549,45 @@ function getFeatureTooltipInfo(featureName, ideName, supportLevel) {
         return compareVersions(current.version, latest.version) > 0 ? current : latest;
     });
     
-    // Get the first introduction of this feature
-    const firstEntry = entries.reduce((first, current) => {
-        return compareVersions(current.version, first.version) < 0 ? current : first;
-    });
+    // Get the first GA version (if it exists)
+    const gaEntries = entries.filter(item => item.releaseType === 'ga');
+    const firstGAEntry = gaEntries.length > 0 ? 
+        gaEntries.reduce((first, current) => {
+            return compareVersions(current.version, first.version) < 0 ? current : first;
+        }) : null;
     
-    let tooltip = `${featureName} in ${ideName}`;
+    // Get the first preview version (if it exists)
+    const previewEntries = entries.filter(item => item.releaseType === 'preview');
+    const firstPreviewEntry = previewEntries.length > 0 ? 
+        previewEntries.reduce((first, current) => {
+            return compareVersions(current.version, first.version) < 0 ? current : first;
+        }) : null;
     
     if (latestEntry.support === 'full') {
-        tooltip += ` (GA since v${latestEntry.version})`;
-        if (firstEntry.version !== latestEntry.version && firstEntry.support === 'partial') {
-            tooltip += ` - Preview since v${firstEntry.version}`;
+        // Feature is currently GA
+        if (firstGAEntry) {
+            if (firstPreviewEntry && compareVersions(firstPreviewEntry.version, firstGAEntry.version) < 0) {
+                // Had preview first, then GA - show both on separate lines
+                return `Preview since v${firstPreviewEntry.version}
+GA since v${firstGAEntry.version}`;
+            } else {
+                // GA only (no preview history)
+                return `GA since v${firstGAEntry.version}`;
+            }
+        } else {
+            // Shouldn't happen, but fallback
+            return `GA since v${latestEntry.version}`;
         }
     } else if (latestEntry.support === 'partial') {
-        tooltip += ` (Preview since v${latestEntry.version})`;
+        // Feature is currently in preview
+        if (firstPreviewEntry) {
+            return `Preview since v${firstPreviewEntry.version}`;
+        } else {
+            return `Preview since v${latestEntry.version}`;
+        }
     }
     
-    return tooltip;
+    return 'Not supported';
 }
 
 // Function to create filter controls based on view type
