@@ -5,7 +5,14 @@ window.rawFeatureData = {};
 // Function to load and process feature data
 async function loadFeatureData() {
     try {
-        const response = await fetch('data.json');
+        // Add cache-busting parameter to force fresh data
+        const timestamp = new Date().getTime();
+        const response = await fetch(`data.json?v=${timestamp}`, {
+            cache: 'no-store',
+            headers: {
+                'Cache-Control': 'no-cache'
+            }
+        });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }

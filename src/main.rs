@@ -53,10 +53,12 @@ fn handle_connection(mut stream: TcpStream) {
     
     // Parse the request path
     let path = if let Some(path_part) = request_line.split_whitespace().nth(1) {
-        if path_part == "/" {
+        // Remove query parameters (everything after ?)
+        let clean_path = path_part.split('?').next().unwrap_or(path_part);
+        if clean_path == "/" {
             "/index.html"
         } else {
-            path_part
+            clean_path
         }
     } else {
         "/index.html"
