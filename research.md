@@ -99,12 +99,14 @@
 | Code completions (Preview)<br>Code completions (GA) | Data     | Data     |  |
 | Chat (Preview)<br>Chat (GA) | Data     | Data     |      |
 | Vision (preview)<br>Vision (GA)   | Data<br>N/A | [05-MAR-2025](https://github.blog/changelog/2025-03-05-copilot-chat-users-can-now-use-the-vision-input-in-vs-code-and-visual-studio-public-preview/)<br>N/A |  |
-| Edit mode (preview?)   | Data     | [12-FEB-2025](https://github.blog/changelog/2025-02-12-github-copilot-in-visual-studio-2022-version-17-13/) |  |
-| Agent mode (preview)   | 17.14.0* | [13-MAY-2025](https://github.blog/changelog/2025-05-13-agent-mode-mcp-and-next-edit-suggestions-come-to-github-copilot-in-visual-studio-17-14/) | No PoV exists. VIFD-F. Closest PoV documentation is [this](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=GA).    |
-| Agent mode (GA)   | [17.14.6](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=June#17.14.6)     | [17-JUN-2025](https://github.blog/changelog/2025-06-17-visual-studio-17-14-june-release/) |  |
-| Code referencing (preview?) | Data | [19-FEB-2025](https://devblogs.microsoft.com/visualstudio/introducing-code-referencing-for-github-copilot-completions-in-visual-studio/) |  |
-| MCP (Preview)<br>MCP (GA) | 17.14.0*<br>[17.14.13](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=August#17.14.13) | [19-AUG-2025]()<br>19-AUG-2025* | N/A<br>VIFD-I. MCP not explicitly listed in version release notes.<br>External PoD does not exist yet. [Internal PoD](./internal_research.md) does exist. |
-|  |  |  |  |
+| Edit mode (preview?)<br>Edit mode (GA) | 17.13.0*<br>Data | [12-FEB-2025](https://github.blog/changelog/2025-02-12-github-copilot-in-visual-studio-2022-version-17-13/)<br>Data | VIFD-I. 17.13.0 was first released on [11-FEB-2025](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes-v17.13).<br>N/A |
+| Agent mode (preview)<br>Agent mode (GA) | 17.14.0*<br>[17.14.6](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=June#17.14.6) | [13-MAY-2025](https://github.blog/changelog/2025-05-13-agent-mode-mcp-and-next-edit-suggestions-come-to-github-copilot-in-visual-studio-17-14/)<br>[17-JUN-2025](https://github.blog/changelog/2025-06-17-visual-studio-17-14-june-release/) | No PoV exists. VIFD-F. Closest PoV documentation is [this](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=GA).<br>N/A |
+| Code referencing (preview?) | 17.13.0* | [12-FEB-2025](https://github.blog/changelog/2025-02-12-github-copilot-in-visual-studio-2022-version-17-13/) | VIFD-I. 17.13.0 was first released on [11-FEB-2025](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes-v17.13). VS Blog post from [19-FEB-2025](https://devblogs.microsoft.com/visualstudio/introducing-code-referencing-for-github-copilot-completions-in-visual-studio/) |
+| MCP (Preview)<br>MCP (GA) | 17.14.0*<br>[17.14.13](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=August#17.14.13) | [13-MAY-2025](https://github.blog/changelog/2025-05-13-agent-mode-mcp-and-next-edit-suggestions-come-to-github-copilot-in-visual-studio-17-14/)<br>19-AUG-2025* | VIFD-F<br>VIFD-I. MCP not explicitly listed in version release notes.<br>External PoD does not exist yet. [Internal PoD](./internal_research.md) does exist. |
+| Next Edit Suggestions (Preview?)<br>Next Edit Suggestions (GA) | [17.14.0](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=GA)<br>Data | [15-APR-2025](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=GA)<br>Data | Our [changelog](https://github.blog/changelog/2025-05-13-agent-mode-mcp-and-next-edit-suggestions-come-to-github-copilot-in-visual-studio-17-14/) regarding this was posted on 13-MAY-2025.<br>N/A |
+| .NET Upgrade Agent (Preview)<br>.NET Upgrade Agent (GA) | N/A<br>N/A | [19-MAY-2025](https://github.blog/changelog/2025-05-19-github-copilot-app-modernization-upgrade-for-net-now-in-public-preview/)<br>Data | Not tied to VS. It's a standalone extension that's only available for VS. There are conflicting changelogs on preview dates. Chose the first one. [One](https://github.blog/changelog/2025-05-19-github-copilot-app-modernization-upgrade-for-net-now-in-public-preview/) and [Two](https://github.blog/changelog/2025-07-21-github-copilot-app-modernization-for-net-enters-public-preview/). |
+| Extensions (GA) | ??? | [19-FEB-2025](https://github.blog/changelog/2025-02-19-announcing-the-general-availability-of-github-copilot-extensions/) |  |
+
 
 > PoV = Proof of `Version`
 >
@@ -124,28 +126,7 @@
 - VS release Notes
   - https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=June
   - June 17th, 2025
-### Next Edit Suggestions
-#### Preview?
-- Changelog
-  - https://github.blog/changelog/2025-05-13-agent-mode-mcp-and-next-edit-suggestions-come-to-github-copilot-in-visual-studio-17-14/
-  - May 13th, 2025
-### App modernization for .NET
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-05-19-github-copilot-app-modernization-upgrade-for-net-now-in-public-preview/
-  - May 19th, 2025
-  - https://github.blog/changelog/2025-07-21-github-copilot-app-modernization-for-net-enters-public-preview/
-  - July 21st, 2025
-### Code Referencing
-#### Preview?
-- Changelog
-  - https://github.blog/changelog/2025-02-12-github-copilot-in-visual-studio-2022-version-17-13/
-  - February 12th, 2025
-### Extensions
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-02-19-announcing-the-general-availability-of-github-copilot-extensions/
-  - February 19th, 2025
+
 ## Eclipse
 ### Code completions
 #### Preview

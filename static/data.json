@@ -1,5 +1,8 @@
 {
   "VS Code": {
+    "0.0.0": {
+      "Extensions": { "releaseType": "ga" }
+    },
     "1.57.0": {
       "Code completion": { "releaseType": "preview" }
     },
@@ -50,9 +53,15 @@
     }
   },
   "Visual Studio": {
-    "0.0.1": {
+    "0.0.0": {
       "Code completion": { "releaseType": "ga" },
       "Chat": { "releaseType": "ga" },
+      ".NET Upgrade Assistant": { "releaseType": "preview" },
+      "Extensions": { "releaseType": "ga" }
+    },
+    "17.13.0": {
+      "_date": "2025-02-11",
+      "Edit mode": { "releaseType": "ga" },
       "Code referencing": { "releaseType": "preview" }
     },
     "17.14.0": {
@@ -71,6 +80,9 @@
     }
   },
   "JetBrains": {
+    "0.0.0": {
+      "Extensions": { "releaseType": "ga" }
+    },
     "1.0.1": {
       "Code completion": { "releaseType": "preview" }
     },
