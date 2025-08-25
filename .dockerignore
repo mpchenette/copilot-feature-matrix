@@ -1,0 +1,26 @@
+# Git files
+.git
+.gitignore
+
+# Documentation
+README.md
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Development files
+.vscode
+.DS_Store
+
+# Research and internal files
+research.md
+internal_research.md
+
+# Node modules if any
+node_modules
+npm-debug.log
+
+# Logs
+*.log
