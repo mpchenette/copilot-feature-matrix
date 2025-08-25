@@ -71,6 +71,24 @@
       "_date": "2025-03-20",
       "Edit mode": { "releaseType": "preview" }
     },
+    "1.5.41": {
+      "_date": "2025-04-14",
+      "Custom instructions": { "releaseType": "preview" },
+      "Vision": { "releaseType": "preview" }
+    },
+    "1.5.43": {
+      "_date": "2025-04-27",
+      "Edit mode": { "releaseType": "ga" }
+    },
+    "1.5.45": {
+      "_date": "2025-05-15",
+      "Agent mode": { "releaseType": "preview" },
+      "MCP": { "releaseType": "preview" }
+    },
+    "1.5.49": {
+      "_date": "2025-07-15",
+      "Agent mode": { "releaseType": "ga" }
+    },
     "1.5.53": {
       "_date": "2025-08-13",
       "MCP": { "releaseType": "ga" }

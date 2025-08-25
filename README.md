@@ -5,6 +5,8 @@
 - show the IDE version you are displaying the features for on the first tab (i.e. static feature matrix). This should be the latest IDE version for all.
 - Add BYOK for VS Code? (1.99)
 - Should I add in experiemental? https://code.visualstudio.com/updates/v1_98#_github-copilot
+- add upgrade agents
+- "GA since" in the tooltip is wrong
 
 
     "1.94.0": {
