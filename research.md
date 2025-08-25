@@ -92,27 +92,28 @@
 ### Misc.
 - https://github.blog/changelog/2025-02-19-new-gpt-4o-copilot-code-completion-model-now-available-for-copilot-in-jetbrains-ides/
 - https://github.blog/changelog/2025-03-27-gpt-4o-copilot-your-new-code-completion-model-is-now-generally-available/
-## Visual Studio
-### Vision
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-03-05-copilot-chat-users-can-now-use-the-vision-input-in-vs-code-and-visual-studio-public-preview/
-  - March 5th, 2025
 
-### Edit mode
-#### Preview?
-- Changelog
-  - https://github.blog/changelog/2025-02-12-github-copilot-in-visual-studio-2022-version-17-13/
-  - February 12th, 2025
-### Agent mode
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-05-13-agent-mode-mcp-and-next-edit-suggestions-come-to-github-copilot-in-visual-studio-17-14/
-  - May 13th, 2025
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-06-17-visual-studio-17-14-june-release/
-  - June 17th, 2025
+## Visual Studio
+| Feature | Version (link PoV) | Date (link PoD) | Notes |
+|---------|----------|----------|----------|
+| Code completions (Preview)<br>Code completions (GA) | Data     | Data     |  |
+| Chat (Preview)<br>Chat (GA) | Data     | Data     |      |
+| Vision (preview)<br>Vision (GA)   | Data<br>N/A | [05-MAR-2025](https://github.blog/changelog/2025-03-05-copilot-chat-users-can-now-use-the-vision-input-in-vs-code-and-visual-studio-public-preview/)<br>N/A |  |
+| Edit mode (preview?)   | Data     | [12-FEB-2025](https://github.blog/changelog/2025-02-12-github-copilot-in-visual-studio-2022-version-17-13/) |  |
+| Agent mode (preview)   | 17.14.0* | [13-MAY-2025](https://github.blog/changelog/2025-05-13-agent-mode-mcp-and-next-edit-suggestions-come-to-github-copilot-in-visual-studio-17-14/) | No PoV exists. VIFD-F. Closest PoV documentation is [this](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=GA).    |
+| Agent mode (GA)   | [17.14.6](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=June#17.14.6)     | [17-JUN-2025](https://github.blog/changelog/2025-06-17-visual-studio-17-14-june-release/) |  |
+| Code referencing (preview?) | Data | [19-FEB-2025](https://devblogs.microsoft.com/visualstudio/introducing-code-referencing-for-github-copilot-completions-in-visual-studio/) |  |
+| MCP (Preview)<br>MCP (GA) | 17.14.0*<br>[17.14.13](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=August#17.14.13) | [19-AUG-2025]()<br>19-AUG-2025* | N/A<br>VIFD-I. MCP not explicitly listed in version release notes.<br>External PoD does not exist yet. [Internal PoD](./internal_research.md) does exist. |
+|  |  |  |  |
+
+> PoV = Proof of `Version`
+>
+> PoD = Proof of `Date`
+>
+> VIFD-I = `Version` inferred from `Date` - Identical Dates (i.e., the `Date` and `Version` release date are identical). 
+>
+> VIFD-F = `Version` inferred from `Date`- Fallback (i.e., the `Date` does not align with any explicit `Version` so an assumption was made it was the most recently released version prior to the `Date`).
+ 
 ### MCP
 #### Preview
 - Changelog

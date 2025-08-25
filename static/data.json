@@ -52,7 +52,8 @@
   "Visual Studio": {
     "0.0.1": {
       "Code completion": { "releaseType": "ga" },
-      "Chat": { "releaseType": "ga" }
+      "Chat": { "releaseType": "ga" },
+      "Code referencing": { "releaseType": "preview" }
     },
     "17.14.0": {
       "_date": "2025-04-15",
