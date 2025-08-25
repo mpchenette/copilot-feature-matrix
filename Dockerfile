@@ -1,14 +1,18 @@
-# Use nginx alpine for a lightweight web server
-FROM nginx:alpine
+FROM rust as builder
+COPY . .
+RUN rustup target add x86_64-unknown-linux-musl
+RUN cargo build --release --target x86_64-unknown-linux-musl
 
-# Copy static files to nginx html directory
-COPY . /usr/share/nginx/html/
+FROM scratch
+COPY --from=builder /target/x86_64-unknown-linux-musl/release/copilot-feature-matrix .
+COPY --from=builder /static/ ./static/
+EXPOSE 8000
+CMD ["./copilot-feature-matrix"]
 
-# Copy custom nginx config if needed (optional)
-# COPY nginx.conf /etc/nginx/nginx.conf
+# works locally for
+# docker build . -t <image-name>
+# docker run -p 8000:8000 <image-name>
 
-# Expose port 80
-EXPOSE 80
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# works on azure app service for
+# add app setting (env var) - WEBSITES_PORT=8000
+# no need for any startup command

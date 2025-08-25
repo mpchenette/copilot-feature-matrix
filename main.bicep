@@ -35,6 +35,6 @@ resource appSettings 'Microsoft.Web/sites/config@2023-01-01' = {
   properties: {
 
     DOCKER_REGISTRY_SERVER_URL: 'https://index.docker.io'
-    WEBSITES_PORT: '80'
+    WEBSITES_PORT: '8000'
   }
 }
