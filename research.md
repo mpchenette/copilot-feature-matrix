@@ -120,6 +120,9 @@
   - May 13th, 2025
   - https://github.blog/changelog/2025-06-17-visual-studio-17-14-june-release/
   - June 17th, 2025
+- VS release Notes
+  - https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=June
+  - June 17th, 2025
 ### Next Edit Suggestions
 #### Preview?
 - Changelog
