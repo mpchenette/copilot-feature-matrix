@@ -122,6 +122,11 @@
     "1.5.53": {
       "_date": "2025-08-13",
       "MCP": { "releaseType": "ga" }
+    },
+    "1.5.54": {
+      "_date": "2025-08-13",
+      "Prompt files": { "releaseType": "preview" },
+      "Next edit suggestions": { "releaseType": "preview" }
     }
   },
   "Neovim": {
@@ -223,7 +228,8 @@
     "0.39.0": {},
     "0.40.0": {},
     "0.41.0": {
-      "MCP": { "releaseType": "ga" }
+      "MCP": { "releaseType": "ga" },
+      "Copilot code review": { "releaseType": "ga" }
     }
   }
 }

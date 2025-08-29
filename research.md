@@ -95,7 +95,7 @@
 ### Misc.
 - https://github.blog/changelog/2025-02-19-new-gpt-4o-copilot-code-completion-model-now-available-for-copilot-in-jetbrains-ides/
 - https://github.blog/changelog/2025-03-27-gpt-4o-copilot-your-new-code-completion-model-is-now-generally-available/
-
+- https://github.blog/changelog/2025-08-29-copilots-next-edit-suggestion-nes-in-public-preview-in-jetbrains/
 ## Visual Studio
 | Feature | Version (link PoV) | Date (link PoD) | Notes |
 |---------|----------|----------|----------|
@@ -246,3 +246,7 @@
   - https://github.com/github/CopilotForXcode/releases/tag/0.38.0
   - June 30th, 2025
   - No confirmation this is the correct release, but the timing lines up. Reading between the lines here.
+
+
+### Misc
+- https://github.blog/changelog/2025-08-27-copilot-code-review-generally-available-in-xcode-and-new-admin-control/
