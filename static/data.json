@@ -124,7 +124,7 @@
       "MCP": { "releaseType": "ga" }
     },
     "1.5.54": {
-      "_date": "2025-08-13",
+      "_date": "2025-08-28",
       "Prompt files": { "releaseType": "preview" },
       "Next edit suggestions": { "releaseType": "preview" }
     }
