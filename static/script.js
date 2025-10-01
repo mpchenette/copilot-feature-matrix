@@ -1,6 +1,8 @@
 // Global variables
 window.featureData = [];
 window.rawFeatureData = {};
+window.versionDateIndex = {};
+window.latestDataDate = null;
 
 // Function to load and process feature data
 async function loadFeatureData() {
@@ -22,10 +24,16 @@ async function loadFeatureData() {
         
         // Store raw data globally for other functions
         window.rawFeatureData = rawData;
-        
+
         // Validate data for conflicts
         const warnings = validateData(rawData);
         displayWarnings(warnings);
+
+        // Capture release dates for metadata surfaces
+        const { versionDates, latestDate } = extractDateMetadata(rawData);
+        window.versionDateIndex = versionDates;
+        window.latestDataDate = latestDate;
+        updateLastUpdatedBanner(latestDate);
         
         // Convert to normalized format
         window.featureData = normalizeData(rawData);
@@ -58,10 +66,6 @@ async function loadFeatureData() {
         return false; // Return failure
     }
 }
-
-// Global variables
-window.featureData = [];
-window.rawFeatureData = {};
 
 // Function to validate data for conflicts and inconsistencies
 function validateData(rawData) {
@@ -316,6 +320,79 @@ function normalizeData(rawData) {
     return normalized;
 }
 
+function extractDateMetadata(rawData) {
+    const versionDates = {};
+    let latestDate = null;
+
+    const isoPattern = /^\d{4}-\d{2}-\d{2}$/;
+
+    for (const [ide, versions] of Object.entries(rawData)) {
+        versionDates[ide] = {};
+        for (const [version, versionData] of Object.entries(versions)) {
+            const isoDate = versionData._date;
+            if (!isoDate || !isoPattern.test(isoDate)) {
+                continue;
+            }
+
+            versionDates[ide][version] = isoDate;
+
+            if (!latestDate || isDateNewer(isoDate, latestDate)) {
+                latestDate = isoDate;
+            }
+        }
+    }
+
+    return { versionDates, latestDate };
+}
+
+function isDateNewer(candidateISO, baselineISO) {
+    if (!candidateISO) return false;
+    if (!baselineISO) return true;
+
+    const candidateDate = new Date(`${candidateISO}T00:00:00.000Z`);
+    const baselineDate = new Date(`${baselineISO}T00:00:00.000Z`);
+
+    return candidateDate > baselineDate;
+}
+
+function getVersionDate(ide, version) {
+    if (!ide || !version || !window.versionDateIndex) {
+        return null;
+    }
+
+    return window.versionDateIndex[ide]?.[version] || null;
+}
+
+function formatDisplayDate(isoDate) {
+    if (!isoDate) return '';
+    const parsed = new Date(`${isoDate}T00:00:00.000Z`);
+    if (isNaN(parsed.getTime())) {
+        return isoDate;
+    }
+
+    return new Intl.DateTimeFormat(undefined, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+    }).format(parsed);
+}
+
+function updateLastUpdatedBanner(latestDate) {
+    const banner = document.getElementById('lastUpdated');
+    if (!banner) {
+        return;
+    }
+
+    if (!latestDate) {
+        banner.textContent = '';
+        banner.classList.add('is-hidden');
+        return;
+    }
+
+    banner.textContent = `Latest data refresh: ${formatDisplayDate(latestDate)}`;
+    banner.classList.remove('is-hidden');
+}
+
 // Helper function to compare versions properly
 function compareVersions(a, b) {
     // Handle different version formats
@@ -461,6 +538,7 @@ function createTable(data, viewType = null) {
     data.headers.forEach(header => {
         const th = document.createElement('th');
         th.textContent = header;
+        th.setAttribute('scope', 'col');
         headerRow.appendChild(th);
     });
     
@@ -470,62 +548,60 @@ function createTable(data, viewType = null) {
     // Create body
     const tbody = document.createElement('tbody');
     
-    data.rows.forEach((row, rowIndex) => {
+    data.rows.forEach(row => {
         const tr = document.createElement('tr');
         
         // First column (name)
         const nameCell = document.createElement('td');
         nameCell.textContent = row.name;
+        nameCell.classList.add('row-heading');
+        nameCell.setAttribute('scope', 'row');
         tr.appendChild(nameCell);
         
         // Value columns
         row.values.forEach((value, colIndex) => {
             const td = document.createElement('td');
             
-            // Check if this is a support status (for Features by IDE view) or version number (for IDEs by Feature view)
             if (supportStatus[value]) {
-                // This is a support status symbol
+                // Render support status symbol
                 const status = supportStatus[value];
-                td.className = status.class + ' tooltip';
-                
-                // Use innerHTML for SVG content, textContent for regular text
+                td.classList.add(status.class, 'tooltip');
+
                 if (status.isHtml) {
                     td.innerHTML = status.symbol;
                 } else {
                     td.textContent = status.symbol;
                 }
-                
-                // Add tooltip for Feature Matrix view
-                if (viewType === 'custom-pivot') {
+
+                const ideFilterValue = document.getElementById('ideFilter')?.value;
+                const shouldShowStatusTooltip = viewType === 'custom-pivot' || viewType === 'ide-features';
+
+                if (shouldShowStatusTooltip) {
                     const featureName = row.name;
-                    const ideName = data.headers[colIndex + 1]; // +1 because first header is empty
-                    
-                    // Get detailed info for tooltip
+                    const ideName = ideFilterValue || data.headers[colIndex + 1]; // +1 because first header is the descriptor column
                     const tooltipInfo = getFeatureTooltipInfo(featureName, ideName, value);
-                    td.setAttribute('data-tooltip', tooltipInfo);
+                    decorateInteractiveCell(td, tooltipInfo);
                 }
             } else {
-                // This is a version number or N/A
-                td.textContent = value;
+                // Render version number or N/A placeholder
                 if (value === 'N/A') {
-                    td.className = 'not-supported tooltip';
-                    td.style.fontStyle = 'italic';
-                    td.style.color = '#888';
-                    td.setAttribute('data-tooltip', 'Feature not available in this IDE');
+                    td.classList.add('not-supported', 'tooltip', 'value-missing');
+                    td.textContent = 'N/A';
+                    decorateInteractiveCell(td, 'Feature not available in this IDE yet');
                 } else {
-                    td.className = 'version-number tooltip';
-                    td.style.fontWeight = 'bold';
-                    
-                    // Add tooltip for version info
+                    td.classList.add('version-number', 'tooltip');
+                    td.textContent = value;
+
                     if (viewType === 'feature-ides') {
-                        const featureName = data.headers[0] === 'IDE' ? 
-                            document.getElementById('featureFilter')?.value || 'Selected Feature' :
-                            'Feature';
+                        const featureSelectValue = document.getElementById('featureFilter')?.value || 'Selected Feature';
                         const releaseType = colIndex === 0 ? 'Preview' : 'GA';
-                        td.setAttribute('data-tooltip', `${featureName} ${releaseType}: Version ${value}`);
+                        const isoDate = getVersionDate(row.name, value);
+                        const dateSuffix = isoDate ? ` (${formatDisplayDate(isoDate)})` : '';
+                        decorateInteractiveCell(td, `${featureSelectValue} ${releaseType}: Version ${value}${dateSuffix}`);
                     }
                 }
             }
+
             tr.appendChild(td);
         });
         
@@ -533,6 +609,7 @@ function createTable(data, viewType = null) {
     });
     
     table.appendChild(tbody);
+    enableColumnHover(table);
     return table;
 }
 
@@ -569,32 +646,183 @@ function getFeatureTooltipInfo(featureName, ideName, supportLevel) {
         previewEntries.reduce((first, current) => {
             return compareVersions(current.version, first.version) < 0 ? current : first;
         }) : null;
+
+    const buildLine = (label, entry) => {
+        if (!entry) {
+            return null;
+        }
+        const isoDate = getVersionDate(ideName, entry.version);
+        const dateSuffix = isoDate ? ` (${formatDisplayDate(isoDate)})` : '';
+        return `${label} since v${entry.version}${dateSuffix}`;
+    };
     
     if (latestEntry.support === 'full') {
         // Feature is currently GA
         if (firstGAEntry) {
+            const lines = [];
             if (firstPreviewEntry && compareVersions(firstPreviewEntry.version, firstGAEntry.version) < 0) {
-                // Had preview first, then GA - show both on separate lines
-                return `Preview since v${firstPreviewEntry.version}
-GA since v${firstGAEntry.version}`;
-            } else {
-                // GA only (no preview history)
-                return `GA since v${firstGAEntry.version}`;
+                lines.push(buildLine('Preview', firstPreviewEntry));
             }
+            lines.push(buildLine('GA', firstGAEntry));
+            return lines.filter(Boolean).join('\n');
         } else {
             // Shouldn't happen, but fallback
-            return `GA since v${latestEntry.version}`;
+            return buildLine('GA', latestEntry) || 'GA available';
         }
     } else if (latestEntry.support === 'partial') {
         // Feature is currently in preview
-        if (firstPreviewEntry) {
-            return `Preview since v${firstPreviewEntry.version}`;
-        } else {
-            return `Preview since v${latestEntry.version}`;
-        }
+        return buildLine('Preview', firstPreviewEntry || latestEntry) || 'Preview available';
     }
     
     return 'Not supported';
+}
+
+function decorateInteractiveCell(cell, tooltipText) {
+    if (!cell || !tooltipText) {
+        return;
+    }
+
+    const inlineText = tooltipText.replace(/\n/g, ' • ');
+    const ariaText = tooltipText.replace(/\n/g, ', ');
+
+    cell.setAttribute('data-tooltip', tooltipText);
+    cell.setAttribute('title', inlineText);
+    cell.setAttribute('aria-label', ariaText);
+    cell.setAttribute('tabindex', '0');
+}
+
+function enableColumnHover(table) {
+    if (!table) {
+        return;
+    }
+
+    const activateColumn = (cell) => {
+        if (!cell) {
+            return;
+        }
+        setColumnHighlight(table, cell.cellIndex);
+    };
+
+    table.addEventListener('mouseover', event => {
+        const cell = event.target.closest('td, th');
+        if (!cell || !table.contains(cell)) {
+            return;
+        }
+        activateColumn(cell);
+    });
+
+    table.addEventListener('focusin', event => {
+        const cell = event.target.closest('td, th');
+        if (!cell || !table.contains(cell)) {
+            return;
+        }
+        activateColumn(cell);
+    });
+
+    table.addEventListener('mouseleave', () => {
+        clearColumnHighlight(table);
+    });
+
+    table.addEventListener('focusout', event => {
+        if (!table.contains(event.relatedTarget)) {
+            clearColumnHighlight(table);
+        }
+    });
+}
+
+function setColumnHighlight(table, columnIndex) {
+    if (columnIndex === undefined || columnIndex === null) {
+        return;
+    }
+
+    const columnKey = String(columnIndex);
+    if (table.dataset.highlightedCol === columnKey) {
+        return;
+    }
+
+    clearColumnHighlight(table);
+    table.dataset.highlightedCol = columnKey;
+
+    const selector = `th:nth-child(${columnIndex + 1}), td:nth-child(${columnIndex + 1})`;
+    table.querySelectorAll(selector).forEach(cell => {
+        cell.classList.add('column-highlight');
+    });
+}
+
+function clearColumnHighlight(table) {
+    table.querySelectorAll('.column-highlight').forEach(cell => {
+        cell.classList.remove('column-highlight');
+    });
+    delete table.dataset.highlightedCol;
+}
+
+function renderLegend(viewType, tableData) {
+    const legendContainer = document.getElementById('legendContainer');
+    if (!legendContainer) {
+        return;
+    }
+
+    legendContainer.innerHTML = '';
+    legendContainer.classList.add('is-hidden');
+
+    const showStatusLegend = ['custom-pivot', 'ide-features'].includes(viewType) && tableData?.rows?.length;
+    const showVersionNote = viewType === 'feature-ides' && tableData?.rows?.length;
+
+    if (showStatusLegend) {
+        const legendList = document.createElement('div');
+        legendList.className = 'legend-list';
+
+        const items = [
+            { key: 'full', label: 'Available (GA)', description: 'Feature is fully released' },
+            { key: 'partial', label: 'Preview', description: 'Feature is currently in preview' },
+            { key: 'none', label: 'Not available', description: 'Feature has not shipped yet' }
+        ];
+
+        items.forEach(item => {
+            const legendItem = document.createElement('div');
+            legendItem.className = 'legend-item';
+
+            const iconWrapper = document.createElement('span');
+            iconWrapper.className = `legend-icon ${supportStatus[item.key].class}`;
+
+            const status = supportStatus[item.key];
+            if (status.isHtml) {
+                iconWrapper.innerHTML = status.symbol;
+            } else {
+                iconWrapper.textContent = status.symbol;
+            }
+
+            const textWrapper = document.createElement('div');
+            textWrapper.className = 'legend-text';
+
+            const label = document.createElement('span');
+            label.className = 'legend-label';
+            label.textContent = item.label;
+
+            const description = document.createElement('span');
+            description.className = 'legend-description';
+            description.textContent = item.description;
+
+            textWrapper.appendChild(label);
+            textWrapper.appendChild(description);
+
+            legendItem.appendChild(iconWrapper);
+            legendItem.appendChild(textWrapper);
+            legendList.appendChild(legendItem);
+        });
+
+        legendContainer.appendChild(legendList);
+        legendContainer.classList.remove('is-hidden');
+        return;
+    }
+
+    if (showVersionNote) {
+        const note = document.createElement('div');
+        note.className = 'legend-note';
+        note.textContent = 'Preview and GA columns show the first version where the feature reached each milestone. N/A indicates the milestone has not shipped yet.';
+        legendContainer.appendChild(note);
+        legendContainer.classList.remove('is-hidden');
+    }
 }
 
 // Function to create filter controls based on view type
@@ -612,6 +840,10 @@ function createFilters(viewType) {
         case 'feature-ides':
             // Feature selector
             filtersContainer.appendChild(createFilterGroup('Feature:', 'featureFilter', getUniqueFeatures(), 'Select Feature'));
+            const featureSelect = document.getElementById('featureFilter');
+            if (featureSelect && featureSelect.options.length > 1) {
+                featureSelect.selectedIndex = 1; // Default to first actual feature
+            }
             break;
             
         case 'custom-pivot':
@@ -700,6 +932,10 @@ function updateVersionFilter() {
                 option.textContent = version;
                 versionSelect.appendChild(option);
             });
+
+            if (versions.length > 0) {
+                versionSelect.value = versions[versions.length - 1];
+            }
         }
     }
     
@@ -964,6 +1200,8 @@ function updateTable(viewType = null) {
             tableData = generateExtensionCompatibilityView();
             break;
     }
+
+    renderLegend(viewType, tableData);
     
     // Clear and rebuild table
     tableContainer.innerHTML = '';
