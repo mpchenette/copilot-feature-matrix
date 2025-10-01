@@ -2,7 +2,8 @@
   "VS Code": {
     "0.0.0": {
       "Extensions": { "releaseType": "ga" },
-      "Java Upgrade Agent": { "releaseType": "preview" }
+      "Java Upgrade Agent": { "releaseType": "preview" },
+      "BYOK": { "releaseType": "preview" }
     },
     "1.57.0": {
       "Code completion": { "releaseType": "preview" }
@@ -60,7 +61,8 @@
       ".NET Upgrade Agent": { "releaseType": "preview" },
       "Extensions": { "releaseType": "ga" },
       "Custom instructions": { "releaseType": "ga" },
-      "Vision": { "releaseType": "preview" }
+      "Vision": { "releaseType": "preview" },
+      "Copilot code review": { "releaseType": "ga" }
     },
     "17.13.0": {
       "_date": "2025-02-11",
@@ -86,7 +88,9 @@
     "0.0.0": {
       "Extensions": { "releaseType": "ga" },
       "Code completion": { "releaseType": "preview" },
-      "Code referencing": { "releaseType": "ga" }
+      "Code referencing": { "releaseType": "ga" },
+      "Copilot code review": { "releaseType": "ga" },
+      "BYOK": { "releaseType": "preview" }
     },
     "1.0.1": {
       "Code completion": { "releaseType": "ga" }
@@ -197,6 +201,9 @@
     }
   },
   "Xcode": {
+    "0.0.0": {
+      "BYOK": { "releaseType": "preview" }
+    },
     "0.23.0": {},
     "0.24.0": {},
     "0.25.0": {},
