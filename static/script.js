@@ -848,13 +848,6 @@ function createFilters(viewType) {
             
         case 'custom-pivot':
             // No filters for custom view - it's a static matrix
-            const description = document.createElement('div');
-            description.style.textAlign = 'center';
-            description.style.color = '#ccc';
-            description.style.fontStyle = 'italic';
-            description.style.marginBottom = '1rem';
-            description.textContent = 'Complete feature matrix showing latest version of each IDE';
-            filtersContainer.appendChild(description);
             break;
             
         case 'extension-compatibility':
