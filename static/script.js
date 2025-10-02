@@ -773,9 +773,9 @@ function renderLegend(viewType, tableData) {
         legendList.className = 'legend-list';
 
         const items = [
-            { key: 'full', label: 'Generally Available', description: 'Feature is fully released' },
-            { key: 'partial', label: 'Public Preview', description: 'Feature is currently in preview' },
-            { key: 'none', label: 'Not available', description: 'Feature has not shipped yet' }
+            { key: 'full', label: 'Generally Available' },
+            { key: 'partial', label: 'Public Preview' },
+            { key: 'none', label: 'Not available' }
         ];
 
         items.forEach(item => {
@@ -792,22 +792,11 @@ function renderLegend(viewType, tableData) {
                 iconWrapper.textContent = status.symbol;
             }
 
-            const textWrapper = document.createElement('div');
-            textWrapper.className = 'legend-text';
-
             const label = document.createElement('span');
             label.className = 'legend-label';
             label.textContent = item.label;
-
-            const description = document.createElement('span');
-            description.className = 'legend-description';
-            description.textContent = item.description;
-
-            textWrapper.appendChild(label);
-            textWrapper.appendChild(description);
-
             legendItem.appendChild(iconWrapper);
-            legendItem.appendChild(textWrapper);
+            legendItem.appendChild(label);
             legendList.appendChild(legendItem);
         });
 

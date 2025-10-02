@@ -243,23 +243,10 @@ body {
     height: 30px;
 }
 
-.legend-text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.15rem;
-}
-
 .legend-label {
     color: var(--text-primary);
     font-weight: 600;
-    font-size: 0.95rem;
-}
-
-.legend-description {
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-    line-height: 1.4;
+    font-size: 1rem;
 }
 
 .legend-note {
