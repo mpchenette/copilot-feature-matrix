@@ -2,7 +2,6 @@
 window.featureData = [];
 window.rawFeatureData = {};
 window.versionDateIndex = {};
-window.latestDataDate = null;
 
 // Function to load and process feature data
 async function loadFeatureData() {
@@ -20,7 +19,7 @@ async function loadFeatureData() {
         }
         
         const rawData = await response.json();
-        console.log('Raw data loaded successfully:', Object.keys(rawData));
+        console.debug('Raw data loaded successfully:', Object.keys(rawData));
         
         // Store raw data globally for other functions
         window.rawFeatureData = rawData;
@@ -32,13 +31,12 @@ async function loadFeatureData() {
         // Capture release dates for metadata surfaces
         const { versionDates, latestDate } = extractDateMetadata(rawData);
         window.versionDateIndex = versionDates;
-        window.latestDataDate = latestDate;
         updateLastUpdatedBanner(latestDate);
-        
+
         // Convert to normalized format
         window.featureData = normalizeData(rawData);
-        
-        console.log('Loaded feature data:', window.featureData.length, 'entries');
+
+        console.debug('Loaded feature data:', window.featureData.length, 'entries');
         
         // Initialize the default view
         showFeatureMatrix();
@@ -194,7 +192,7 @@ function validateData(rawData) {
 // Function to display validation warnings
 function displayWarnings(warnings) {
     if (warnings.length === 0) {
-        console.log('✅ Data validation passed - no conflicts detected');
+        console.info('✅ Data validation passed - no conflicts detected');
         return;
     }
     
@@ -483,12 +481,44 @@ function getVersionsForIDE(ide) {
     return Object.keys(window.rawFeatureData[ide]).sort(compareVersions);
 }
 
-function getAllVersions() {
-    const versions = new Set();
-    for (const ide of Object.values(window.rawFeatureData)) {
-        Object.keys(ide).forEach(version => versions.add(version));
+function getLatestVersionsByIDE(data) {
+    const latestVersions = {};
+
+    if (!Array.isArray(data)) {
+        return latestVersions;
     }
-    return [...versions].sort(compareVersions);
+
+    data.forEach(item => {
+        const current = latestVersions[item.ide];
+        if (!current || compareVersions(item.version, current) > 0) {
+            latestVersions[item.ide] = item.version;
+        }
+    });
+
+    return latestVersions;
+}
+
+function buildLatestFeatureMatrix(data) {
+    if (!Array.isArray(data) || data.length === 0) {
+        return { headers: [], rows: [] };
+    }
+
+    const latestVersions = getLatestVersionsByIDE(data);
+    const latestData = data.filter(item => latestVersions[item.ide] === item.version);
+    const ides = sortIDEs([...new Set(latestData.map(item => item.ide))]);
+    const features = [...new Set(latestData.map(item => item.feature))].sort();
+
+    return {
+        headers: ['', ...ides],
+        rows: features.map(feature => {
+            const row = { name: feature, values: [] };
+            ides.forEach(ide => {
+                const match = latestData.find(item => item.ide === ide && item.feature === feature);
+                row.values.push(match ? match.support : 'none');
+            });
+            return row;
+        })
+    };
 }
 
 // Pivot function - the core of our slicing and dicing
@@ -579,7 +609,7 @@ function createTable(data, viewType = null) {
                 if (shouldShowStatusTooltip) {
                     const featureName = row.name;
                     const ideName = ideFilterValue || data.headers[colIndex + 1]; // +1 because first header is the descriptor column
-                    const tooltipInfo = getFeatureTooltipInfo(featureName, ideName, value);
+                    const tooltipInfo = getFeatureTooltipInfo(featureName, ideName);
                     decorateInteractiveCell(td, tooltipInfo);
                 }
             } else {
@@ -614,7 +644,7 @@ function createTable(data, viewType = null) {
 }
 
 // Helper function to get tooltip information for feature matrix
-function getFeatureTooltipInfo(featureName, ideName, supportLevel) {
+function getFeatureTooltipInfo(featureName, ideName) {
     if (!window.featureData) return 'Loading...';
     
     // Find all version entries for this feature and IDE
@@ -876,7 +906,7 @@ function createFilterGroup(label, id, options, defaultOption) {
     options.forEach(option => {
         const optionEl = document.createElement('option');
         optionEl.value = option;
-        optionEl.textContent = option.charAt(0).toUpperCase() + option.slice(1);
+        optionEl.textContent = option;
         if (option === defaultOption) {
             optionEl.selected = true;
         }
@@ -951,34 +981,7 @@ function generateIDEFeaturesView() {
         return pivotData('feature', 'version', { ide: ideFilter });
     } else {
         // Show all IDEs vs features (use latest version for each IDE)
-        // Get the latest version for each IDE
-        const latestVersions = {};
-        window.featureData.forEach(item => {
-            if (!latestVersions[item.ide] || compareVersions(item.version, latestVersions[item.ide]) > 0) {
-                latestVersions[item.ide] = item.version;
-            }
-        });
-        
-        // Filter to only include latest versions
-        const latestData = window.featureData.filter(item => 
-            latestVersions[item.ide] === item.version
-        );
-        
-        // Create pivot with the latest data
-        const ides = sortIDEs([...new Set(latestData.map(item => item.ide))]);
-        const features = [...new Set(latestData.map(item => item.feature))].sort();
-        
-        return {
-            headers: ['', ...ides],
-            rows: features.map(feature => {
-                const row = { name: feature, values: [] };
-                ides.forEach(ide => {
-                    const match = latestData.find(item => item.ide === ide && item.feature === feature);
-                    row.values.push(match ? match.support : 'none');
-                });
-                return row;
-            })
-        };
+        return buildLatestFeatureMatrix(window.featureData);
     }
 }
 
@@ -1027,40 +1030,7 @@ function generateFeatureIDEsView() {
 
 function generateCustomPivotView() {
     // Create a static feature matrix showing all features vs all IDEs (latest versions)
-    
-    if (!window.featureData || window.featureData.length === 0) {
-        return { headers: [], rows: [] };
-    }
-    
-    // Get the latest version for each IDE
-    const latestVersions = {};
-    window.featureData.forEach(item => {
-        if (!latestVersions[item.ide] || compareVersions(item.version, latestVersions[item.ide]) > 0) {
-            latestVersions[item.ide] = item.version;
-        }
-    });
-    
-    // Filter to only include latest versions
-    const latestData = window.featureData.filter(item => 
-        latestVersions[item.ide] === item.version
-    );
-    
-    // Get unique IDEs and features
-    const ides = sortIDEs([...new Set(latestData.map(item => item.ide))]);
-    const features = [...new Set(latestData.map(item => item.feature))].sort();
-    
-    // Create the matrix
-    return {
-        headers: ['', ...ides],
-        rows: features.map(feature => {
-            const row = { name: feature, values: [] };
-            ides.forEach(ide => {
-                const match = latestData.find(item => item.ide === ide && item.feature === feature);
-                row.values.push(match ? match.support : 'none');
-            });
-            return row;
-        })
-    };
+    return buildLatestFeatureMatrix(window.featureData);
 }
 
 function generateExtensionCompatibilityView() {
@@ -1148,7 +1118,7 @@ async function initializeApp() {
         });
     });
     
-    console.log('Feature matrix application initialized with JSON data!');
+    console.info('Feature matrix application initialized with JSON data!');
 }
 
 // Function to switch to a specific view
