@@ -773,8 +773,8 @@ function renderLegend(viewType, tableData) {
         legendList.className = 'legend-list';
 
         const items = [
-            { key: 'full', label: 'Available (GA)', description: 'Feature is fully released' },
-            { key: 'partial', label: 'Preview', description: 'Feature is currently in preview' },
+            { key: 'full', label: 'Generally Available', description: 'Feature is fully released' },
+            { key: 'partial', label: 'Public Preview', description: 'Feature is currently in preview' },
             { key: 'none', label: 'Not available', description: 'Feature has not shipped yet' }
         ];
 

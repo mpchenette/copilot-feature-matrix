@@ -234,11 +234,13 @@ body {
     justify-content: center;
     width: 32px;
     height: 32px;
+    font-size: 1.35rem;
 }
 
-.legend-icon svg {
-    width: 22px;
-    height: 22px;
+.legend-icon.supported svg,
+.legend-icon.partial svg {
+    width: 30px;
+    height: 30px;
 }
 
 .legend-text {
