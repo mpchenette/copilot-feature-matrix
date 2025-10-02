@@ -303,11 +303,9 @@ select:focus {
 }
 
 .table-container {
-    background: var(--bg-tertiary);
-    border-radius: 10px;
-    padding: 1.5rem;
+    padding: 0;
+    margin-top: 1.25rem;
     overflow: auto;
-    transition: background 0.3s ease;
     max-height: 70vh;
 }
 
