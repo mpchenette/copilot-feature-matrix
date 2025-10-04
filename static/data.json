@@ -43,15 +43,22 @@
       "Copilot code review": { "releaseType": "ga" }
     },
     "1.100.0": {
+      "_date": "2025-05-08"
     },
     "1.101.0": {
+      "_date": "2025-06-12",
       "Custom chat modes": { "releaseType": "preview" }
     },
     "1.102.0": {
+      "_date": "2025-07-09",
       "MCP": { "releaseType": "ga" }
     },
     "1.103.0": {
+      "_date": "2025-08-07",
       "Checkpoints": { "releaseType": "ga" }
+    },
+    "1.104.0": {
+      "_date": "2025-09-11"
     }
   },
   "Visual Studio": {
@@ -131,6 +138,15 @@
       "_date": "2025-08-28",
       "Prompt files": { "releaseType": "preview" },
       "Next edit suggestions": { "releaseType": "preview" }
+    },
+    "1.5.55": {
+      "_date": "2025-09-02"
+    },
+    "1.5.56": {
+      "_date": "2025-09-07"
+    },
+    "1.5.57": {
+      "_date": "2025-09-17"
     }
   },
   "Neovim": {
@@ -198,6 +214,9 @@
       "_date": "2025-08-11",
       "Custom instructions": { "releaseType": "preview" },
       "MCP": { "releaseType": "ga" }
+    },
+    "0.11.0": {
+      "_date": "2025-09-01"
     }
   },
   "Xcode": {
