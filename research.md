@@ -48,54 +48,23 @@
 ### Misc.
 - https://github.blog/changelog/2025-02-18-new-gpt-4o-copilot-code-completion-model-now-available-in-public-preview-for-copilot-in-vs-code/
 - https://github.blog/changelog/2025-03-27-gpt-4o-copilot-your-new-code-completion-model-is-now-generally-available/
+
 ## JetBrains
-### Code referencing
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-03-02-jetbrains-copilot-code-referencing-support-is-generally-available/
-  - March 2nd, 2025
-### Edit mode
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-03-20-enhance-your-productivity-with-copilot-edits-in-jetbrains-ides/
-  - March 20th, 2025
-- Extension Doc
-  - https://plugins.jetbrains.com/plugin/17718-github-copilot/versions/stable/701524
-  - March 20th, 2025
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-04-28-copilot-edits-for-jetbrains-ides-is-generally-available/
-  - April 28th, 2025
-### Agent mode
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-05-19-agent-mode-and-mcp-support-for-copilot-in-jetbrains-eclipse-and-xcode-now-in-public-preview/
-  - May 19th, 2025
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-07-16-agent-mode-for-jetbrains-eclipse-and-xcode-is-now-generally-available/
-  - July 16th, 2025
-### MCP
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-05-19-agent-mode-and-mcp-support-for-copilot-in-jetbrains-eclipse-and-xcode-now-in-public-preview/
-  - May 19th, 2025
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-08-13-model-context-protocol-mcp-support-for-jetbrains-eclipse-and-xcode-is-now-generally-available/
-  - August 13th, 2025
-- Extension Doc
-  - https://plugins.jetbrains.com/plugin/17718-github-copilot/versions/stable/827393
-  - August 13th, 2025
-### Extensions
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-02-19-announcing-the-general-availability-of-github-copilot-extensions/
-  - February 19th, 2025
+| Feature | Version (link PoV) | Date (link PoD) | Notes |
+|---------|----------|----------|----------|
+| Code completions (Preview)<br>Code completions (GA) | Data<br>Data | Data<br>Data | Notes<br>Notes |
+| Chat (Preview)<br>Chat (GA) | Data<br>Data | Data<br>Data | Notes<br>Notes |
+| Agent mode (Preview)<br>Agent mode (GA) | Data<br>Data | [19-MAY-2025](https://github.blog/changelog/2025-05-19-agent-mode-and-mcp-support-for-copilot-in-jetbrains-eclipse-and-xcode-now-in-public-preview/)<br>[16-JUL-2025](https://github.blog/changelog/2025-07-16-agent-mode-for-jetbrains-eclipse-and-xcode-is-now-generally-available/) | Notes<br>Notes |
+| Edit mode (Preview)<br>Edit mode (GA) | [1.5.39](https://plugins.jetbrains.com/plugin/17718-github-copilot/versions/stable/701524)<br>Data | [20-MAR-2025](https://github.blog/changelog/2025-03-20-enhance-your-productivity-with-copilot-edits-in-jetbrains-ides/)<br>[28-APR-2025](https://github.blog/changelog/2025-04-28-copilot-edits-for-jetbrains-ides-is-generally-available/) | VIFD-I (and maybe IPoVE)<br>Notes |
+| MCP (Preview)<br>MCP (GA) | Data<br>[1.5.53](https://plugins.jetbrains.com/plugin/17718-github-copilot/versions/stable/827393) | [19-MAY-2025](https://github.blog/changelog/2025-05-19-agent-mode-and-mcp-support-for-copilot-in-jetbrains-eclipse-and-xcode-now-in-public-preview/)<br>[13-AUG-2025](https://github.blog/changelog/2025-08-13-model-context-protocol-mcp-support-for-jetbrains-eclipse-and-xcode-is-now-generally-available/) | Notes<br>VIFD-I (and maybe IPoVE?) |
+| Code referencing (Preview)<br>Code referencing (GA) | Data<br>Data | Data<br>[02-MAR-2025](https://github.blog/changelog/2025-03-02-jetbrains-copilot-code-referencing-support-is-generally-available/) | Notes<br>Notes |
+| Extensions (Preview)<br>Extensions (GA) | Data<br>Data | Data<br>[19-FEB-2025](https://github.blog/changelog/2025-02-19-announcing-the-general-availability-of-github-copilot-extensions/) | Notes<br>Notes |
+| Next Edit Suggestion (Preview)<br>Next Edit Suggestion (GA) | Data<br>Data | [29-AUG-2025](https://github.blog/changelog/2025-08-29-copilots-next-edit-suggestion-nes-in-public-preview-in-jetbrains/)<br>Data | Notes<br>Notes |
+
 ### Misc.
 - https://github.blog/changelog/2025-02-19-new-gpt-4o-copilot-code-completion-model-now-available-for-copilot-in-jetbrains-ides/
 - https://github.blog/changelog/2025-03-27-gpt-4o-copilot-your-new-code-completion-model-is-now-generally-available/
-- https://github.blog/changelog/2025-08-29-copilots-next-edit-suggestion-nes-in-public-preview-in-jetbrains/
+
 ## Visual Studio
 | Feature | Version (link PoV) | Date (link PoD) | Notes |
 |---------|----------|----------|----------|
@@ -109,15 +78,6 @@
 | Next Edit Suggestions (Preview?)<br>Next Edit Suggestions (GA) | [17.14.0](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=GA)<br>Data | [15-APR-2025](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=GA)<br>Data | Our [changelog](https://github.blog/changelog/2025-05-13-agent-mode-mcp-and-next-edit-suggestions-come-to-github-copilot-in-visual-studio-17-14/) regarding this was posted on 13-MAY-2025.<br>N/A |
 | .NET Upgrade Agent (Preview)<br>.NET Upgrade Agent (GA) | N/A<br>N/A | [19-MAY-2025](https://github.blog/changelog/2025-05-19-github-copilot-app-modernization-upgrade-for-net-now-in-public-preview/)<br>Data | Not tied to VS. It's a standalone extension that's only available for VS. There are conflicting changelogs on preview dates. Chose the first one. [One](https://github.blog/changelog/2025-05-19-github-copilot-app-modernization-upgrade-for-net-now-in-public-preview/) and [Two](https://github.blog/changelog/2025-07-21-github-copilot-app-modernization-for-net-enters-public-preview/). |
 | Extensions (GA) | ??? | [19-FEB-2025](https://github.blog/changelog/2025-02-19-announcing-the-general-availability-of-github-copilot-extensions/) |  |
-
-
-> PoV = Proof of `Version`
->
-> PoD = Proof of `Date`
->
-> VIFD-I = `Version` inferred from `Date` - Identical Dates (i.e., the `Date` and `Version` release date are identical). 
->
-> VIFD-F = `Version` inferred from `Date`- Fallback (i.e., the `Date` does not align with any explicit `Version` so an assumption was made it was the most recently released version prior to the `Date`).
  
 ### MCP
 #### Preview
