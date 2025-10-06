@@ -1,53 +1,30 @@
 ## VS Code
-### Next Edit Suggestions
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-02-06-next-edit-suggestions-agent-mode-and-prompts-files-for-github-copilot-in-vs-code-january-release-v0-24/
-  - February 6th, 2025
-### Vision
+| Feature | Version (link PoV) | Date (link PoD) | Notes |
+|---------|----------|----------|----------|
+| Code completions (Preview)<br>Code completions (GA) | Data<br>Data | Data<br>Data | Notes<br>Notes |
+| Chat (Preview)<br>Chat (GA) | Data<br>Data | Data<br>Data | Notes<br>Notes |
+| Edit mode (Preview)<br>Edit mode (GA) | Data<br>Data | Data<br>[06-FEB-2025](https://github.blog/changelog/2025-02-06-next-edit-suggestions-agent-mode-and-prompts-files-for-github-copilot-in-vs-code-january-release-v0-24/) | Notes<br>Notes |
+| Agent mode (Preview)<br>Agent mode (GA) | Data<br>Data | [06-FEB-2025](https://github.blog/changelog/2025-02-06-next-edit-suggestions-agent-mode-and-prompts-files-for-github-copilot-in-vs-code-january-release-v0-24/)<br>Data | Notes<br>Notes |
+| Next Edit Suggestions (Preview)<br>Next Edit Suggestions (GA) | Data<br>Data | [06-FEB-2025](https://github.blog/changelog/2025-02-06-next-edit-suggestions-agent-mode-and-prompts-files-for-github-copilot-in-vs-code-january-release-v0-24/)<br>Data | Notes<br>Notes |
+| MCP (Preview)<br>MCP (GA) | Data<br>Data | Data<br>Data | Notes<br>Notes |
+| Vision (Preview)<br>Vision (GA) | Data<br>Data | [06-FEB-2025](https://github.blog/changelog/2025-02-06-next-edit-suggestions-agent-mode-and-prompts-files-for-github-copilot-in-vs-code-january-release-v0-24/)<br>Data | Notes<br>Notes |
+| Prompt files (Preview)<br>Prompt files (GA) | Data<br>Data | [06-FEB-2025](https://github.blog/changelog/2025-02-06-next-edit-suggestions-agent-mode-and-prompts-files-for-github-copilot-in-vs-code-january-release-v0-24/)<br>Data | Notes<br>Notes |
+| Extensions (Preview)<br>Extensions (GA) | Data<br>Data | Data<br>[19-FEB-2025](https://github.blog/changelog/2025-02-19-announcing-the-general-availability-of-github-copilot-extensions/) | Notes<br>Notes |
+| Code referencing (Preview)<br>Code referencing (GA) | Data<br>[1.94.0](https://code.visualstudio.com/updates/v1_94#_public-code-matching-in-chat) | Data<br>Data | Notes<br>Notes |
+| App modernization for Java (Preview)<br>App modernization for Java (GA) | Data<br>Data | [19-MAY-2025](https://github.blog/changelog/2025-05-19-github-copilot-app-modernization-for-java-now-in-public-preview/)<br>Data | Notes<br>Notes |
+| Custom Instructions (Preview)<br>Custom Instructions (GA) | Data<br>Data | Data<br>[06-MAR-2025](https://github.blog/changelog/2025-03-06-github-copilot-updates-in-visual-studio-code-february-release-v0-25-including-improvements-to-agent-mode-and-next-exit-suggestions-ga-of-custom-instructions-and-more/) | Notes<br>Notes |
+
+<!-- ### Vision
 #### Preview
 - Changelog
   - https://github.blog/changelog/2025-02-06-next-edit-suggestions-agent-mode-and-prompts-files-for-github-copilot-in-vs-code-january-release-v0-24/
   - February, 6th, 2025
   - https://github.blog/changelog/2025-03-05-copilot-chat-users-can-now-use-the-vision-input-in-vs-code-and-visual-studio-public-preview/
   - March 5th, 2025
-  - https://github.blog/changelog/2025-03-06-github-copilot-updates-in-visual-studio-code-february-release-v0-25-including-improvements-to-agent-mode-and-next-exit-suggestions-ga-of-custom-instructions-and-more/
-### Agent mode
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-02-06-next-edit-suggestions-agent-mode-and-prompts-files-for-github-copilot-in-vs-code-january-release-v0-24/
-  - February 6th, 2025
-### App modernization for Java
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-05-19-github-copilot-app-modernization-for-java-now-in-public-preview/
-  - May 19th, 2025
-### Prompt files
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-02-06-next-edit-suggestions-agent-mode-and-prompts-files-for-github-copilot-in-vs-code-january-release-v0-24/
-  - February 6th, 2025
-### Custom Instructions
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-03-06-github-copilot-updates-in-visual-studio-code-february-release-v0-25-including-improvements-to-agent-mode-and-next-exit-suggestions-ga-of-custom-instructions-and-more/
-  - March 6th, 2025
-### Edit mode
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-02-06-next-edit-suggestions-agent-mode-and-prompts-files-for-github-copilot-in-vs-code-january-release-v0-24/
-  - February 6th, 2025
-### Extensions
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-02-19-announcing-the-general-availability-of-github-copilot-extensions/
-  - February 19th, 2025
-### Code REferencing
-#### Preview?GA?
-- https://code.visualstudio.com/updates/v1_94#_public-code-matching-in-chat
-### Misc.
+  - https://github.blog/changelog/2025-03-06-github-copilot-updates-in-visual-studio-code-february-release-v0-25-including-improvements-to-agent-mode-and-next-exit-suggestions-ga-of-custom-instructions-and-more/ -->
+<!-- ### Misc.
 - https://github.blog/changelog/2025-02-18-new-gpt-4o-copilot-code-completion-model-now-available-in-public-preview-for-copilot-in-vs-code/
-- https://github.blog/changelog/2025-03-27-gpt-4o-copilot-your-new-code-completion-model-is-now-generally-available/
+- https://github.blog/changelog/2025-03-27-gpt-4o-copilot-your-new-code-completion-model-is-now-generally-available/ -->
 
 ## JetBrains
 | Feature | Version (link PoV) | Date (link PoD) | Notes |
@@ -61,9 +38,9 @@
 | Extensions (Preview)<br>Extensions (GA) | Data<br>Data | Data<br>[19-FEB-2025](https://github.blog/changelog/2025-02-19-announcing-the-general-availability-of-github-copilot-extensions/) | Notes<br>Notes |
 | Next Edit Suggestion (Preview)<br>Next Edit Suggestion (GA) | Data<br>Data | [29-AUG-2025](https://github.blog/changelog/2025-08-29-copilots-next-edit-suggestion-nes-in-public-preview-in-jetbrains/)<br>Data | Notes<br>Notes |
 
-### Misc.
+<!-- ### Misc.
 - https://github.blog/changelog/2025-02-19-new-gpt-4o-copilot-code-completion-model-now-available-for-copilot-in-jetbrains-ides/
-- https://github.blog/changelog/2025-03-27-gpt-4o-copilot-your-new-code-completion-model-is-now-generally-available/
+- https://github.blog/changelog/2025-03-27-gpt-4o-copilot-your-new-code-completion-model-is-now-generally-available/ -->
 
 ## Visual Studio
 | Feature | Version (link PoV) | Date (link PoD) | Notes |
@@ -79,7 +56,7 @@
 | .NET Upgrade Agent (Preview)<br>.NET Upgrade Agent (GA) | N/A<br>N/A | [19-MAY-2025](https://github.blog/changelog/2025-05-19-github-copilot-app-modernization-upgrade-for-net-now-in-public-preview/)<br>Data | Not tied to VS. It's a standalone extension that's only available for VS. There are conflicting changelogs on preview dates. Chose the first one. [One](https://github.blog/changelog/2025-05-19-github-copilot-app-modernization-upgrade-for-net-now-in-public-preview/) and [Two](https://github.blog/changelog/2025-07-21-github-copilot-app-modernization-for-net-enters-public-preview/). |
 | Extensions (GA) | ??? | [19-FEB-2025](https://github.blog/changelog/2025-02-19-announcing-the-general-availability-of-github-copilot-extensions/) |  |
  
-### MCP
+<!-- ### MCP
 #### Preview
 - Changelog
   - https://github.blog/changelog/2025-05-13-agent-mode-mcp-and-next-edit-suggestions-come-to-github-copilot-in-visual-studio-17-14/
@@ -88,7 +65,7 @@
   - June 17th, 2025
 - VS release Notes
   - https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=June
-  - June 17th, 2025
+  - June 17th, 2025 -->
 
 ## Eclipse
 | Feature | Version (link PoV) | Date (link PoD) | Notes |
