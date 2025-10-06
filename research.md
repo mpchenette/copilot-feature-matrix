@@ -131,122 +131,30 @@
   - June 17th, 2025
 
 ## Eclipse
-### Code completions
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-02-13-github-copilot-code-completions-now-in-public-preview-for-eclipse/
-  - February 13th, 2025
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-03-11-code-completion-in-github-copilot-for-eclipse-is-now-generally-available/
-  - March 11th, 2025
-### Chat
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-03-11-github-copilot-chat-for-eclipse-now-in-public-preview/
-  - March 11th, 2025
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-04-15-github-copilot-chat-for-eclipse-is-now-generally-available/
-  - April 15th, 2025
-### Agent mode
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-05-19-agent-mode-and-mcp-support-for-copilot-in-jetbrains-eclipse-and-xcode-now-in-public-preview/
-  - May 19th, 2025
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-07-16-agent-mode-for-jetbrains-eclipse-and-xcode-is-now-generally-available/
-  - July 16th, 2025
-### MCP
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-05-19-agent-mode-and-mcp-support-for-copilot-in-jetbrains-eclipse-and-xcode-now-in-public-preview/
-  - May 19th, 2025
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-08-13-model-context-protocol-mcp-support-for-jetbrains-eclipse-and-xcode-is-now-generally-available/
-  - August 13th, 2025
+| Feature | Version (link PoV) | Date (link PoD) | Notes |
+|---------|----------|----------|----------|
+| Code completions (Preview)<br>Code completions (GA) | Data<br>Data | [13-FEB-2025](https://github.blog/changelog/2025-02-13-github-copilot-code-completions-now-in-public-preview-for-eclipse/)<br>[11-MAR-2025](https://github.blog/changelog/2025-03-11-code-completion-in-github-copilot-for-eclipse-is-now-generally-available/) | Notes<br>Notes |
+| Chat (Preview)<br>Chat (GA) | Data<br>Data | [11-MAR-2025](https://github.blog/changelog/2025-03-11-github-copilot-chat-for-eclipse-now-in-public-preview/)<br>[15-APR-2025](https://github.blog/changelog/2025-04-15-github-copilot-chat-for-eclipse-is-now-generally-available/) | Notes<br>Notes |
+| Agent mode (Preview)<br>Agent mode (GA) | Data<br>Data | [19-MAY-2025](https://github.blog/changelog/2025-05-19-agent-mode-and-mcp-support-for-copilot-in-jetbrains-eclipse-and-xcode-now-in-public-preview/)<br>[16-JUL-2025](https://github.blog/changelog/2025-07-16-agent-mode-for-jetbrains-eclipse-and-xcode-is-now-generally-available/) | Notes<br>Notes |
+| MCP (Preview)<br>MCP (GA) | Data<br>Data | [19-MAY-2025](https://github.blog/changelog/2025-05-19-agent-mode-and-mcp-support-for-copilot-in-jetbrains-eclipse-and-xcode-now-in-public-preview/)<br>[13-AUG-2025](https://github.blog/changelog/2025-08-13-model-context-protocol-mcp-support-for-jetbrains-eclipse-and-xcode-is-now-generally-available/) | Notes<br>Notes |
+
 ## Xcode
-### Code completion
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-02-14-code-completion-in-github-copilot-for-xcode-is-now-generally-available/
-  - February 14th, 2025
-- Extension Releases
-  - https://github.com/github/CopilotForXcode/releases/tag/0.31.0
-  - February 12th, 2025
-  - No confirmation this is the correct release, but the timing lines up. Reading between the lines here.
-### Chat
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-02-13-github-copilot-for-xcode-chat-now-in-public-preview/
-  - February 13th, 2025
-- Extension Releases
-  - https://github.com/github/CopilotForXcode/releases/tag/0.31.0
-  - February 12th, 2025
-  - No confirmation this is the correct release, but the timing lines up. Reading between the lines here.
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-03-11-github-copilot-for-xcode-chat-is-now-generally-available/
-  - March 11th, 2025
-- Extension Releases
-  - https://github.com/github/CopilotForXcode/releases/tag/0.32.0
-  - March 10th, 2025
-  - No confirmation this is the correct release, but the timing lines up. Reading between the lines here.
-### Agent mode
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-05-19-agent-mode-and-mcp-support-for-copilot-in-jetbrains-eclipse-and-xcode-now-in-public-preview/
-  - May 19th, 2025
-- Extension Releases
-  - https://github.com/github/CopilotForXcode/releases/tag/0.35.0
-  - May 18th, 2025
-  - No confirmation this is the correct release, but the timing lines up. Reading between the lines here.
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-07-16-agent-mode-for-jetbrains-eclipse-and-xcode-is-now-generally-available/
-  - July 16th, 2025
-- Extension Releases
-  - https://github.com/github/CopilotForXcode/releases/tag/0.38.0
-  - June 30th, 2025
-  - No confirmation this is the correct release, but the timing (kinda) lines up. Reading between the lines here.
-### MCP
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-05-19-agent-mode-and-mcp-support-for-copilot-in-jetbrains-eclipse-and-xcode-now-in-public-preview/
-  - May 19th, 2025
-- Extension Releases
-  - https://github.com/github/CopilotForXcode/releases/tag/0.35.0
-  - May 18th, 2025
-  - No confirmation this is the correct release, but the timing lines up. Reading between the lines here.
-#### GA
-- Changelog
-  - https://github.blog/changelog/2025-08-13-model-context-protocol-mcp-support-for-jetbrains-eclipse-and-xcode-is-now-generally-available/
-  - August 13th, 2025
-- Extension Releases
-  - https://github.com/github/CopilotForXcode/releases/tag/0.41.0
-  - August 14th, 2025
-  - No confirmation this is the correct release, but the timing lines up. Reading between the lines here.
-### Vision
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-06-29-github-copilot-in-xcode-explore-with-copilot-vision-custom-instructions-and-locale-response-support/
-  - June 29th, 2025
-- Extension Releases
-  - https://github.com/github/CopilotForXcode/releases/tag/0.38.0
-  - June 30th, 2025
-  - No confirmation this is the correct release, but the timing lines up. Reading between the lines here.
-### Custom Instructions
-#### Preview?
-- Changelog
-  - https://github.blog/changelog/2025-06-29-github-copilot-in-xcode-explore-with-copilot-vision-custom-instructions-and-locale-response-support/
-  - June 29th, 2025
-- Extension Releases
-  - https://github.com/github/CopilotForXcode/releases/tag/0.38.0
-  - June 30th, 2025
-  - No confirmation this is the correct release, but the timing lines up. Reading between the lines here.
+| Feature | Version (link PoV) | Date (link PoD) | Notes |
+|---------|----------|----------|----------|
+| Code completions (Preview)<br>Code completions (GA) | Data<br>[0.31.0](https://github.com/github/CopilotForXcode/releases/tag/0.31.0) | Data<br>[14-FEB-2025](https://github.blog/changelog/2025-02-14-code-completion-in-github-copilot-for-xcode-is-now-generally-available/) | Notes<br>VIFD-F (maybe IPoVE?) |
+| Chat (Preview)<br>Chat (GA) | [0.31.0](https://github.com/github/CopilotForXcode/releases/tag/0.31.0)<br>[0.32.0](https://github.com/github/CopilotForXcode/releases/tag/0.32.0) | [13-FEB-2025](https://github.blog/changelog/2025-02-13-github-copilot-for-xcode-chat-now-in-public-preview/)<br>[11-MAR-2025](https://github.blog/changelog/2025-03-11-github-copilot-for-xcode-chat-is-now-generally-available/) | IPoVE and/or VIFD-F for the public version link<br>VIFD-F (maybe IPoVE?) |
+| Agent mode (Preview)<br>Agent mode (GA) | [0.35.0](https://github.com/github/CopilotForXcode/releases/tag/0.35.0)<br>[0.38.0](https://github.com/github/CopilotForXcode/releases/tag/0.38.0) | [19-MAY-2025](https://github.blog/changelog/2025-05-19-agent-mode-and-mcp-support-for-copilot-in-jetbrains-eclipse-and-xcode-now-in-public-preview/)<br>[16-JUL-2025](https://github.blog/changelog/2025-07-16-agent-mode-for-jetbrains-eclipse-and-xcode-is-now-generally-available/) | VIFD-F (and maybe IPoVE?)<br>VIFD-F (and maybe IPoVE?) |
+| MCP (Preview)<br>MCP (GA) | [0.35.0](https://github.com/github/CopilotForXcode/releases/tag/0.35.0)<br>[0.41.0](https://github.com/github/CopilotForXcode/releases/tag/0.41.0) | [19-MAY-2025](https://github.blog/changelog/2025-05-19-agent-mode-and-mcp-support-for-copilot-in-jetbrains-eclipse-and-xcode-now-in-public-preview/)<br>[13-AUG-2025](https://github.blog/changelog/2025-08-13-model-context-protocol-mcp-support-for-jetbrains-eclipse-and-xcode-is-now-generally-available/) | VIFD-F (and maybe IPoVE?)<br>VIFD-F (and maybe IPoVE?) |
+| Vision (Preview)<br>Vision (GA) | [0.38.0](https://github.com/github/CopilotForXcode/releases/tag/0.38.0)<br>Data | [29-JUN-2025](https://github.blog/changelog/2025-06-29-github-copilot-in-xcode-explore-with-copilot-vision-custom-instructions-and-locale-response-support/)<br>Data | VIFD-F (and maybe IPoVE?)<br>Notes |
+| Custom Instructions (Preview?) | [0.38.0](https://github.com/github/CopilotForXcode/releases/tag/0.38.0) | [29-JUN-2025](https://github.blog/changelog/2025-06-29-github-copilot-in-xcode-explore-with-copilot-vision-custom-instructions-and-locale-response-support/) | VIFD-F (and maybe IPoVE?) |
+| Copilot code review (GA) | Data | [27-AUG-2025](https://github.blog/changelog/2025-08-27-copilot-code-review-generally-available-in-xcode-and-new-admin-control/) | Notes |
 
-
-### Misc
-- https://github.blog/changelog/2025-08-27-copilot-code-review-generally-available-in-xcode-and-new-admin-control/
+> PoV = Proof of `Version`
+>
+> PoD = Proof of `Date`
+>
+> VIFD-I = `Version` inferred from `Date` - Identical Dates (i.e., the `Date` and `Version` release date are identical). 
+>
+> VIFD-F = `Version` inferred from `Date`- Fallback (i.e., the `Date` does not align with any explicit `Version` so an assumption was made it was the most recently released version prior to the `Date`).
+>
+> IPoVE = Internal Proof of Version Exists
