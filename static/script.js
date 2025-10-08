@@ -387,7 +387,7 @@ function updateLastUpdatedBanner(latestDate) {
         return;
     }
 
-    banner.textContent = `Latest data refresh: ${formatDisplayDate(latestDate)}`;
+    banner.textContent = `Updated: ${formatDisplayDate(latestDate)}`;
     banner.classList.remove('is-hidden');
 }
 
@@ -639,7 +639,6 @@ function createTable(data, viewType = null) {
     });
     
     table.appendChild(tbody);
-    enableColumnHover(table);
     return table;
 }
 
@@ -719,71 +718,6 @@ function decorateInteractiveCell(cell, tooltipText) {
     cell.setAttribute('title', inlineText);
     cell.setAttribute('aria-label', ariaText);
     cell.setAttribute('tabindex', '0');
-}
-
-function enableColumnHover(table) {
-    if (!table) {
-        return;
-    }
-
-    const activateColumn = (cell) => {
-        if (!cell) {
-            return;
-        }
-        setColumnHighlight(table, cell.cellIndex);
-    };
-
-    table.addEventListener('mouseover', event => {
-        const cell = event.target.closest('td, th');
-        if (!cell || !table.contains(cell)) {
-            return;
-        }
-        activateColumn(cell);
-    });
-
-    table.addEventListener('focusin', event => {
-        const cell = event.target.closest('td, th');
-        if (!cell || !table.contains(cell)) {
-            return;
-        }
-        activateColumn(cell);
-    });
-
-    table.addEventListener('mouseleave', () => {
-        clearColumnHighlight(table);
-    });
-
-    table.addEventListener('focusout', event => {
-        if (!table.contains(event.relatedTarget)) {
-            clearColumnHighlight(table);
-        }
-    });
-}
-
-function setColumnHighlight(table, columnIndex) {
-    if (columnIndex === undefined || columnIndex === null) {
-        return;
-    }
-
-    const columnKey = String(columnIndex);
-    if (table.dataset.highlightedCol === columnKey) {
-        return;
-    }
-
-    clearColumnHighlight(table);
-    table.dataset.highlightedCol = columnKey;
-
-    const selector = `th:nth-child(${columnIndex + 1}), td:nth-child(${columnIndex + 1})`;
-    table.querySelectorAll(selector).forEach(cell => {
-        cell.classList.add('column-highlight');
-    });
-}
-
-function clearColumnHighlight(table) {
-    table.querySelectorAll('.column-highlight').forEach(cell => {
-        cell.classList.remove('column-highlight');
-    });
-    delete table.dataset.highlightedCol;
 }
 
 function renderLegend(viewType, tableData) {

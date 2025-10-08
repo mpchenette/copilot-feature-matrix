@@ -16,7 +16,6 @@
     --shadow: rgba(0, 0, 0, 0.3);
     --partial-color: #FF9800;
     --row-hover: rgba(255, 255, 255, 0.05);
-    --column-highlight: rgba(102, 126, 234, 0.18);
     --focus-outline: #8892f6;
 }
 
@@ -38,7 +37,6 @@
     --shadow: rgba(0, 0, 0, 0.1);
     --partial-color: #E65100;
     --row-hover: rgba(0, 0, 0, 0.05);
-    --column-highlight: rgba(102, 126, 234, 0.16);
     --focus-outline: #5a6fd8;
 }
 
@@ -632,13 +630,6 @@ select:focus {
 .value-missing {
     font-style: italic;
     color: var(--text-secondary);
-}
-
-.column-highlight {
-    background-color: var(--column-highlight) !important;
-    box-shadow: inset 0 0 0 1px var(--accent-color);
-    color: var(--text-primary);
-    z-index: 3;
 }
 
 /* Tooltip styles */
