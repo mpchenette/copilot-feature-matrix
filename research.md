@@ -1,5 +1,15 @@
+> PoV = Proof of `Version`
+>
+> PoD = Proof of `Date`
+>
+> VIFD-I = `Version` inferred from `Date` - Identical Dates (i.e., the `Date` and `Version` release date are identical). 
+>
+> VIFD-F = `Version` inferred from `Date`- Fallback (i.e., the `Date` does not align with any explicit `Version` so an assumption was made it was the most recently released version prior to the `Date`).
+>
+> IPoVE = Internal Proof of Version Exists
+
 ## VS Code
-| Feature | Version (link PoV) | Date (link PoD) | Notes |
+| Feature | Version | Date | Notes |
 |---------|----------|----------|----------|
 | Code completions (Preview)<br>Code completions (GA) | Data<br>Data | Data<br>Data | Notes<br>Notes |
 | Chat (Preview)<br>Chat (GA) | Data<br>Data | Data<br>Data | Notes<br>Notes |
@@ -14,20 +24,8 @@
 | App modernization for Java (Preview)<br>App modernization for Java (GA) | Data<br>Data | [19-MAY-2025](https://github.blog/changelog/2025-05-19-github-copilot-app-modernization-for-java-now-in-public-preview/)<br>Data | Notes<br>Notes |
 | Custom Instructions (Preview)<br>Custom Instructions (GA) | Data<br>Data | Data<br>[06-MAR-2025](https://github.blog/changelog/2025-03-06-github-copilot-updates-in-visual-studio-code-february-release-v0-25-including-improvements-to-agent-mode-and-next-exit-suggestions-ga-of-custom-instructions-and-more/) | Notes<br>Notes |
 
-<!-- ### Vision
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-02-06-next-edit-suggestions-agent-mode-and-prompts-files-for-github-copilot-in-vs-code-january-release-v0-24/
-  - February, 6th, 2025
-  - https://github.blog/changelog/2025-03-05-copilot-chat-users-can-now-use-the-vision-input-in-vs-code-and-visual-studio-public-preview/
-  - March 5th, 2025
-  - https://github.blog/changelog/2025-03-06-github-copilot-updates-in-visual-studio-code-february-release-v0-25-including-improvements-to-agent-mode-and-next-exit-suggestions-ga-of-custom-instructions-and-more/ -->
-<!-- ### Misc.
-- https://github.blog/changelog/2025-02-18-new-gpt-4o-copilot-code-completion-model-now-available-in-public-preview-for-copilot-in-vs-code/
-- https://github.blog/changelog/2025-03-27-gpt-4o-copilot-your-new-code-completion-model-is-now-generally-available/ -->
-
 ## JetBrains
-| Feature | Version (link PoV) | Date (link PoD) | Notes |
+| Feature | Version | Date | Notes |
 |---------|----------|----------|----------|
 | Code completions (Preview)<br>Code completions (GA) | Data<br>Data | Data<br>Data | Notes<br>Notes |
 | Chat (Preview)<br>Chat (GA) | Data<br>Data | Data<br>Data | Notes<br>Notes |
@@ -38,12 +36,8 @@
 | Extensions (Preview)<br>Extensions (GA) | Data<br>Data | Data<br>[19-FEB-2025](https://github.blog/changelog/2025-02-19-announcing-the-general-availability-of-github-copilot-extensions/) | Notes<br>Notes |
 | Next Edit Suggestion (Preview)<br>Next Edit Suggestion (GA) | Data<br>Data | [29-AUG-2025](https://github.blog/changelog/2025-08-29-copilots-next-edit-suggestion-nes-in-public-preview-in-jetbrains/)<br>Data | Notes<br>Notes |
 
-<!-- ### Misc.
-- https://github.blog/changelog/2025-02-19-new-gpt-4o-copilot-code-completion-model-now-available-for-copilot-in-jetbrains-ides/
-- https://github.blog/changelog/2025-03-27-gpt-4o-copilot-your-new-code-completion-model-is-now-generally-available/ -->
-
 ## Visual Studio
-| Feature | Version (link PoV) | Date (link PoD) | Notes |
+| Feature | Version | Date | Notes |
 |---------|----------|----------|----------|
 | Code completions (Preview)<br>Code completions (GA) | Data     | Data     |  |
 | Chat (Preview)<br>Chat (GA) | Data     | Data     |      |
@@ -55,20 +49,9 @@
 | Next Edit Suggestions (Preview?)<br>Next Edit Suggestions (GA) | [17.14.0](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=GA)<br>Data | [15-APR-2025](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=GA)<br>Data | Our [changelog](https://github.blog/changelog/2025-05-13-agent-mode-mcp-and-next-edit-suggestions-come-to-github-copilot-in-visual-studio-17-14/) regarding this was posted on 13-MAY-2025.<br>N/A |
 | .NET Upgrade Agent (Preview)<br>.NET Upgrade Agent (GA) | N/A<br>N/A | [19-MAY-2025](https://github.blog/changelog/2025-05-19-github-copilot-app-modernization-upgrade-for-net-now-in-public-preview/)<br>Data | Not tied to VS. It's a standalone extension that's only available for VS. There are conflicting changelogs on preview dates. Chose the first one. [One](https://github.blog/changelog/2025-05-19-github-copilot-app-modernization-upgrade-for-net-now-in-public-preview/) and [Two](https://github.blog/changelog/2025-07-21-github-copilot-app-modernization-for-net-enters-public-preview/). |
 | Extensions (GA) | ??? | [19-FEB-2025](https://github.blog/changelog/2025-02-19-announcing-the-general-availability-of-github-copilot-extensions/) |  |
- 
-<!-- ### MCP
-#### Preview
-- Changelog
-  - https://github.blog/changelog/2025-05-13-agent-mode-mcp-and-next-edit-suggestions-come-to-github-copilot-in-visual-studio-17-14/
-  - May 13th, 2025
-  - https://github.blog/changelog/2025-06-17-visual-studio-17-14-june-release/
-  - June 17th, 2025
-- VS release Notes
-  - https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes?tabs=June
-  - June 17th, 2025 -->
 
 ## Eclipse
-| Feature | Version (link PoV) | Date (link PoD) | Notes |
+| Feature | Version | Date | Notes |
 |---------|----------|----------|----------|
 | Code completions (Preview)<br>Code completions (GA) | Data<br>Data | [13-FEB-2025](https://github.blog/changelog/2025-02-13-github-copilot-code-completions-now-in-public-preview-for-eclipse/)<br>[11-MAR-2025](https://github.blog/changelog/2025-03-11-code-completion-in-github-copilot-for-eclipse-is-now-generally-available/) | Notes<br>Notes |
 | Chat (Preview)<br>Chat (GA) | Data<br>Data | [11-MAR-2025](https://github.blog/changelog/2025-03-11-github-copilot-chat-for-eclipse-now-in-public-preview/)<br>[15-APR-2025](https://github.blog/changelog/2025-04-15-github-copilot-chat-for-eclipse-is-now-generally-available/) | Notes<br>Notes |
@@ -76,7 +59,7 @@
 | MCP (Preview)<br>MCP (GA) | Data<br>Data | [19-MAY-2025](https://github.blog/changelog/2025-05-19-agent-mode-and-mcp-support-for-copilot-in-jetbrains-eclipse-and-xcode-now-in-public-preview/)<br>[13-AUG-2025](https://github.blog/changelog/2025-08-13-model-context-protocol-mcp-support-for-jetbrains-eclipse-and-xcode-is-now-generally-available/) | Notes<br>Notes |
 
 ## Xcode
-| Feature | Version (link PoV) | Date (link PoD) | Notes |
+| Feature | Version | Date | Notes |
 |---------|----------|----------|----------|
 | Code completions (Preview)<br>Code completions (GA) | Data<br>[0.31.0](https://github.com/github/CopilotForXcode/releases/tag/0.31.0) | Data<br>[14-FEB-2025](https://github.blog/changelog/2025-02-14-code-completion-in-github-copilot-for-xcode-is-now-generally-available/) | Notes<br>VIFD-F (maybe IPoVE?) |
 | Chat (Preview)<br>Chat (GA) | [0.31.0](https://github.com/github/CopilotForXcode/releases/tag/0.31.0)<br>[0.32.0](https://github.com/github/CopilotForXcode/releases/tag/0.32.0) | [13-FEB-2025](https://github.blog/changelog/2025-02-13-github-copilot-for-xcode-chat-now-in-public-preview/)<br>[11-MAR-2025](https://github.blog/changelog/2025-03-11-github-copilot-for-xcode-chat-is-now-generally-available/) | IPoVE and/or VIFD-F for the public version link<br>VIFD-F (maybe IPoVE?) |
@@ -85,13 +68,3 @@
 | Vision (Preview)<br>Vision (GA) | [0.38.0](https://github.com/github/CopilotForXcode/releases/tag/0.38.0)<br>Data | [29-JUN-2025](https://github.blog/changelog/2025-06-29-github-copilot-in-xcode-explore-with-copilot-vision-custom-instructions-and-locale-response-support/)<br>Data | VIFD-F (and maybe IPoVE?)<br>Notes |
 | Custom Instructions (Preview?) | [0.38.0](https://github.com/github/CopilotForXcode/releases/tag/0.38.0) | [29-JUN-2025](https://github.blog/changelog/2025-06-29-github-copilot-in-xcode-explore-with-copilot-vision-custom-instructions-and-locale-response-support/) | VIFD-F (and maybe IPoVE?) |
 | Copilot code review (GA) | Data | [27-AUG-2025](https://github.blog/changelog/2025-08-27-copilot-code-review-generally-available-in-xcode-and-new-admin-control/) | Notes |
-
-> PoV = Proof of `Version`
->
-> PoD = Proof of `Date`
->
-> VIFD-I = `Version` inferred from `Date` - Identical Dates (i.e., the `Date` and `Version` release date are identical). 
->
-> VIFD-F = `Version` inferred from `Date`- Fallback (i.e., the `Date` does not align with any explicit `Version` so an assumption was made it was the most recently released version prior to the `Date`).
->
-> IPoVE = Internal Proof of Version Exists
