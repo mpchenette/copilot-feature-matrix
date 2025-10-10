@@ -89,6 +89,9 @@
     "17.14.13": {
       "_date": "2025-08-19",
       "MCP": { "releaseType": "ga" }
+    },
+    "17.14.16": {
+      ".NET Upgrade Agent": { "releaseType": "ga" }
     }
   },
   "JetBrains": {

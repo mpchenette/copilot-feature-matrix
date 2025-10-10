@@ -14,8 +14,8 @@
     --accent-color: #667eea;
     --accent-hover: #5a6fd8;
     --shadow: rgba(0, 0, 0, 0.3);
-    --partial-color: #FF9800;
-    --not-supported-color: #f44336;
+    --partial-color: #de8500;
+    --not-supported-color: #ff0000;
     --row-hover: rgba(255, 255, 255, 0.05);
     --focus-outline: #8892f6;
 }
@@ -36,8 +36,8 @@
     --accent-color: #667eea;
     --accent-hover: #5a6fd8;
     --shadow: rgba(0, 0, 0, 0.1);
-    --partial-color: #E65100;
-    --not-supported-color: #d32f2f;
+    --partial-color: #de8500;
+    --not-supported-color: #ff0000;
     --row-hover: rgba(0, 0, 0, 0.05);
     --focus-outline: #5a6fd8;
 }
