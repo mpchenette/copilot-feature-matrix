@@ -15,6 +15,7 @@
     --accent-hover: #5a6fd8;
     --shadow: rgba(0, 0, 0, 0.3);
     --partial-color: #FF9800;
+    --not-supported-color: #f44336;
     --row-hover: rgba(255, 255, 255, 0.05);
     --focus-outline: #8892f6;
 }
@@ -36,6 +37,7 @@
     --accent-hover: #5a6fd8;
     --shadow: rgba(0, 0, 0, 0.1);
     --partial-color: #E65100;
+    --not-supported-color: #d32f2f;
     --row-hover: rgba(0, 0, 0, 0.05);
     --focus-outline: #5a6fd8;
 }
@@ -625,9 +627,13 @@ select:focus {
 }
 
 .not-supported {
-    color: #f44336;
+    color: var(--not-supported-color);
     font-weight: bold;
     text-align: center;
+}
+
+.feature-table td.not-supported {
+    color: var(--not-supported-color);
 }
 
 .version-number {
