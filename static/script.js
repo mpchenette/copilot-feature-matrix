@@ -595,7 +595,11 @@ function createTable(data, viewType = null) {
             if (supportStatus[value]) {
                 // Render support status symbol
                 const status = supportStatus[value];
-                td.classList.add(status.class, 'tooltip');
+                const isUnsupported = status.class === 'not-supported';
+                td.classList.add(status.class);
+                if (!isUnsupported) {
+                    td.classList.add('tooltip');
+                }
 
                 if (status.isHtml) {
                     td.innerHTML = status.symbol;
@@ -606,7 +610,7 @@ function createTable(data, viewType = null) {
                 const ideFilterValue = document.getElementById('ideFilter')?.value;
                 const shouldShowStatusTooltip = viewType === 'custom-pivot' || viewType === 'ide-features';
 
-                if (shouldShowStatusTooltip) {
+                if (shouldShowStatusTooltip && !isUnsupported) {
                     const featureName = row.name;
                     const ideName = ideFilterValue || data.headers[colIndex + 1]; // +1 because first header is the descriptor column
                     const tooltipInfo = getFeatureTooltipInfo(featureName, ideName);
@@ -682,7 +686,7 @@ function getFeatureTooltipInfo(featureName, ideName) {
         }
         const isoDate = getVersionDate(ideName, entry.version);
         const dateSuffix = isoDate ? ` (${formatDisplayDate(isoDate)})` : '';
-        return `${label} since v${entry.version}${dateSuffix}`;
+        return `${label} - v${entry.version}`;
     };
     
     if (latestEntry.support === 'full') {
