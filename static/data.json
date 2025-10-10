@@ -65,7 +65,6 @@
     "0.0.0": {
       "Code completion": { "releaseType": "ga" },
       "Chat": { "releaseType": "ga" },
-      ".NET Upgrade Agent": { "releaseType": "preview" },
       "Extensions": { "releaseType": "ga" },
       "Custom instructions": { "releaseType": "ga" },
       "Vision": { "releaseType": "preview" },
