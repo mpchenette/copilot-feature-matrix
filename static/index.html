@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="research-button-container">
+        <a href="research.html" class="research-button" aria-label="View supporting references">References</a>
+    </div>
+
     <div class="theme-toggle-container">
         <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark mode">
             <span class="theme-icon">🌙</span>
@@ -20,6 +24,7 @@
     </div>
     
     <h1 class="page-title">Unofficial Copilot Feature Matrix</h1>
+    <p id="lastUpdated" class="page-meta" aria-live="polite"></p>
     
     <div class="container">
         <div class="tabs">
@@ -33,6 +38,9 @@
             <div class="filters" id="filters">
                 <!-- Dynamic filters will be inserted here -->
             </div>
+            <div id="legendContainer" class="legend-container" aria-live="polite">
+                <!-- Legend will be injected here -->
+            </div>
             
             <div class="table-container">
                 <div id="dynamicTable">
@@ -41,6 +49,7 @@
             </div>
         </div>
     </div>
+    <script src="theme.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

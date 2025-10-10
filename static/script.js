@@ -1,6 +1,7 @@
 // Global variables
 window.featureData = [];
 window.rawFeatureData = {};
+window.versionDateIndex = {};
 
 // Function to load and process feature data
 async function loadFeatureData() {
@@ -18,19 +19,24 @@ async function loadFeatureData() {
         }
         
         const rawData = await response.json();
-        console.log('Raw data loaded successfully:', Object.keys(rawData));
+        console.debug('Raw data loaded successfully:', Object.keys(rawData));
         
         // Store raw data globally for other functions
         window.rawFeatureData = rawData;
-        
+
         // Validate data for conflicts
         const warnings = validateData(rawData);
         displayWarnings(warnings);
-        
+
+        // Capture release dates for metadata surfaces
+        const { versionDates, latestDate } = extractDateMetadata(rawData);
+        window.versionDateIndex = versionDates;
+        updateLastUpdatedBanner(latestDate);
+
         // Convert to normalized format
         window.featureData = normalizeData(rawData);
-        
-        console.log('Loaded feature data:', window.featureData.length, 'entries');
+
+        console.debug('Loaded feature data:', window.featureData.length, 'entries');
         
         // Initialize the default view
         showFeatureMatrix();
@@ -58,10 +64,6 @@ async function loadFeatureData() {
         return false; // Return failure
     }
 }
-
-// Global variables
-window.featureData = [];
-window.rawFeatureData = {};
 
 // Function to validate data for conflicts and inconsistencies
 function validateData(rawData) {
@@ -190,7 +192,7 @@ function validateData(rawData) {
 // Function to display validation warnings
 function displayWarnings(warnings) {
     if (warnings.length === 0) {
-        console.log('✅ Data validation passed - no conflicts detected');
+        console.info('✅ Data validation passed - no conflicts detected');
         return;
     }
     
@@ -316,6 +318,79 @@ function normalizeData(rawData) {
     return normalized;
 }
 
+function extractDateMetadata(rawData) {
+    const versionDates = {};
+    let latestDate = null;
+
+    const isoPattern = /^\d{4}-\d{2}-\d{2}$/;
+
+    for (const [ide, versions] of Object.entries(rawData)) {
+        versionDates[ide] = {};
+        for (const [version, versionData] of Object.entries(versions)) {
+            const isoDate = versionData._date;
+            if (!isoDate || !isoPattern.test(isoDate)) {
+                continue;
+            }
+
+            versionDates[ide][version] = isoDate;
+
+            if (!latestDate || isDateNewer(isoDate, latestDate)) {
+                latestDate = isoDate;
+            }
+        }
+    }
+
+    return { versionDates, latestDate };
+}
+
+function isDateNewer(candidateISO, baselineISO) {
+    if (!candidateISO) return false;
+    if (!baselineISO) return true;
+
+    const candidateDate = new Date(`${candidateISO}T00:00:00.000Z`);
+    const baselineDate = new Date(`${baselineISO}T00:00:00.000Z`);
+
+    return candidateDate > baselineDate;
+}
+
+function getVersionDate(ide, version) {
+    if (!ide || !version || !window.versionDateIndex) {
+        return null;
+    }
+
+    return window.versionDateIndex[ide]?.[version] || null;
+}
+
+function formatDisplayDate(isoDate) {
+    if (!isoDate) return '';
+    const parsed = new Date(`${isoDate}T00:00:00.000Z`);
+    if (isNaN(parsed.getTime())) {
+        return isoDate;
+    }
+
+    return new Intl.DateTimeFormat(undefined, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+    }).format(parsed);
+}
+
+function updateLastUpdatedBanner(latestDate) {
+    const banner = document.getElementById('lastUpdated');
+    if (!banner) {
+        return;
+    }
+
+    if (!latestDate) {
+        banner.textContent = '';
+        banner.classList.add('is-hidden');
+        return;
+    }
+
+    banner.textContent = `Updated: ${formatDisplayDate(latestDate)}`;
+    banner.classList.remove('is-hidden');
+}
+
 // Helper function to compare versions properly
 function compareVersions(a, b) {
     // Handle different version formats
@@ -406,12 +481,44 @@ function getVersionsForIDE(ide) {
     return Object.keys(window.rawFeatureData[ide]).sort(compareVersions);
 }
 
-function getAllVersions() {
-    const versions = new Set();
-    for (const ide of Object.values(window.rawFeatureData)) {
-        Object.keys(ide).forEach(version => versions.add(version));
+function getLatestVersionsByIDE(data) {
+    const latestVersions = {};
+
+    if (!Array.isArray(data)) {
+        return latestVersions;
     }
-    return [...versions].sort(compareVersions);
+
+    data.forEach(item => {
+        const current = latestVersions[item.ide];
+        if (!current || compareVersions(item.version, current) > 0) {
+            latestVersions[item.ide] = item.version;
+        }
+    });
+
+    return latestVersions;
+}
+
+function buildLatestFeatureMatrix(data) {
+    if (!Array.isArray(data) || data.length === 0) {
+        return { headers: [], rows: [] };
+    }
+
+    const latestVersions = getLatestVersionsByIDE(data);
+    const latestData = data.filter(item => latestVersions[item.ide] === item.version);
+    const ides = sortIDEs([...new Set(latestData.map(item => item.ide))]);
+    const features = [...new Set(latestData.map(item => item.feature))].sort();
+
+    return {
+        headers: ['', ...ides],
+        rows: features.map(feature => {
+            const row = { name: feature, values: [] };
+            ides.forEach(ide => {
+                const match = latestData.find(item => item.ide === ide && item.feature === feature);
+                row.values.push(match ? match.support : 'none');
+            });
+            return row;
+        })
+    };
 }
 
 // Pivot function - the core of our slicing and dicing
@@ -461,6 +568,7 @@ function createTable(data, viewType = null) {
     data.headers.forEach(header => {
         const th = document.createElement('th');
         th.textContent = header;
+        th.setAttribute('scope', 'col');
         headerRow.appendChild(th);
     });
     
@@ -470,62 +578,60 @@ function createTable(data, viewType = null) {
     // Create body
     const tbody = document.createElement('tbody');
     
-    data.rows.forEach((row, rowIndex) => {
+    data.rows.forEach(row => {
         const tr = document.createElement('tr');
         
         // First column (name)
         const nameCell = document.createElement('td');
         nameCell.textContent = row.name;
+        nameCell.classList.add('row-heading');
+        nameCell.setAttribute('scope', 'row');
         tr.appendChild(nameCell);
         
         // Value columns
         row.values.forEach((value, colIndex) => {
             const td = document.createElement('td');
             
-            // Check if this is a support status (for Features by IDE view) or version number (for IDEs by Feature view)
             if (supportStatus[value]) {
-                // This is a support status symbol
+                // Render support status symbol
                 const status = supportStatus[value];
-                td.className = status.class + ' tooltip';
-                
-                // Use innerHTML for SVG content, textContent for regular text
+                td.classList.add(status.class, 'tooltip');
+
                 if (status.isHtml) {
                     td.innerHTML = status.symbol;
                 } else {
                     td.textContent = status.symbol;
                 }
-                
-                // Add tooltip for Feature Matrix view
-                if (viewType === 'custom-pivot') {
+
+                const ideFilterValue = document.getElementById('ideFilter')?.value;
+                const shouldShowStatusTooltip = viewType === 'custom-pivot' || viewType === 'ide-features';
+
+                if (shouldShowStatusTooltip) {
                     const featureName = row.name;
-                    const ideName = data.headers[colIndex + 1]; // +1 because first header is empty
-                    
-                    // Get detailed info for tooltip
-                    const tooltipInfo = getFeatureTooltipInfo(featureName, ideName, value);
-                    td.setAttribute('data-tooltip', tooltipInfo);
+                    const ideName = ideFilterValue || data.headers[colIndex + 1]; // +1 because first header is the descriptor column
+                    const tooltipInfo = getFeatureTooltipInfo(featureName, ideName);
+                    decorateInteractiveCell(td, tooltipInfo);
                 }
             } else {
-                // This is a version number or N/A
-                td.textContent = value;
+                // Render version number or N/A placeholder
                 if (value === 'N/A') {
-                    td.className = 'not-supported tooltip';
-                    td.style.fontStyle = 'italic';
-                    td.style.color = '#888';
-                    td.setAttribute('data-tooltip', 'Feature not available in this IDE');
+                    td.classList.add('not-supported', 'tooltip', 'value-missing');
+                    td.textContent = 'N/A';
+                    decorateInteractiveCell(td, 'Feature not available in this IDE yet');
                 } else {
-                    td.className = 'version-number tooltip';
-                    td.style.fontWeight = 'bold';
-                    
-                    // Add tooltip for version info
+                    td.classList.add('version-number', 'tooltip');
+                    td.textContent = value;
+
                     if (viewType === 'feature-ides') {
-                        const featureName = data.headers[0] === 'IDE' ? 
-                            document.getElementById('featureFilter')?.value || 'Selected Feature' :
-                            'Feature';
+                        const featureSelectValue = document.getElementById('featureFilter')?.value || 'Selected Feature';
                         const releaseType = colIndex === 0 ? 'Preview' : 'GA';
-                        td.setAttribute('data-tooltip', `${featureName} ${releaseType}: Version ${value}`);
+                        const isoDate = getVersionDate(row.name, value);
+                        const dateSuffix = isoDate ? ` (${formatDisplayDate(isoDate)})` : '';
+                        decorateInteractiveCell(td, `${featureSelectValue} ${releaseType}: Version ${value}${dateSuffix}`);
                     }
                 }
             }
+
             tr.appendChild(td);
         });
         
@@ -537,7 +643,7 @@ function createTable(data, viewType = null) {
 }
 
 // Helper function to get tooltip information for feature matrix
-function getFeatureTooltipInfo(featureName, ideName, supportLevel) {
+function getFeatureTooltipInfo(featureName, ideName) {
     if (!window.featureData) return 'Loading...';
     
     // Find all version entries for this feature and IDE
@@ -569,32 +675,107 @@ function getFeatureTooltipInfo(featureName, ideName, supportLevel) {
         previewEntries.reduce((first, current) => {
             return compareVersions(current.version, first.version) < 0 ? current : first;
         }) : null;
+
+    const buildLine = (label, entry) => {
+        if (!entry) {
+            return null;
+        }
+        const isoDate = getVersionDate(ideName, entry.version);
+        const dateSuffix = isoDate ? ` (${formatDisplayDate(isoDate)})` : '';
+        return `${label} since v${entry.version}${dateSuffix}`;
+    };
     
     if (latestEntry.support === 'full') {
         // Feature is currently GA
         if (firstGAEntry) {
+            const lines = [];
             if (firstPreviewEntry && compareVersions(firstPreviewEntry.version, firstGAEntry.version) < 0) {
-                // Had preview first, then GA - show both on separate lines
-                return `Preview since v${firstPreviewEntry.version}
-GA since v${firstGAEntry.version}`;
-            } else {
-                // GA only (no preview history)
-                return `GA since v${firstGAEntry.version}`;
+                lines.push(buildLine('Preview', firstPreviewEntry));
             }
+            lines.push(buildLine('GA', firstGAEntry));
+            return lines.filter(Boolean).join('\n');
         } else {
             // Shouldn't happen, but fallback
-            return `GA since v${latestEntry.version}`;
+            return buildLine('GA', latestEntry) || 'GA available';
         }
     } else if (latestEntry.support === 'partial') {
         // Feature is currently in preview
-        if (firstPreviewEntry) {
-            return `Preview since v${firstPreviewEntry.version}`;
-        } else {
-            return `Preview since v${latestEntry.version}`;
-        }
+        return buildLine('Preview', firstPreviewEntry || latestEntry) || 'Preview available';
     }
     
     return 'Not supported';
+}
+
+function decorateInteractiveCell(cell, tooltipText) {
+    if (!cell || !tooltipText) {
+        return;
+    }
+
+    const inlineText = tooltipText.replace(/\n/g, ' • ');
+    const ariaText = tooltipText.replace(/\n/g, ', ');
+
+    cell.setAttribute('data-tooltip', tooltipText);
+    cell.setAttribute('title', inlineText);
+    cell.setAttribute('aria-label', ariaText);
+    cell.setAttribute('tabindex', '0');
+}
+
+function renderLegend(viewType, tableData) {
+    const legendContainer = document.getElementById('legendContainer');
+    if (!legendContainer) {
+        return;
+    }
+
+    legendContainer.innerHTML = '';
+    legendContainer.classList.add('is-hidden');
+
+    const showStatusLegend = ['custom-pivot', 'ide-features'].includes(viewType) && tableData?.rows?.length;
+    const showVersionNote = viewType === 'feature-ides' && tableData?.rows?.length;
+
+    if (showStatusLegend) {
+        const legendList = document.createElement('div');
+        legendList.className = 'legend-list';
+
+        const items = [
+            { key: 'full', label: 'Generally Available' },
+            { key: 'partial', label: 'Public Preview' },
+            { key: 'none', label: 'Not available' }
+        ];
+
+        items.forEach(item => {
+            const legendItem = document.createElement('div');
+            legendItem.className = 'legend-item';
+
+            const iconWrapper = document.createElement('span');
+            iconWrapper.className = `legend-icon ${supportStatus[item.key].class}`;
+
+            const status = supportStatus[item.key];
+            if (status.isHtml) {
+                iconWrapper.innerHTML = status.symbol;
+            } else {
+                iconWrapper.textContent = status.symbol;
+            }
+
+            const label = document.createElement('span');
+            label.className = 'legend-label';
+            label.textContent = item.label;
+            legendItem.appendChild(iconWrapper);
+            legendItem.appendChild(label);
+            legendList.appendChild(legendItem);
+        });
+
+        legendContainer.appendChild(legendList);
+        legendContainer.classList.remove('is-hidden');
+        return;
+    }
+
+    if (showVersionNote) {
+        const note = document.createElement('div');
+        note.className = 'legend-note';
+        note.textContent = 'Preview and GA columns show the first version where the feature reached each milestone. N/A indicates the milestone has not shipped yet.';
+        legendContainer.appendChild(note);
+        legendContainer.classList.remove('is-hidden');
+    }
 }
 
 // Function to create filter controls based on view type
@@ -612,17 +793,14 @@ function createFilters(viewType) {
         case 'feature-ides':
             // Feature selector
             filtersContainer.appendChild(createFilterGroup('Feature:', 'featureFilter', getUniqueFeatures(), 'Select Feature'));
+            const featureSelect = document.getElementById('featureFilter');
+            if (featureSelect && featureSelect.options.length > 1) {
+                featureSelect.selectedIndex = 1; // Default to first actual feature
+            }
             break;
             
         case 'custom-pivot':
             // No filters for custom view - it's a static matrix
-            const description = document.createElement('div');
-            description.style.textAlign = 'center';
-            description.style.color = '#ccc';
-            description.style.fontStyle = 'italic';
-            description.style.marginBottom = '1rem';
-            description.textContent = 'Complete feature matrix showing latest version of each IDE';
-            filtersContainer.appendChild(description);
             break;
             
         case 'extension-compatibility':
@@ -662,7 +840,7 @@ function createFilterGroup(label, id, options, defaultOption) {
     options.forEach(option => {
         const optionEl = document.createElement('option');
         optionEl.value = option;
-        optionEl.textContent = option.charAt(0).toUpperCase() + option.slice(1);
+        optionEl.textContent = option;
         if (option === defaultOption) {
             optionEl.selected = true;
         }
@@ -700,6 +878,10 @@ function updateVersionFilter() {
                 option.textContent = version;
                 versionSelect.appendChild(option);
             });
+
+            if (versions.length > 0) {
+                versionSelect.value = versions[versions.length - 1];
+            }
         }
     }
     
@@ -733,34 +915,7 @@ function generateIDEFeaturesView() {
         return pivotData('feature', 'version', { ide: ideFilter });
     } else {
         // Show all IDEs vs features (use latest version for each IDE)
-        // Get the latest version for each IDE
-        const latestVersions = {};
-        window.featureData.forEach(item => {
-            if (!latestVersions[item.ide] || compareVersions(item.version, latestVersions[item.ide]) > 0) {
-                latestVersions[item.ide] = item.version;
-            }
-        });
-        
-        // Filter to only include latest versions
-        const latestData = window.featureData.filter(item => 
-            latestVersions[item.ide] === item.version
-        );
-        
-        // Create pivot with the latest data
-        const ides = sortIDEs([...new Set(latestData.map(item => item.ide))]);
-        const features = [...new Set(latestData.map(item => item.feature))].sort();
-        
-        return {
-            headers: ['', ...ides],
-            rows: features.map(feature => {
-                const row = { name: feature, values: [] };
-                ides.forEach(ide => {
-                    const match = latestData.find(item => item.ide === ide && item.feature === feature);
-                    row.values.push(match ? match.support : 'none');
-                });
-                return row;
-            })
-        };
+        return buildLatestFeatureMatrix(window.featureData);
     }
 }
 
@@ -809,40 +964,7 @@ function generateFeatureIDEsView() {
 
 function generateCustomPivotView() {
     // Create a static feature matrix showing all features vs all IDEs (latest versions)
-    
-    if (!window.featureData || window.featureData.length === 0) {
-        return { headers: [], rows: [] };
-    }
-    
-    // Get the latest version for each IDE
-    const latestVersions = {};
-    window.featureData.forEach(item => {
-        if (!latestVersions[item.ide] || compareVersions(item.version, latestVersions[item.ide]) > 0) {
-            latestVersions[item.ide] = item.version;
-        }
-    });
-    
-    // Filter to only include latest versions
-    const latestData = window.featureData.filter(item => 
-        latestVersions[item.ide] === item.version
-    );
-    
-    // Get unique IDEs and features
-    const ides = sortIDEs([...new Set(latestData.map(item => item.ide))]);
-    const features = [...new Set(latestData.map(item => item.feature))].sort();
-    
-    // Create the matrix
-    return {
-        headers: ['', ...ides],
-        rows: features.map(feature => {
-            const row = { name: feature, values: [] };
-            ides.forEach(ide => {
-                const match = latestData.find(item => item.ide === ide && item.feature === feature);
-                row.values.push(match ? match.support : 'none');
-            });
-            return row;
-        })
-    };
+    return buildLatestFeatureMatrix(window.featureData);
 }
 
 function generateExtensionCompatibilityView() {
@@ -873,40 +995,12 @@ function showFeatureMatrix() {
     }
 }
 
-// Theme toggle functionality
-function initializeTheme() {
-    // Check for saved theme preference or default to dark mode
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    updateThemeIcon(savedTheme);
-    
-    // Set up theme toggle button
-    const themeToggle = document.getElementById('themeToggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', toggleTheme);
-    }
-}
-
-function toggleTheme() {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateThemeIcon(newTheme);
-}
-
-function updateThemeIcon(theme) {
-    const themeIcon = document.querySelector('.theme-icon');
-    if (themeIcon) {
-        themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
-    }
-}
-
 // Initialize the application
 async function initializeApp() {
     // Initialize theme
-    initializeTheme();
+    if (window.themeManager?.setupTheme) {
+        window.themeManager.setupTheme();
+    }
     
     // Load data first
     const dataLoaded = await loadFeatureData();
@@ -930,7 +1024,7 @@ async function initializeApp() {
         });
     });
     
-    console.log('Feature matrix application initialized with JSON data!');
+    console.info('Feature matrix application initialized with JSON data!');
 }
 
 // Function to switch to a specific view
@@ -964,6 +1058,8 @@ function updateTable(viewType = null) {
             tableData = generateExtensionCompatibilityView();
             break;
     }
+
+    renderLegend(viewType, tableData);
     
     // Clear and rebuild table
     tableContainer.innerHTML = '';

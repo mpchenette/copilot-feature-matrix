@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copilot Feature Reference Library</title>
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="research-body">
+    <div class="back-button-container">
+        <a href="index.html" class="back-button" aria-label="Return to the feature matrix">← Back to Matrix</a>
+    </div>
+
+    <div class="theme-toggle-container">
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark mode">
+            <span class="theme-icon">🌙</span>
+        </button>
+    </div>
+
+    <main class="research-main">
+        <header class="research-header">
+            <h1 class="page-title">Copilot Feature Reference Library</h1>
+        </header>
+
+        <section class="research-layout">
+            <nav class="research-nav" aria-label="Research sections">
+                <h2 class="research-nav-title">Reference Sections</h2>
+                <ul id="researchNav" class="research-nav-list"></ul>
+            </nav>
+            <article id="researchContent" class="research-content" aria-live="polite">
+                <div class="loading-message">Loading references…</div>
+            </article>
+        </section>
+    </main>
+
+    <script src="theme.js"></script>
+    <script src="research.js"></script>
+</body>
+</html>
