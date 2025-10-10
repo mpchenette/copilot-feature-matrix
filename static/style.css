@@ -412,7 +412,7 @@ body {
 }
 
 .tab-content {
-    padding: 2.5rem;
+    padding: 1.5rem 2.5rem 2.5rem;
 }
 
 .filters {
@@ -428,7 +428,7 @@ body {
     justify-content: center;
     gap: 1rem;
     flex-wrap: wrap;
-    margin: -0.5rem auto 1.5rem auto;
+    margin: 0.25rem auto 1.5rem auto;
 }
 
 .legend-container.is-hidden {
@@ -591,14 +591,16 @@ select:focus {
     transition: background 0.3s ease;
 }
 
-.feature-table tbody tr:hover td,
-.feature-table tbody tr:focus-within td {
+.feature-table tbody td:hover,
+.feature-table tbody td:focus,
+.feature-table tbody td:focus-within {
     background-color: var(--row-hover);
 }
 
-.feature-table tbody tr:hover td:first-child,
-.feature-table tbody tr:focus-within td:first-child {
-    background-color: var(--row-hover) !important;
+.feature-table tbody td:first-child:hover,
+.feature-table tbody td:first-child:focus,
+.feature-table tbody td:first-child:focus-within {
+    background-color: var(--row-hover);
 }
 
 .supported {
@@ -612,6 +614,14 @@ select:focus {
     font-weight: bold;
     text-align: center;
     transition: color 0.3s ease;
+}
+
+.partial svg {
+    color: var(--partial-color);
+}
+
+.partial svg text {
+    fill: currentColor;
 }
 
 .not-supported {
