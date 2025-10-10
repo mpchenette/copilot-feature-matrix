@@ -272,7 +272,7 @@
 
         try {
             const cacheBust = new Date().getTime();
-            const response = await fetch(`../research.md?v=${cacheBust}`, {
+            const response = await fetch(`research.md?v=${cacheBust}`, {
                 cache: 'no-store',
                 headers: {
                     'Cache-Control': 'no-cache'
