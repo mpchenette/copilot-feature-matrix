@@ -1,6 +1,6 @@
 :root {
     /* Dark mode (default) */
-    --bg-primary: #2d2d2d;
+    --bg-primary: #f5c842;
     --bg-secondary: #4a4a4a;
     --bg-tertiary: #3a3a3a;
     --bg-striped: #424242;
@@ -22,7 +22,7 @@
 
 [data-theme="light"] {
     /* Light mode */
-    --bg-primary: #f5f5f5;
+    --bg-primary: #f5c842;
     --bg-secondary: #ffffff;
     --bg-tertiary: #e8e8e8;
     --bg-striped: #f8f9fa;
