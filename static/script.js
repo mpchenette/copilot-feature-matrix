@@ -508,8 +508,14 @@ function buildLatestFeatureMatrix(data) {
     const ides = sortIDEs([...new Set(latestData.map(item => item.ide))]);
     const features = [...new Set(latestData.map(item => item.feature))].sort();
 
+    // Create headers with IDE names and their latest versions
+    const headersWithVersions = ides.map(ide => {
+        const version = latestVersions[ide];
+        return version ? `${ide} (v${version})` : ide;
+    });
+
     return {
-        headers: ['', ...ides],
+        headers: ['', ...headersWithVersions],
         rows: features.map(feature => {
             const row = { name: feature, values: [] };
             ides.forEach(ide => {
