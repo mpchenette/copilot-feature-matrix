@@ -987,6 +987,9 @@ function generateExtensionCompatibilityView() {
     // Get the Extensions feature data for each IDE
     const extensionData = window.featureData.filter(item => item.feature === extensionsFeature);
     
+    // Get the latest versions for all IDEs (for consistent headers)
+    const latestVersions = getLatestVersionsByIDE(window.featureData);
+    
     // Get the latest version for each IDE that has Extensions support
     const ideSupport = {};
     ides.forEach(ide => {
@@ -1012,8 +1015,14 @@ function generateExtensionCompatibilityView() {
         }
     });
     
+    // Create headers with IDE names and their latest versions (consistent with Feature Matrix)
+    const headersWithVersions = ides.map(ide => {
+        const version = latestVersions[ide];
+        return version ? `${ide} (v${version})` : ide;
+    });
+    
     // Build the table - single row showing Extensions support across IDEs
-    const headers = ['Feature', ...ides];
+    const headers = ['Feature', ...headersWithVersions];
     const values = ides.map(ide => {
         if (ideSupport[ide]) {
             return ideSupport[ide].support;
