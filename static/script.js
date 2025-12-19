@@ -808,13 +808,13 @@ function createFilters(viewType) {
             break;
             
         case 'extension-compatibility':
-            // No filters for extension compatibility view yet
+            // No filters for extension compatibility view - shows Extensions feature support
             const compatDescription = document.createElement('div');
             compatDescription.style.textAlign = 'center';
             compatDescription.style.color = '#ccc';
             compatDescription.style.fontStyle = 'italic';
             compatDescription.style.marginBottom = '1rem';
-            compatDescription.textContent = 'Extension compatibility matrix - coming soon';
+            compatDescription.textContent = 'GitHub Copilot Extensions support across IDEs';
             filtersContainer.appendChild(compatDescription);
             break;
     }
@@ -972,13 +972,55 @@ function generateCustomPivotView() {
 }
 
 function generateExtensionCompatibilityView() {
-    // Placeholder for extension compatibility matrix
+    // Show which IDEs support Copilot Extensions
+    // This displays the "Extensions" feature from the data
+    
+    const ides = getUniqueIDEs();
+    const extensionsFeature = 'Extensions';
+    
+    // Get the Extensions feature data for each IDE
+    const extensionData = window.featureData.filter(item => item.feature === extensionsFeature);
+    
+    // Get the latest version for each IDE that has Extensions support
+    const ideSupport = {};
+    ides.forEach(ide => {
+        const ideData = extensionData.filter(item => item.ide === ide);
+        if (ideData.length > 0) {
+            // Find the first version with Extensions support
+            const gaVersion = ideData.find(item => item.releaseType === 'ga');
+            const previewVersion = ideData.find(item => item.releaseType === 'preview');
+            
+            if (gaVersion) {
+                ideSupport[ide] = {
+                    support: 'full',
+                    version: gaVersion.version,
+                    releaseType: 'ga'
+                };
+            } else if (previewVersion) {
+                ideSupport[ide] = {
+                    support: 'partial',
+                    version: previewVersion.version,
+                    releaseType: 'preview'
+                };
+            }
+        }
+    });
+    
+    // Build the table - single row showing Extensions support across IDEs
+    const headers = ['Feature', ...ides];
+    const values = ides.map(ide => {
+        if (ideSupport[ide]) {
+            return ideSupport[ide].support;
+        }
+        return 'none';
+    });
+    
     return {
-        headers: ['Extension', 'VS Code', 'Visual Studio', 'JetBrains', 'Neovim'],
+        headers: headers,
         rows: [
             {
-                name: 'Coming Soon...',
-                values: ['-', '-', '-', '-']
+                name: extensionsFeature,
+                values: values
             }
         ]
     };
