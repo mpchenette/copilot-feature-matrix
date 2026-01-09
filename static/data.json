@@ -58,7 +58,8 @@
       "Checkpoints": { "releaseType": "ga" }
     },
     "1.104.0": {
-      "_date": "2025-09-11"
+      "_date": "2025-09-11",
+      "Auto model": { "releaseType": "preview" }
     },
     "1.105.0": {
       "_date": "2025-10-09"
@@ -69,7 +70,12 @@
       "Custom agents": { "releaseType": "ga" }
     },
     "1.107.0": {
-      "_date": "2025-12-10"
+      "_date": "2025-12-10",
+      "Auto model": { "releaseType": "ga" }
+    },
+    "1.108.0": {
+      "_date": "2026-01-08",
+      "Skills": { "releaseType": "preview" }
     }
   },
   "Visual Studio": {
