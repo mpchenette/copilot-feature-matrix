@@ -3,52 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unofficial Copilot Feature Matrix</title>
-    
-    <!-- Cache control headers -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
+    <title>GitHub Copilot Features</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="research-button-container">
-        <a href="research.html" class="research-button" aria-label="View supporting references">References</a>
-    </div>
+    <header>
+        <h1>GitHub Copilot Features</h1>
+        <nav>
+            <button id="viewToggle" class="view-toggle">By IDE</button>
+            <a href="research.html">Refs</a>
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">○</button>
+        </nav>
+    </header>
 
-    <div class="theme-toggle-container">
-        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark mode">
-            <span class="theme-icon">🌙</span>
-        </button>
-    </div>
-    
-    <h1 class="page-title">Unofficial Copilot Feature Matrix</h1>
-    <p id="lastUpdated" class="page-meta" aria-live="polite"></p>
-    
-    <div class="container">
-        <div class="tabs">
-            <button class="tab-button active" data-view="custom-pivot">Feature Matrix</button>
-            <button class="tab-button" data-view="feature-ides">IDEs by Feature</button>
-            <button class="tab-button" data-view="ide-features">Features by IDE</button>
-            <button class="tab-button" data-view="extension-compatibility">Extension Compatibility Matrix</button>
-        </div>
-        
-        <div class="tab-content">
-            <div class="filters" id="filters">
-                <!-- Dynamic filters will be inserted here -->
-            </div>
-            <div id="legendContainer" class="legend-container" aria-live="polite">
-                <!-- Legend will be injected here -->
-            </div>
-            
-            <div class="table-container">
-                <div id="dynamicTable">
-                    <!-- Dynamic table will be inserted here -->
-                </div>
-            </div>
-        </div>
-    </div>
+    <main id="mainContent">
+        <div id="tableContainer"></div>
+    </main>
+
     <script src="theme.js"></script>
     <script src="script.js"></script>
 </body>

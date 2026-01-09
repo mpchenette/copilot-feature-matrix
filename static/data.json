@@ -59,6 +59,17 @@
     },
     "1.104.0": {
       "_date": "2025-09-11"
+    },
+    "1.105.0": {
+      "_date": "2025-10-09"
+    },
+    "1.106.0": {
+      "_date": "2025-11-12",
+      "Plan mode": { "releaseType": "ga" },
+      "Custom agents": { "releaseType": "ga" }
+    },
+    "1.107.0": {
+      "_date": "2025-12-10"
     }
   },
   "Visual Studio": {
