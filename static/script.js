@@ -1,7 +1,6 @@
 // Minimal script - just load and display data
 
 let rawData = {};
-let currentView = 'features'; // 'features' or 'ides'
 
 // Load data
 async function init() {
@@ -9,33 +8,16 @@ async function init() {
         const response = await fetch('data.json');
         rawData = await response.json();
         render();
-        setupEventListeners();
     } catch (error) {
         document.getElementById('tableContainer').innerHTML =
             '<div class="loading">Failed to load data</div>';
     }
 }
 
-// Setup interactions
-function setupEventListeners() {
-    const viewToggle = document.getElementById('viewToggle');
-
-    viewToggle.addEventListener('click', () => {
-        currentView = currentView === 'features' ? 'ides' : 'features';
-        viewToggle.textContent = currentView === 'features' ? 'By IDE' : 'By Feature';
-        render();
-    });
-}
-
 // Render table
 function render() {
     const container = document.getElementById('tableContainer');
-
-    if (currentView === 'features') {
-        container.innerHTML = renderFeaturesView();
-    } else {
-        container.innerHTML = renderIDEsView();
-    }
+    container.innerHTML = renderFeaturesView();
 }
 
 // Features view: rows = features, columns = IDEs
@@ -55,36 +37,6 @@ function renderFeaturesView() {
         html += `<td>${feature}</td>`;
 
         ides.forEach(ide => {
-            const status = getFeatureStatus(ide, latestVersions[ide], feature);
-            html += `<td>${formatStatus(status)}</td>`;
-        });
-
-        html += '</tr>';
-    });
-
-    html += '</tbody></table>';
-    html += renderLegend();
-
-    return html;
-}
-
-// IDEs view: rows = IDEs, columns = features
-function renderIDEsView() {
-    const ides = Object.keys(rawData);
-    const allFeatures = getAllFeatures();
-    const latestVersions = getLatestVersions();
-
-    let html = '<table><thead><tr><th>IDE</th>';
-    allFeatures.forEach(feature => {
-        html += `<th>${feature}</th>`;
-    });
-    html += '</tr></thead><tbody>';
-
-    ides.forEach(ide => {
-        html += '<tr>';
-        html += `<td>${ide}</td>`;
-
-        allFeatures.forEach(feature => {
             const status = getFeatureStatus(ide, latestVersions[ide], feature);
             html += `<td>${formatStatus(status)}</td>`;
         });
