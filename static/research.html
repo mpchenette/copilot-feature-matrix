@@ -4,10 +4,160 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>References</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        @font-face {
+            font-family: 'Mona Sans';
+            src: url('https://github.githubassets.com/assets/mona-sans-5182c7e48cfc.woff2') format('woff2');
+            font-weight: 100 900;
+            font-stretch: 75% 125%;
+        }
+
+        /* Brutally Minimal Design */
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --text-secondary: #666666;
+            --border: #e0e0e0;
+            --hover: #f5f5f5;
+            --green: #00aa00;
+            --yellow: #cc8800;
+        }
+
+        [data-theme="dark"] {
+            --bg: #000000;
+            --text: #ffffff;
+            --text-secondary: #999999;
+            --border: #333333;
+            --hover: #111111;
+            --green: #00ff00;
+            --yellow: #ffaa00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Mona Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 15px;
+            line-height: 1.5;
+            color: var(--text);
+            background: var(--bg);
+            padding: 0;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        header {
+            padding: 60px 40px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 40px;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100vw;
+            height: 1px;
+            background: var(--border);
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+        }
+
+        nav {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        nav a,
+        nav button {
+            font-size: 15px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            padding: 0;
+            transition: color 0.15s;
+        }
+
+        nav a:hover,
+        nav button:hover {
+            color: var(--text);
+        }
+
+        .theme-toggle {
+            font-size: 20px;
+            width: 24px;
+            height: 24px;
+        }
+
+        main {
+            padding: 60px 40px 120px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 120px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline: 2px solid var(--text);
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 40px 24px 24px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            nav {
+                gap: 16px;
+            }
+
+            main {
+                padding: 40px 24px 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
