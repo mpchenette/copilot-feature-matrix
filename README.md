@@ -43,77 +43,69 @@ Then open `http://localhost:8080`
 
 ## Deployment
 
-### Option 1: Azure Static Web Apps (Recommended - FREE!)
+### Option 1: Firebase Hosting (Recommended - FREE!)
 
-**Why:** Global CDN, auto-deploy from GitHub, free SSL, zero maintenance.
+**Why:** Global CDN (125+ edge locations), auto-deploy, free SSL, incredibly fast.
 
-#### Using Azure Portal:
-1. Go to [Azure Portal](https://portal.azure.com)
-2. Create Resource → Static Web Apps
-3. Connect to your GitHub repository
-4. Configure build:
-   - **App location:** `/static`
-   - **Api location:** (leave empty)
-   - **Output location:** (leave empty)
-5. Click Create
+**Free tier:** 10GB storage, 360MB/day bandwidth (plenty for this site)
 
-Azure will automatically deploy on every push to main branch.
-
-#### Using Azure CLI:
+#### Setup:
 ```bash
-# Login
-az login
+# Install Firebase CLI
+npm install -g firebase-tools
 
-# Create resource group (if needed)
-az group create --name copilot-matrix-rg --location eastus2
+# Login to Firebase
+firebase login
 
-# Create static web app
-az staticwebapp create \
-  --name copilot-matrix \
-  --resource-group copilot-matrix-rg \
-  --source https://github.com/YOUR_USERNAME/copilot-feature-matrix \
-  --location eastus2 \
-  --branch main \
-  --app-location "/static" \
-  --api-location "" \
-  --output-location ""
+# Initialize Firebase in your repo
+cd /path/to/copilot-feature-matrix
+firebase init hosting
+
+# When prompted:
+# - Use an existing project or create new one
+# - Public directory: static
+# - Configure as single-page app: No
+# - Set up automatic builds with GitHub: Yes (optional)
+
+# Deploy
+firebase deploy
 ```
 
-#### Custom Domain:
-1. In Azure Portal, go to your Static Web App
-2. Click "Custom domains"
-3. Add your domain and follow DNS instructions
+Your site will be live at `https://YOUR-PROJECT.web.app`
 
-### Option 2: Azure Blob Storage + CDN
+#### Custom Domain:
+```bash
+# Add custom domain
+firebase hosting:channel:deploy live --only hosting
+```
+
+Then in Firebase Console → Hosting → Add custom domain
+
+#### Auto-deploy from GitHub:
+Firebase will create a GitHub Action workflow automatically if you choose that option during `firebase init`. Every push to main will auto-deploy.
+
+### Option 2: Google Cloud Storage
 
 **Cost:** ~$0.50/month for storage + bandwidth
 
 ```bash
-# Create storage account
-az storage account create \
-  --name copilotmatrix \
-  --resource-group copilot-matrix-rg \
-  --location eastus2 \
-  --sku Standard_LRS
+# Create bucket (name must be globally unique)
+gsutil mb -c standard -l us-east1 gs://copilot-matrix
 
-# Enable static website hosting
-az storage blob service-properties update \
-  --account-name copilotmatrix \
-  --static-website \
-  --index-document index.html
+# Make bucket public
+gsutil iam ch allUsers:objectViewer gs://copilot-matrix
+
+# Configure as website
+gsutil web set -m index.html gs://copilot-matrix
 
 # Upload files
-az storage blob upload-batch \
-  --account-name copilotmatrix \
-  --destination '$web' \
-  --source ./static
+gsutil -m cp -r static/* gs://copilot-matrix
 
-# Get website URL
-az storage account show \
-  --name copilotmatrix \
-  --query "primaryEndpoints.web" \
-  --output tsv
+# Your site is live at:
+# https://storage.googleapis.com/copilot-matrix/index.html
 ```
+
+For custom domain, set up Cloud CDN and Cloud Load Balancer.
 
 ### Option 3: Other Static Hosts
 
