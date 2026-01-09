@@ -22,6 +22,19 @@ The site should be immediately understandable to non-technical users:
 
 Everything visible at a glance - no clicking through tabs or filters.
 
+### Accessibility Priority
+Accessibility is a core design principle:
+- **Color scheme**: Warm, neutral tones that reduce eye strain
+  - Cream background (#f8f7f4) instead of harsh white
+  - Dark gray text (#2a2a2a) instead of pure black
+  - Maintains WCAG AA contrast ratios for readability
+- **Text sizing**: Larger fonts for comfortable reading
+  - Body text: 18px (optimal for accessibility)
+  - Table headers: 15px (increased for readability)
+  - Version numbers: 16px
+  - Emphasizes readability over density
+- **Universal comfort**: Designed to work for users sensitive to both bright and dark themes
+
 ## Technical Goals
 
 ### Performance: Sub-14KB First Packet
@@ -65,12 +78,6 @@ const rawData = {
 }
 ```
 
-### Theme Support
-- Light mode (default) and dark mode
-- Preference saved in localStorage
-- Toggle via ○/● button in header
-- No external dependencies
-
 ## Design Decisions
 
 ### Why No Tabs/Filters?
@@ -106,19 +113,22 @@ Compressed CSS and JavaScript to minimal size because:
 ## Visual Design
 
 ### Color System
-- **Light mode**: White background, black text, green/yellow status dots
-- **Dark mode**: Black background, white text, bright green/yellow dots
+Accessible, neutral palette designed to reduce eye strain:
+- **Background**: #f8f7f4 (warm cream, paper-like)
+- **Text**: #2a2a2a (dark gray, softer than pure black)
+- **Secondary text**: #6b6b6b (medium gray for labels/versions)
+- **Borders**: #d4d2ca and #e8e7e2 (soft, warm grays)
 - **Status colors**:
-  - Green (#00aa00 / #00ff00) = Generally Available
-  - Yellow (#cc8800 / #ffaa00) = Preview
-  - Gray (faded) = Not Available
+  - Green (#2d8659) = Generally Available
+  - Orange-yellow (#c27200) = Preview
+  - Gray (25% opacity) = Not Available
 
 ### Typography
 - **Font**: System font stack (-apple-system, BlinkMacSystemFont, 'Segoe UI')
 - **Title**: 32px, medium weight
-- **Table headers**: 13px, uppercase-styled
-- **Table content**: 15px
-- **Version numbers**: 14px, gray
+- **Table headers**: 15px (optimal for accessibility)
+- **Table content**: 18px (optimal for accessibility)
+- **Version numbers**: 16px, gray
 
 ### Layout
 - **Max width**: 1600px (centered)
