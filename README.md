@@ -1,3 +1,6 @@
+# 31-JAN-2025 - TODO: GET CI/CD (i.e. Actions) WORKING. Have to run `firebase deploy` manually to deploy at the moment.
+
+
 # GitHub Copilot Feature Matrix
 
 A brutally minimal website showing GitHub Copilot feature availability across different IDEs.
